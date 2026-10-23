@@ -37,7 +37,7 @@ git clone git@github.com:blueguy42/genohack.git && cd genohack
 bash scripts/setup_vm.sh
 export BUCKET=gs://haduh-512512-genohack
 bash scripts/select_isolates.sh
-snakemake -s workflow/Snakefile --cores 8 --jobs 2
+snakemake -s workflow/Snakefile --cores 12 --jobs 3   # 3 isolates at once, 4 threads each
 ```
 
 ## Stopping early

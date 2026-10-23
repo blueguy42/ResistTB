@@ -38,15 +38,37 @@ lap() {
     t_prev=${now}
 }
 
-conda activate snippy
-fasterq-dump "${sample}" -e "${threads}" --split-files --temp "${work}" --outdir "${work}"
-lap download
-
-pigz -p "${threads}" "${work}"/*.fastq
-lap compress
-
 r1="${work}/${sample}_1.fastq.gz"
 r2="${work}/${sample}_2.fastq.gz"
+
+# Preferred: ENA serves ready-made gzipped FASTQ, so there is no SRA conversion or compression.
+download_ena() {
+    local urls u
+    urls=$(curl -fsS "https://www.ebi.ac.uk/ena/portal/api/filereport?accession=${sample}&result=read_run&fields=fastq_ftp&format=tsv&download=true" \
+        | tail -n +2 | cut -f2 | tr ';' '\n' | grep -E '_[12]\.fastq\.gz$' || true)
+    [[ -n "${urls}" ]] || return 1
+    for u in ${urls}; do
+        curl -fsS --retry 3 -o "${work}/$(basename "${u}")" "https://${u}" &
+    done
+    wait
+    [[ -s "${r1}" && -s "${r2}" ]]
+}
+
+conda activate snippy
+dur[compress]=0
+if download_ena; then
+    dl_source="ena"
+    lap download
+else
+    echo "${sample}: ENA download unavailable, falling back to fasterq-dump" >&2
+    dl_source="sra"
+    rm -f "${work}"/*.fastq.gz
+    fasterq-dump "${sample}" -e "${threads}" --split-files --temp "${work}" --outdir "${work}"
+    lap download
+    pigz -p "${threads}" "${work}"/*.fastq
+    lap compress
+fi
+
 if [[ ! -f "${r1}" || ! -f "${r2}" ]]; then
     echo "${sample}: expected paired reads, got $(ls "${work}")" >&2
     exit 1
@@ -99,6 +121,7 @@ write_metadata() {
     "start_utc": "${start_utc}",
     "end_utc": "${end_utc}",
     "machine_type": "$(curl -s -m 2 -H 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/instance/machine-type 2>/dev/null | awk -F/ '{print $NF}')",
+    "download_source": "${dl_source}",
     "threads": ${threads},
     "target_coverage": ${coverage},
     "genome_size": "${genome_size}"
