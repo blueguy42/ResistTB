@@ -28,7 +28,7 @@ The per-isolate approach follows the design of the Nextstrain TB build
 
 ## GCP
 
-Project `haduh-512512`, region `asia-southeast1`. See `infra/gcp_setup.sh`.
+Project `haduh-512512`. VM in `us-east4-a` (near NCBI; Singapore downloads stalled), bucket in `asia-southeast1`. See `infra/gcp_setup.sh`.
 
 ## Quick start on the VM
 

@@ -4,12 +4,12 @@
 set -euo pipefail
 
 PROJECT=haduh-512512
-REGION=asia-southeast1
-ZONE=asia-southeast1-b
+REGION=asia-southeast1          # bucket location
+VM_ZONE=us-east4-a              # VM next to NCBI's US servers; Singapore downloads stalled
 BUCKET=gs://${PROJECT}-genohack
 SA_NAME=genohack-vm
 SA=${SA_NAME}@${PROJECT}.iam.gserviceaccount.com
-VM=genohack-analysis
+VM=genohack-analysis-us
 
 gcloud services enable compute.googleapis.com storage.googleapis.com \
     billingbudgets.googleapis.com --project "${PROJECT}"
@@ -30,11 +30,11 @@ fi
 gcloud compute firewall-rules create allow-iap-ssh --project "${PROJECT}" --network default \
     --direction INGRESS --allow tcp:22 --source-ranges 35.235.240.0/20 || true
 
-gcloud compute instances create "${VM}" --project "${PROJECT}" --zone "${ZONE}" \
+gcloud compute instances create "${VM}" --project "${PROJECT}" --zone "${VM_ZONE}" \
     --machine-type e2-standard-8 \
     --image-family debian-12 --image-project debian-cloud \
     --boot-disk-size 400GB --boot-disk-type pd-balanced \
     --service-account "${SA}" --scopes cloud-platform \
     --labels project=genohack
 
-# Connect: gcloud compute ssh ${VM} --zone ${ZONE} --project ${PROJECT} --tunnel-through-iap
+# Connect: gcloud compute ssh ${VM} --zone ${VM_ZONE} --project ${PROJECT} --tunnel-through-iap
