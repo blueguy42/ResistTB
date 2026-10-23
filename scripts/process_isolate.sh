@@ -93,16 +93,17 @@ bytes_sub=$(( $(stat -c %s "${work}/sub_1.fastq.gz") + $(stat -c %s "${work}/sub
 snippy --outdir "${work}/snippy" --R1 "${work}/sub_1.fastq.gz" --R2 "${work}/sub_2.fastq.gz" \
     --ref "${ref}" --cpus "${threads}" --force
 lap snippy
-ver_snippy=$(snippy --version 2>&1 | head -1)
-ver_rasusa=$(rasusa --version 2>&1 | head -1)
-ver_sra=$(fasterq-dump --version 2>&1 | grep -i version | head -1 | xargs)
+# Version capture must never abort the run, so every pipeline here is guarded with || true.
+ver_snippy=$(snippy --version 2>&1 | head -1 || true)
+ver_rasusa=$(rasusa --version 2>&1 | head -1 || true)
+ver_sra=$(fasterq-dump --version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true)
 conda deactivate
 
 conda activate tb-profiler
 tb-profiler profile -1 "${work}/sub_1.fastq.gz" -2 "${work}/sub_2.fastq.gz" \
     -p "${sample}" --txt --dir "${work}/tbprofiler" --threads "${threads}"
 lap tbprofiler
-ver_tbp=$(tb-profiler version 2>&1 | head -1)
+ver_tbp=$(tb-profiler version 2>&1 | head -1 || true)
 conda deactivate
 
 # Keep only the small outputs.
