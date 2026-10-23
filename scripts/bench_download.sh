@@ -9,7 +9,7 @@ limit="${3:-1200}"
 work="work/bench_${sample}_${method}"
 rm -rf "${work}"
 mkdir -p "${work}"
-source "$(conda info --base)/etc/profile.d/conda.sh"
+source "${CONDA_BASE:-$HOME/miniforge3}/etc/profile.d/conda.sh"
 
 fetch_ena() {
     local urls u
@@ -31,7 +31,7 @@ else
     # A fresh shell needs conda sourced before the snippy environment (fasterq-dump, pigz) is on PATH.
     export sample work
     timeout "${limit}" bash -c '
-        source "$(conda info --base)/etc/profile.d/conda.sh"
+        source "${CONDA_BASE:-$HOME/miniforge3}/etc/profile.d/conda.sh"
         conda activate snippy
         fasterq-dump "${sample}" -e 4 --split-files --temp "${work}" --outdir "${work}" &&
         pigz -p 4 "${work}"/*.fastq'

@@ -15,7 +15,7 @@ work="work/${sample}"
 out="results/${sample}"
 remote="${bucket}/results/${sample}"
 
-source "$(conda info --base)/etc/profile.d/conda.sh"
+source "${CONDA_BASE:-$HOME/miniforge3}/etc/profile.d/conda.sh"
 
 # Resume: skip if this isolate is already in the bucket.
 if gcloud storage ls "${remote}/DONE" >/dev/null 2>&1; then
