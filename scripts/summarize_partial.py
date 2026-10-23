@@ -43,7 +43,8 @@ for d in done:
             "gene": v.get("gene_name"),
             "change": v.get("change") or v.get("nucleotide_change"),
             "freq": v.get("freq"),
-            "drugs": ";".join(x.get("drug", "") for x in v.get("drugs", [])),
+            # TB-Profiler 6.x lists drugs inside each variant's annotation records.
+            "drugs": ";".join(sorted({a["drug"] for a in v.get("annotation", []) if a.get("drug")})),
         })
 
 iso = pd.DataFrame(isolates)
