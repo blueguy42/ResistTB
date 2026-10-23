@@ -66,7 +66,9 @@ download_ena() {
 
 conda activate snippy
 dur[compress]=0
-if download_ena; then
+# ENA is opt-in (DOWNLOAD_SOURCE=ena): from Singapore its connections stalled repeatedly and the
+# server does not support resuming, so the SRA path is the default.
+if [[ "${DOWNLOAD_SOURCE:-sra}" == "ena" ]] && download_ena; then
     dl_source="ena"
     lap download
 else
