@@ -23,19 +23,18 @@ fetch_ena() {
     wait
 }
 
-fetch_sra() {
-    conda activate snippy
-    fasterq-dump "${sample}" -e 4 --split-files --temp "${work}" --outdir "${work}"
-    pigz -p 4 "${work}"/*.fastq
-}
-
 start=$(date +%s)
 if [[ "${method}" == "ena" ]]; then
     export -f fetch_ena; export sample work
     timeout "${limit}" bash -c fetch_ena
 else
-    export -f fetch_sra; export sample work
-    timeout "${limit}" bash -c "source \"$(conda info --base)/etc/profile.d/conda.sh\"; fetch_sra"
+    # A fresh shell needs conda sourced before the snippy environment (fasterq-dump, pigz) is on PATH.
+    export sample work
+    timeout "${limit}" bash -c '
+        source "$(conda info --base)/etc/profile.d/conda.sh"
+        conda activate snippy
+        fasterq-dump "${sample}" -e 4 --split-files --temp "${work}" --outdir "${work}" &&
+        pigz -p 4 "${work}"/*.fastq'
 fi
 rc=$?
 end=$(date +%s)
