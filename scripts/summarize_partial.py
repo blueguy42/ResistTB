@@ -58,7 +58,7 @@ for d in done:
         row = {"sample": j["sample"], "bioproject": j.get("source", {}).get("bioproject")}
         row.update({f"sec_{k}": v for k, v in j.get("duration_seconds", {}).items()})
         row["machine_type"] = j.get("run", {}).get("machine_type")
-        row["raw_fastq_mb"] = round(j.get("input_bytes", {}).get("raw_fastq_gz", 0) / 1e6)
+        row["raw_fastq_mb"] = round(j.get("input_bytes", {}).get("raw_fastq", j.get("input_bytes", {}).get("raw_fastq_gz", 0)) / 1e6)
         meta_rows.append(row)
 if meta_rows:
     iso = iso.merge(pd.DataFrame(meta_rows), on="sample", how="left")

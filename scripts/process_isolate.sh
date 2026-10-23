@@ -72,13 +72,15 @@ if [[ "${DOWNLOAD_SOURCE:-sra}" == "ena" ]] && download_ena; then
     dl_source="ena"
     lap download
 else
-    echo "${sample}: ENA download unavailable, falling back to fasterq-dump" >&2
+    [[ "${DOWNLOAD_SOURCE:-sra}" == "ena" ]] && echo "${sample}: ENA download failed, falling back to fasterq-dump" >&2
     dl_source="sra"
     rm -f "${work}"/*.fastq.gz
     fasterq-dump "${sample}" -e "${threads}" --split-files --temp "${work}" --outdir "${work}"
     lap download
-    pigz -p "${threads}" "${work}"/*.fastq
-    lap compress
+    # Leave the reads uncompressed: rasusa reads plain FASTQ and writes the small subsample gzipped.
+    # Compressing the full-size reads took 5-10 minutes per isolate in the 3-isolate test.
+    r1="${work}/${sample}_1.fastq"
+    r2="${work}/${sample}_2.fastq"
 fi
 
 if [[ ! -f "${r1}" || ! -f "${r2}" ]]; then
@@ -148,7 +150,7 @@ write_metadata() {
     "upload": ${dur[upload]:-0},
     "total": ${total}
   },
-  "input_bytes": { "raw_fastq_gz": ${bytes_raw}, "subsampled_fastq_gz": ${bytes_sub} },
+  "input_bytes": { "raw_fastq": ${bytes_raw}, "subsampled_fastq_gz": ${bytes_sub} },
   "tool_versions": {
     "snippy": "${ver_snippy}", "tb-profiler": "${ver_tbp}",
     "rasusa": "${ver_rasusa}", "sra-tools": "${ver_sra}"
