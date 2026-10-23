@@ -1,0 +1,13 @@
+[project]
+name = "genohack"
+version = "0.1.0"
+description = "ChatGP-TB design library"
+requires-python = ">=3.11"
+dependencies = ["numpy", "pandas", "primer3-py", "biopython"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

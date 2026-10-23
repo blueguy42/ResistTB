@@ -54,3 +54,16 @@ Re-running `snakemake` later resumes where it stopped. If the design changes, no
 the stored outputs (VCF, aligned FASTA, TB-Profiler JSON) do not depend on the downstream design.
 
 Time one isolate first (`bash scripts/process_isolate.sh SRR37495311 8 100`) before running all.
+
+## Design library (`src/genohack/`)
+
+```bash
+python -m venv .venv && .venv/bin/pip install -e . pytest
+.venv/bin/python -m pytest                       # tests
+.venv/bin/python -m genohack.cli windows --results results --out out --flank 250
+```
+
+`genohack.cli windows` builds a variant table and ranks conserved windows around each resistance target
+(rpoB S450L, katG S315T, inhA c.-15, gyrA D94G) from whatever isolates have finished. Windows are scored
+against the population consensus, not H37Rv, because a base that differs from H37Rv in every isolate is
+still conserved in the population. Needs `ref/NC_000962.3.fasta` and `ref/mask.bed` (see `scripts/setup_vm.sh`).
