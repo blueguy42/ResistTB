@@ -50,7 +50,11 @@ def _sites(primers: dict[str, str], db: Path, threads: int) -> list[tuple[str, s
         if qseq[-THREE_PRIME_EXACT:] != sseq[-THREE_PRIME_EXACT:]:
             continue
         sstart, send = int(sstart), int(send)
-        sites.append((sid.split("|", 1)[0], sid, send if sstart > send else send, "+" if send > sstart else "-"))
+        group = next((t for t in sid.split("|") if t in GROUPS), None)  # BLAST may wrap ids as gnl|<group>|<id>
+        if group is None:
+            continue
+        # sstart is the primer's 5' end on the subject; the orientation says which way it extends.
+        sites.append((group, sid, sstart, "+" if send > sstart else "-"))
     return sites
 
 
