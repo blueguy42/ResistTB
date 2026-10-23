@@ -127,12 +127,8 @@ def build_assay(rm, table, ref, target: Target, n_pairs: int = 20) -> Assay | No
 
 
 def annotate_off_target(a: Assay) -> None:
-    """Add BLAST hits against human, NTM and respiratory bacteria, then rescore with them included."""
-    res = specificity.blast_off_target({
-        "F": (a.pair.left_seq, "primer"), "R": (a.pair.right_seq, "primer"),
-        "WT": (a.probe.wt_seq, "probe"), "MUT": (a.probe.mut_seq, "probe"),
-    })
-    a.off_target = {g: sum(r[g] for r in res.values()) for g in specificity.GROUPS}
+    """Predict off-target products (BLAST) for the primer pair, then rescore with them included."""
+    a.off_target = specificity.predict_products({"F": a.pair.left_seq, "R": a.pair.right_seq})
     total = sum(a.hits.values()) + sum(a.off_target.values())
     a.scores = score_assay(a.coverage, a.pair, a.probe, a.interactions, total, evidence_score(a.evidence))
 
@@ -178,8 +174,9 @@ def _specificity(a: Assay) -> dict:
                 "note": f"{self_hits} near-matches elsewhere in H37Rv. Human and non-tuberculous genomes were not checked."}
     o = a.off_target
     return {"human_hits": o["human"], "ntm_hits": o["ntm"],
-            "note": f"{self_hits} near-matches elsewhere in H37Rv; {o['flora']} in common respiratory bacteria. "
-                    "BLAST screen (at most 2 mismatches, primers must match at the 3' end)."}
+            "note": f"Predicted off-target products: human {o['human']}, non-tuberculous mycobacteria {o['ntm']}, "
+                    f"respiratory bacteria {o['flora']}; {self_hits} near-matches elsewhere in H37Rv. "
+                    "BLAST screen: a product needs both primers to bind within 3 kb, matching at the 3' end."}
 
 
 def to_candidate(a: Assay, rank: int) -> dict:
