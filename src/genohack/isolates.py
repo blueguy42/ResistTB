@@ -13,8 +13,14 @@ from .genome import encode
 
 
 def finished_samples(results_dir: str | Path) -> list[str]:
-    """Samples whose DONE marker exists, in sorted order (a partial run is fine)."""
-    return sorted(p.parent.name for p in Path(results_dir).glob("*/DONE"))
+    """Samples with a DONE marker AND their data files, in sorted order (a partial run is fine).
+
+    The data files are checked too: after a resume the marker can exist locally while the files are
+    still only in the bucket."""
+    need = ("snps.aligned.fa.gz", "snps.vcf.gz")
+    return sorted(
+        p.parent.name for p in Path(results_dir).glob("*/DONE") if all((p.parent / f).exists() for f in need)
+    )
 
 
 def read_aligned(results_dir: str | Path, sample: str) -> np.ndarray:
