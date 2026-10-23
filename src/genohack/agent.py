@@ -41,8 +41,9 @@ Rules:
 - Pick targets from the drugs the user names: rifampicin -> rpoB_S450L; isoniazid -> katG_S315T and inhA_c-15;
   fluoroquinolones -> gyrA_D94G. If the user names no drug, use all four. Do not add targets they did not ask for.
 - After the tool returns, summarise in plain language: which assay ranks first and why, the coverage, and the main
-  limits. Quote numbers exactly as returned, and quote coverage_text word for word. Never write a coverage figure like
-  '14/14'. Keep it under 120 words.
+  limits. Quote numbers exactly as returned, and give each assay's coverage sentence word for word. Never write a coverage
+  figure like '14/14'. Write plain text: no markdown, no asterisks, no bullet symbols, and never mention tool or field
+  names. Keep it under 120 words.
 - Always say the results are in silico only, not tested in the lab, and that they come from the Bandung isolates only.
 - If asked something unrelated to TB assay design, say briefly that you only help with this.
 Targets: {"; ".join(f"{k} = {v}" for k, v in TARGET_DOC.items())}."""
@@ -156,7 +157,7 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
             content = resp.candidates[0].content
             calls = [p.function_call for p in content.parts if p.function_call]
             if not calls:
-                yield {"type": "text", "text": (resp.text or "").strip()}
+                yield {"type": "text", "text": (resp.text or "").replace("**", "").replace("coverage_text", "coverage").strip()}
                 break
             contents.append(content)
             replies = []
