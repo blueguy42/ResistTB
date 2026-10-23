@@ -10,6 +10,7 @@ extends from its 3' end). A predicted product is a plus-orientation site followe
 MAX_PRODUCT bases, by a minus-orientation site. This is a screen with BLAST's sensitivity limits, not a proof."""
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import subprocess
@@ -21,7 +22,15 @@ DEFAULT_DB = Path(os.environ.get("GENOHACK_BLAST_DB", REPO / "ref" / "offtarget"
 GROUPS = ("human", "ntm", "flora")
 MAX_PRODUCT = 3000
 THREE_PRIME_EXACT = 5
-_cache: dict[tuple, dict] = {}
+CACHE_FILE = REPO / "resources" / "offtarget_cache.json"
+_cache: dict[str, dict] | None = None
+
+
+def _load() -> dict[str, dict]:
+    global _cache
+    if _cache is None:
+        _cache = json.loads(CACHE_FILE.read_text()) if CACHE_FILE.exists() else {}
+    return _cache
 
 
 def available(db: Path = DEFAULT_DB) -> bool:
@@ -58,11 +67,15 @@ def _sites(primers: dict[str, str], db: Path, threads: int) -> list[tuple[str, s
     return sites
 
 
-def predict_products(primers: dict[str, str], db: Path = DEFAULT_DB, threads: int = 4) -> dict[str, int]:
-    """Number of predicted off-target amplicons per group for a set of primers (usually the forward and reverse)."""
-    key = tuple(sorted(primers.values()))
-    if key in _cache:
-        return _cache[key]
+def predict_products(primers: dict[str, str], db: Path = DEFAULT_DB, threads: int = 4) -> dict[str, int] | None:
+    """Predicted off-target amplicons per group for a primer set. Uses BLAST when the database is here, else the
+    cached result for this exact primer pair (resources/offtarget_cache.json); None when neither exists."""
+    key = "|".join(sorted(primers.values()))
+    cache = _load()
+    if key in cache:
+        return cache[key]
+    if not available(db):
+        return None
     by_subject: dict[str, dict[str, list[int]]] = {}
     group_of: dict[str, str] = {}
     for group, sid, pos, orient in _sites(primers, db, threads):
@@ -73,5 +86,6 @@ def predict_products(primers: dict[str, str], db: Path = DEFAULT_DB, threads: in
         minus = sorted(o["-"])
         for p in o["+"]:
             counts[group_of[sid]] += sum(1 for m in minus if 0 < m - p <= MAX_PRODUCT)
-    _cache[key] = counts
+    cache[key] = counts
+    CACHE_FILE.write_text(json.dumps(cache, indent=1, sort_keys=True))
     return counts

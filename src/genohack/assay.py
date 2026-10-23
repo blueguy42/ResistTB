@@ -137,6 +137,8 @@ def build_assay(rm, table, ref, target: Target, n_pairs: int = 20) -> Assay | No
 def annotate_off_target(a: Assay) -> None:
     """Predict off-target products (BLAST) for the primer pair, then rescore with them included."""
     a.off_target = specificity.predict_products({"F": a.pair.left_seq, "R": a.pair.right_seq})
+    if a.off_target is None:
+        return  # no database here and no cached result for this pair: leave specificity as not checked
     total = sum(a.hits.values()) + sum(a.off_target.values())
     a.scores = score_assay(a.coverage, a.pair, a.probe, a.interactions, total, evidence_score(a.evidence))
 
@@ -246,11 +248,12 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
     step("design_assays", "Design primers and probes, check specificity and coverage",
          "Primer3, thermodynamic alignment, H37Rv near-match scan", t0)
 
-    if specificity.available():
-        t0 = time.perf_counter()
-        for a in assays:
-            annotate_off_target(a)
-        step("check_specificity", "Screen oligos against human, non-tuberculous and respiratory genomes", "BLAST", t0)
+    t0 = time.perf_counter()
+    for a in assays:
+        annotate_off_target(a)
+    if any(a.off_target is not None for a in assays):
+        step("check_specificity", "Screen primers against human, non-tuberculous and respiratory genomes",
+             "BLAST" if specificity.available() else "cached BLAST results", t0)
     assays.sort(key=lambda a: -a.scores["overall"])
     cands = [to_candidate(a, i + 1) for i, a in enumerate(assays)]
     best = cands[0] if cands else None
@@ -259,7 +262,7 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
         + (f"The top-ranked is {best['gene']} {best['mutation']} (overall {best['scores']['overall']}), "
            f"matching {best['coverage']['perfect_match']} of {best['coverage']['isolates_total']} isolates exactly. " if best else "")
         + "Results are in silico only."
-        + ("" if specificity.available() else " Specificity against human and non-tuberculous genomes was not checked.")
+        + ("" if all(a.off_target is not None for a in assays) else " Specificity against human and non-tuberculous genomes was not checked for every assay.")
     )
     return {
         "mock": False,
