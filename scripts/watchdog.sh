@@ -33,7 +33,8 @@ stop_run() {
 
 start_run() {
     act systemd-run --quiet --unit="genohack-run-$(date +%s)" --uid="${RUN_USER}" --working-directory="${REPO}" \
-        --setenv=HOME="/home/${RUN_USER}" bash scripts/run_full.sh
+        --setenv=HOME="/home/${RUN_USER}" --property=StandardOutput="append:${REPO}/logs/run_full.log" \
+        --property=StandardError=inherit bash scripts/run_full.sh
 }
 
 read -r done_n total < <(sudo -u "${RUN_USER}" bash scripts/progress.sh)
@@ -48,7 +49,7 @@ if [[ "${total}" -gt 0 && "${done_n}" -ge "${total}" ]]; then
     exit 0
 fi
 
-read -r last_done last_ts < "${STATE}" 2>/dev/null || { last_done=-1; last_ts=${now}; }
+if [[ -f "${STATE}" ]]; then read -r last_done last_ts < "${STATE}"; else last_done=-1; last_ts=${now}; fi
 if [[ "${done_n}" != "${last_done}" ]]; then
     echo "${done_n} ${now}" > "${STATE}"
     echo 0 > "${RESTARTS}"
