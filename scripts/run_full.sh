@@ -10,8 +10,10 @@ export BUCKET="${BUCKET:-gs://haduh-512512-genohack}"
 mkdir -p logs
 
 echo "start $(date -u +%FT%TZ) on $(nproc) vCPUs"
-# 4 isolates at once, 4 threads each (config: threads_per_isolate), 2 retries per isolate.
-snakemake -s workflow/Snakefile --cores "$(nproc)" --keep-going --retries 2 --latency-wait 30 --rerun-incomplete
+# Isolates run mostly I/O-bound, so a little oversubscription uses idle CPU: with 3 threads per isolate
+# (config: threads_per_isolate), cores = nproc + 2 allows 6 isolates at once on 16 vCPUs.
+CORES="${CORES:-$(( $(nproc) + 2 ))}"
+snakemake -s workflow/Snakefile --cores "${CORES}" --keep-going --retries 2 --latency-wait 30 --rerun-incomplete
 rc=$?
 echo "snakemake exit=${rc} at $(date -u +%FT%TZ)"
 
