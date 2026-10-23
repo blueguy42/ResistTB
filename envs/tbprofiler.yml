@@ -1,0 +1,6 @@
+name: tb-profiler
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - tb-profiler=6.6.5

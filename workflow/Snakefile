@@ -1,0 +1,24 @@
+import pandas as pd
+
+configfile: "workflow/config.yaml"
+
+isolates = pd.read_csv(config["isolates"], sep="\t")
+design = isolates[isolates["bioproject"] == config["design_bioproject"]]
+# Fixed-seed random order, so whichever isolates finish first are a fair sample of the project
+# and partial results stay representative if the run is stopped early.
+SAMPLES = design["acc"].sample(frac=1, random_state=100).tolist()
+
+
+rule all:
+    input:
+        expand("results/{sample}/DONE", sample=SAMPLES),
+
+
+rule process_isolate:
+    output:
+        "results/{sample}/DONE",
+    threads: config["threads_per_isolate"]
+    log:
+        "logs/{sample}.log",
+    shell:
+        "bash scripts/process_isolate.sh {wildcards.sample} {threads} {config[coverage]} > {log} 2>&1"

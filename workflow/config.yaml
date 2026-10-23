@@ -1,0 +1,4 @@
+isolates: data/isolates.tsv
+design_bioproject: PRJNA1433044   # Bandung: the design set; other projects are held out for testing
+threads_per_isolate: 4
+coverage: 100

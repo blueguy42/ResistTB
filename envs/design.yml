@@ -1,0 +1,15 @@
+name: design
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+  - snakemake
+  - pandas
+  - numpy
+  - biopython
+  - blast
+  - bedtools
+  - pip
+  - pip:
+      - primer3-py

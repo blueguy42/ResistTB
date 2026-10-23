@@ -1,0 +1,5 @@
+name: duckdb
+channels:
+  - conda-forge
+dependencies:
+  - duckdb-cli
