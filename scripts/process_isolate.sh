@@ -50,7 +50,9 @@ download_ena() {
     local pids=() rc=0 p
     for u in ${urls}; do
         # -C - resumes a dropped transfer instead of restarting it.
+        # --speed-limit/--speed-time abort a stalled connection (under 20 kB/s for 60 s) so it retries.
         curl -fsS --retry 5 --retry-delay 5 --retry-all-errors -C - \
+            --connect-timeout 30 --speed-limit 20000 --speed-time 60 \
             -o "${work}/$(basename "${u}")" "https://${u}" &
         pids+=($!)
     done
