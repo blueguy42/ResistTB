@@ -4,13 +4,22 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import os
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
 from . import agent
 
 app = FastAPI(title="ChatGP-TB")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=os.environ.get("GENOHACK_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(","),
+    allow_methods=["GET", "POST"],
+    allow_headers=["content-type"],
+)
 REPORT = Path(agent.__file__).resolve().parents[2] / "web" / "data" / "report.json"
 
 

@@ -5,40 +5,109 @@ import type { Report, ToolStep } from "@/lib/types";
 import AgentPanel from "./AgentPanel";
 import ReportView from "./ReportView";
 
-// While the backend is not connected, a request replays the report's own tool steps one by one,
-// so the interface behaves like a streaming agent. Swap `replay` for a fetch to the API later.
-export default function App({ report }: { report: Report }) {
-  const [request, setRequest] = useState(report.request);
-  const [steps, setSteps] = useState<ToolStep[]>(report.steps);
+const API = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+
+type Turn = { role: "user" | "model"; text: string };
+
+type ChatEvent =
+  | { type: "step"; step: ToolStep }
+  | { type: "report"; report: Report }
+  | { type: "text"; text: string }
+  | { type: "error"; message: string }
+  | { type: "done" };
+
+export default function App({ report: initial }: { report: Report }) {
+  const [report, setReport] = useState(initial);
+  const [request, setRequest] = useState(initial.request);
+  const [summary, setSummary] = useState(initial.summary);
+  const [steps, setSteps] = useState<ToolStep[]>(initial.steps);
   const [running, setRunning] = useState(false);
-  const [selectedId, setSelectedId] = useState(report.candidates[0].id);
+  const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(initial.candidates[0].id);
+  const history = useRef<Turn[]>([]);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const clearTimers = () => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
   };
-
   useEffect(() => clearTimers, []);
 
-  const replay = useCallback(
-    (text: string) => {
+  // Used only while the report is demo data and the backend is not running.
+  const replay = useCallback(() => {
+    clearTimers();
+    setRunning(true);
+    setSummary("");
+    setSteps(initial.steps.map((s, i) => ({ ...s, status: i === 0 ? "running" : "pending" })));
+    initial.steps.forEach((_, i) => {
+      timers.current.push(
+        setTimeout(() => {
+          setSteps((prev) => prev.map((s, j) => (j === i ? { ...s, status: "done" } : j === i + 1 ? { ...s, status: "running" } : s)));
+          if (i === initial.steps.length - 1) {
+            setRunning(false);
+            setSummary(initial.summary);
+          }
+        }, 700 * (i + 1)),
+      );
+    });
+  }, [initial]);
+
+  const handle = useCallback((ev: ChatEvent) => {
+    if (ev.type === "step") {
+      setSteps((prev) => (prev.some((s) => s.id === ev.step.id) ? prev.map((s) => (s.id === ev.step.id ? ev.step : s)) : [...prev, ev.step]));
+    } else if (ev.type === "report") {
+      setReport(ev.report);
+      setSelectedId(ev.report.candidates[0]?.id ?? "");
+    } else if (ev.type === "text") {
+      setSummary(ev.text);
+      history.current.push({ role: "model", text: ev.text });
+    } else if (ev.type === "error") {
+      setError(ev.message);
+    }
+  }, []);
+
+  const send = useCallback(
+    async (text: string) => {
       clearTimers();
       setRequest(text);
+      setSteps([]);
+      setSummary("");
+      setError("");
       setRunning(true);
-      setSteps(report.steps.map((s, i) => ({ ...s, status: i === 0 ? "running" : "pending" })));
-      report.steps.forEach((_, i) => {
-        timers.current.push(
-          setTimeout(() => {
-            setSteps((prev) =>
-              prev.map((s, j) => (j === i ? { ...s, status: "done" } : j === i + 1 ? { ...s, status: "running" } : s)),
-            );
-            if (i === report.steps.length - 1) setRunning(false);
-          }, 700 * (i + 1)),
-        );
-      });
+      const prior = history.current.slice();
+      history.current.push({ role: "user", text });
+      try {
+        const res = await fetch(`${API}/api/chat`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ message: text, history: prior }),
+        });
+        if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buf = "";
+        for (;;) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buf += decoder.decode(value, { stream: true });
+          let cut;
+          while ((cut = buf.indexOf("\n\n")) >= 0) {
+            const line = buf.slice(0, cut).trim();
+            buf = buf.slice(cut + 2);
+            if (line.startsWith("data: ")) handle(JSON.parse(line.slice(6)) as ChatEvent);
+          }
+        }
+      } catch {
+        if (initial.mock) {
+          replay();
+          return;
+        }
+        setError("Could not reach the backend. Start it with: uvicorn genohack.api:app --port 8000");
+      } finally {
+        setRunning(false);
+      }
     },
-    [report.steps],
+    [handle, initial.mock, replay],
   );
 
   return (
@@ -64,7 +133,7 @@ export default function App({ report }: { report: Report }) {
 
       <main className="mx-auto grid w-full max-w-[1400px] flex-1 gap-5 px-5 py-5 lg:grid-cols-[380px_minmax(0,1fr)]">
         <div className="lg:sticky lg:top-5 lg:h-[calc(100vh-6.5rem)]">
-          <AgentPanel report={report} request={request} steps={steps} running={running} onSend={replay} />
+          <AgentPanel request={request} steps={steps} summary={summary} error={error} running={running} onSend={send} />
         </div>
         <ReportView report={report} selectedId={selectedId} onSelect={setSelectedId} />
       </main>

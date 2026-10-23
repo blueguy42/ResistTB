@@ -41,7 +41,8 @@ Rules:
 - Pick targets from the drugs the user names: rifampicin -> rpoB_S450L; isoniazid -> katG_S315T and inhA_c-15;
   fluoroquinolones -> gyrA_D94G. If the user names no drug, use all four. Do not add targets they did not ask for.
 - After the tool returns, summarise in plain language: which assay ranks first and why, the coverage, and the main
-  limits. Quote numbers exactly as returned. Keep it under 120 words.
+  limits. Quote numbers exactly as returned, and quote coverage_text word for word. Never write a coverage figure like
+  '14/14'. Keep it under 120 words.
 - Always say the results are in silico only, not tested in the lab, and that they come from the Bandung isolates only.
 - If asked something unrelated to TB assay design, say briefly that you only help with this.
 Targets: {"; ".join(f"{k} = {v}" for k, v in TARGET_DOC.items())}."""
@@ -94,6 +95,13 @@ def refresh_client() -> None:
         _client = None
 
 
+def coverage_text(cov: dict) -> str:
+    """One sentence the model quotes verbatim, so it cannot blur exact matches with near matches."""
+    n = cov["isolates_total"]
+    return (f"{cov['perfect_match']} of {n} isolates match every oligo exactly; {cov['one_mismatch']} more have a single "
+            f"mismatch that should not break the assay; {cov['failing']} carry a variant likely to break it")
+
+
 def _compact(report: dict) -> dict:
     """What the model sees: enough to explain the result, nothing it could mistake for an invitation to invent."""
     return {
@@ -101,7 +109,7 @@ def _compact(report: dict) -> dict:
         "assays": [
             {
                 "rank": c["rank"], "target": f"{c['gene']} {c['mutation']}", "drug": c["drug"], "who_tier": c["who_tier"],
-                "scores": c["scores"], "coverage": c["coverage"],
+                "scores": c["scores"], "coverage_text": coverage_text(c["coverage"]),
                 "probe_tm_gap_c": [o["mismatch_dtm"] for o in c["oligos"] if "mismatch_dtm" in o],
                 "specificity": c["specificity"]["note"], "caveats": c["caveats"],
             }

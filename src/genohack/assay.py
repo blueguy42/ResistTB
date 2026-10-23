@@ -12,6 +12,7 @@ import pandas as pd
 from .checks import genome_hits, interactions
 from .genome import MISSING, load_genes, load_mask, load_reference
 from .isolates import finished_samples
+from . import specificity
 from .primers import PrimerPair, design_primer_pairs
 from .probes import ProbePair, design_probes
 from .targets import Target, default_targets
@@ -32,6 +33,7 @@ class Assay:
     interactions: dict
     hits: dict
     evidence: pd.DataFrame
+    off_target: dict | None = None  # BLAST counts per group, when the database is available
 
 
 def _clip01(x: float) -> float:
@@ -124,6 +126,17 @@ def build_assay(rm, table, ref, target: Target, n_pairs: int = 20) -> Assay | No
     return best
 
 
+def annotate_off_target(a: Assay) -> None:
+    """Add BLAST hits against human, NTM and respiratory bacteria, then rescore with them included."""
+    res = specificity.blast_off_target({
+        "F": (a.pair.left_seq, "primer"), "R": (a.pair.right_seq, "primer"),
+        "WT": (a.probe.wt_seq, "probe"), "MUT": (a.probe.mut_seq, "probe"),
+    })
+    a.off_target = {g: sum(r[g] for r in res.values()) for g in specificity.GROUPS}
+    total = sum(a.hits.values()) + sum(a.off_target.values())
+    a.scores = score_assay(a.coverage, a.pair, a.probe, a.interactions, total, evidence_score(a.evidence))
+
+
 def _oligo_rows(a: Assay) -> list[dict]:
     g, p, pr = a.target.gene, a.pair, a.probe
     inter = a.interactions
@@ -158,6 +171,17 @@ def _who_text(rows: pd.DataFrame) -> tuple[str, list[str]]:
     return best["grade"].split(") ", 1)[1], lines
 
 
+def _specificity(a: Assay) -> dict:
+    self_hits = sum(a.hits.values())
+    if a.off_target is None:
+        return {"human_hits": None, "ntm_hits": None,
+                "note": f"{self_hits} near-matches elsewhere in H37Rv. Human and non-tuberculous genomes were not checked."}
+    o = a.off_target
+    return {"human_hits": o["human"], "ntm_hits": o["ntm"],
+            "note": f"{self_hits} near-matches elsewhere in H37Rv; {o['flora']} in common respiratory bacteria. "
+                    "BLAST screen (at most 2 mismatches, primers must match at the 3' end)."}
+
+
 def to_candidate(a: Assay, rank: int) -> dict:
     t, c, s = a.target, a.coverage, a.scores
     tier, who_lines = _who_text(a.evidence)
@@ -171,7 +195,9 @@ def to_candidate(a: Assay, rank: int) -> dict:
     caveats = [
         "Computed from the finished isolates only; coverage will change as more are processed." if n < 222 else
         "Coverage is measured on the Bandung isolates only, not all of Indonesia.",
-        "Specificity covers the H37Rv genome only; human and non-tuberculous genomes have not been checked.",
+        ("Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; "
+         "a screen is not proof of no cross-reaction." if a.off_target is not None else
+         "Specificity covers the H37Rv genome only; human and non-tuberculous genomes have not been checked."),
         f"Probe discrimination is a thermodynamic estimate ({a.probe.gap:.1f} C at worst), not a measurement.",
     ]
     if c["failing"]:
@@ -183,10 +209,7 @@ def to_candidate(a: Assay, rank: int) -> dict:
         "oligos": _oligo_rows(a),
         "scores": s,
         "coverage": c,
-        "specificity": {
-            "human_hits": None, "ntm_hits": None,
-            "note": f"{sum(a.hits.values())} near-matches elsewhere in H37Rv. Human and non-tuberculous genomes not checked yet.",
-        },
+        "specificity": _specificity(a),
         "reasons": reasons, "caveats": caveats, "validation": "in_silico",
     }
 
@@ -215,6 +238,11 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
     step("design_assays", "Design primers and probes, check specificity and coverage",
          "Primer3, thermodynamic alignment, H37Rv near-match scan", t0)
 
+    if specificity.available():
+        t0 = time.perf_counter()
+        for a in assays:
+            annotate_off_target(a)
+        step("check_specificity", "Screen oligos against human, non-tuberculous and respiratory genomes", "BLAST", t0)
     assays.sort(key=lambda a: -a.scores["overall"])
     cands = [to_candidate(a, i + 1) for i, a in enumerate(assays)]
     best = cands[0] if cands else None
@@ -222,7 +250,8 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
         f"I designed {len(cands)} candidate assays on {len(samples)} Bandung isolates. "
         + (f"The top-ranked is {best['gene']} {best['mutation']} (overall {best['scores']['overall']}), "
            f"matching {best['coverage']['perfect_match']} of {best['coverage']['isolates_total']} isolates exactly. " if best else "")
-        + "Results are in silico only; specificity against human and non-tuberculous genomes is not checked yet."
+        + "Results are in silico only."
+        + ("" if specificity.available() else " Specificity against human and non-tuberculous genomes was not checked.")
     )
     return {
         "mock": False,

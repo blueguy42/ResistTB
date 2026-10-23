@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Report, ToolStep } from "@/lib/types";
+import type { ToolStep } from "@/lib/types";
 
 function StepIcon({ status }: { status: ToolStep["status"] }) {
   if (status === "done")
@@ -18,15 +18,17 @@ function StepIcon({ status }: { status: ToolStep["status"] }) {
 }
 
 export default function AgentPanel({
-  report,
   request,
   steps,
+  summary,
+  error,
   running,
   onSend,
 }: {
-  report: Report;
   request: string;
   steps: ToolStep[];
+  summary: string;
+  error: string;
   running: boolean;
   onSend: (text: string) => void;
 }) {
@@ -66,8 +68,11 @@ export default function AgentPanel({
           ))}
         </ol>
 
-        {!running && steps.every((s) => s.status === "done") && (
-          <div className="mr-6 rounded-2xl rounded-tl-md border border-line px-4 py-3 text-sm leading-6">{report.summary}</div>
+        {summary && <div className="mr-6 whitespace-pre-wrap rounded-2xl rounded-tl-md border border-line px-4 py-3 text-sm leading-6">{summary}</div>}
+        {error && (
+          <div role="alert" className="rounded-xl border border-line bg-warn-soft px-4 py-3 text-sm text-warn">
+            {error}
+          </div>
         )}
       </div>
 
