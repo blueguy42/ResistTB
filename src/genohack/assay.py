@@ -33,7 +33,8 @@ class Assay:
     interactions: dict
     hits: dict
     evidence: pd.DataFrame
-    off_target: dict | None = None  # BLAST counts per group, when the database is available
+    off_target: dict | None = None  # predicted off-target products per group, when the database is available
+    tolerance: float = 0.02  # variable sites above this frequency were avoided; larger means the design had to relax
 
 
 def _clip01(x: float) -> float:
@@ -96,10 +97,17 @@ def score_assay(cov: dict, pair: PrimerPair, probe: ProbePair, inter: dict, hits
     return out
 
 
+TOLERANCE_LADDER = (0.02, 0.05, 0.10, 0.20)
+
+
 def build_assay(rm, table, ref, target: Target, n_pairs: int = 20) -> Assay | None:
-    pairs = design_primer_pairs(rm, table, target.pos, n=n_pairs)
-    probes = design_probes(table, target)
-    if not pairs or not probes:
+    """Design at the strictest variable-site tolerance that yields both primers and a probe; relax only if needed."""
+    for tol in TOLERANCE_LADDER:
+        pairs = design_primer_pairs(rm, table, target.pos, n=n_pairs, max_maf=tol)
+        probes = design_probes(table, target, max_maf=tol)
+        if pairs and probes:
+            break
+    else:
         return None
     ev_rows = evidence_for(target)
     ev = evidence_score(ev_rows)
@@ -120,7 +128,7 @@ def build_assay(rm, table, ref, target: Target, n_pairs: int = 20) -> Assay | No
         }
         cov = coverage_for(rm, table, target, pair, probe)
         scores = score_assay(cov, pair, probe, inter, sum(hits.values()), ev)
-        cand = Assay(target, pair, probe, cov, scores, inter, hits, ev_rows)
+        cand = Assay(target, pair, probe, cov, scores, inter, hits, ev_rows, tolerance=tol)
         if best is None or cand.scores["overall"] > best.scores["overall"]:
             best = cand
     return best
@@ -199,6 +207,9 @@ def to_candidate(a: Assay, rank: int) -> dict:
     ]
     if c["failing"]:
         caveats.append(f"{c['failing']} isolates carry a variant likely to break the assay.")
+    if a.tolerance > 0.02:
+        caveats.append(f"No design avoided every variable site, so oligos were allowed over sites varying in up to "
+                       f"{100 * a.tolerance:.0f}% of isolates; isolates carrying them count as mismatches in the coverage.")
     return {
         "id": t.id, "rank": rank, "gene": t.gene if t.gene != "fabG1" else "inhA promoter", "drug": drug,
         "mutation": t.mutation, "genome_pos": t.pos, "who_tier": tier,

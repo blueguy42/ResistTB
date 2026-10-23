@@ -59,9 +59,9 @@ def design_primer_pairs(
     bad = (
         variable_sites(table, max_maf, min_minor)
         | table["masked"].to_numpy()
-        | (table["n_indel"] / n_iso > max_maf)
-        | (table["n_missing"] / n_iso > max_maf)
-    ).to_numpy()
+        | ((table["n_indel"] >= min_minor) & (table["n_indel"] / n_iso > max_maf)).to_numpy()
+        | ((table["n_missing"] >= min_minor) & (table["n_missing"] / n_iso > max_maf)).to_numpy()
+    )
     excluded = [[int(i), 1] for i in np.flatnonzero(bad)]
     args = {
         "SEQUENCE_ID": rm.name,
