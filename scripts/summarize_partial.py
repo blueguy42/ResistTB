@@ -5,7 +5,8 @@ Reads results/<sample>/ (pull from the bucket first with scripts/sync_results.sh
 tables to results/summary/. Only per-isolate outputs are used, so the summary stays valid if the
 downstream design changes.
 
-Usage: python scripts/summarize_partial.py [results_dir]
+Usage: python scripts/summarize_partial.py [results_dir] [total_isolates_planned]
+Durations come from each isolate's metadata.json; pass the planned total to get a time projection.
 """
 import json
 import sys
@@ -46,7 +47,32 @@ for d in done:
         })
 
 iso = pd.DataFrame(isolates)
+
+# Per-isolate durations and metadata written by process_isolate.sh.
+meta_rows = []
+for d in done:
+    m = d / "metadata.json"
+    if m.exists():
+        j = json.load(open(m))
+        row = {"sample": j["sample"], "bioproject": j.get("source", {}).get("bioproject")}
+        row.update({f"sec_{k}": v for k, v in j.get("duration_seconds", {}).items()})
+        row["machine_type"] = j.get("run", {}).get("machine_type")
+        row["raw_fastq_mb"] = round(j.get("input_bytes", {}).get("raw_fastq_gz", 0) / 1e6)
+        meta_rows.append(row)
+if meta_rows:
+    iso = iso.merge(pd.DataFrame(meta_rows), on="sample", how="left")
 iso.to_csv(out / "isolates.csv", index=False)
+
+if "sec_total" in iso.columns and iso["sec_total"].notna().any():
+    t = iso["sec_total"].dropna()
+    total_isolates = int(sys.argv[2]) if len(sys.argv) > 2 else None
+    print(f"\nduration per isolate: mean {t.mean() / 60:.1f} min, median {t.median() / 60:.1f} min, "
+          f"max {t.max() / 60:.1f} min; total compute so far {t.sum() / 3600:.1f} h")
+    step_cols = [c for c in iso.columns if c.startswith("sec_") and c != "sec_total"]
+    print("mean minutes per step:\n", (iso[step_cols].mean() / 60).round(1).to_string())
+    if total_isolates:
+        left = total_isolates - len(iso)
+        print(f"projected time for the remaining {left}: {left * t.mean() / 3600:.1f} h (one at a time)")
 print("\nlineage:\n", iso["main_lineage"].value_counts(dropna=False).to_string())
 print("\ndrug-resistance class:\n", iso["drtype"].value_counts(dropna=False).to_string())
 
