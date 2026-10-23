@@ -11,8 +11,9 @@ import pandas as pd
 
 from .checks import genome_hits, interactions
 from .genome import MISSING, load_genes, load_mask, load_reference
-from .isolates import finished_samples
+from .isolates import finished_samples, read_resistance
 from . import specificity
+from .multiplex import compatibility
 from .primers import PrimerPair, design_primer_pairs
 from .probes import ProbePair, design_probes
 from .targets import Target, default_targets
@@ -41,7 +42,8 @@ def _clip01(x: float) -> float:
     return float(min(1.0, max(0.0, x)))
 
 
-def coverage_for(rm: RegionMatrix, table: pd.DataFrame, target: Target, pair: PrimerPair, probe: ProbePair) -> dict:
+def coverage_for(rm: RegionMatrix, table: pd.DataFrame, target: Target, pair: PrimerPair, probe: ProbePair,
+                 lineages: list[str] | None = None) -> dict:
     """Per-isolate match to the oligos. The SNP position is excluded from the mismatch count because the
     wild-type and mutant probe cover both alleles; an isolate still needs a called base there."""
     cons = np.array(["ACGT".index(b) for b in table["consensus"]], dtype=np.uint8)
@@ -60,12 +62,21 @@ def coverage_for(rm: RegionMatrix, table: pd.DataFrame, target: Target, pair: Pr
     critical_hit = mism[:, crit].any(axis=1) | (~called)
     perfect = n_mm == 0
     one = (n_mm == 1) & ~critical_hit
-    return {
+    fail = ~(perfect | one)
+    out = {
         "isolates_total": len(rm.samples),
         "perfect_match": int(perfect.sum()),
         "one_mismatch": int(one.sum()),
-        "failing": int((~(perfect | one)).sum()),
+        "failing": int(fail.sum()),
     }
+    if lineages is not None:
+        by: dict[str, dict] = {}
+        for lin in sorted(set(lineages)):
+            sel = np.array([x == lin for x in lineages])
+            by[lin] = {"isolates": int(sel.sum()), "perfect_match": int((perfect & sel).sum()),
+                       "one_mismatch": int((one & sel).sum()), "failing": int((fail & sel).sum())}
+        out["by_lineage"] = by
+    return out
 
 
 def score_assay(cov: dict, pair: PrimerPair, probe: ProbePair, inter: dict, hits_total: int, evidence: int | None) -> dict:
@@ -100,7 +111,7 @@ def score_assay(cov: dict, pair: PrimerPair, probe: ProbePair, inter: dict, hits
 TOLERANCE_LADDER = (0.02, 0.05, 0.10, 0.20)
 
 
-def build_assay(rm, table, ref, target: Target, n_pairs: int = 20) -> Assay | None:
+def build_assay(rm, table, ref, target: Target, n_pairs: int = 20, lineages: list[str] | None = None) -> Assay | None:
     """Design at the strictest variable-site tolerance that yields both primers and a probe; relax only if needed."""
     for tol in TOLERANCE_LADDER:
         pairs = design_primer_pairs(rm, table, target.pos, n=n_pairs, max_maf=tol)
@@ -126,7 +137,7 @@ def build_assay(rm, table, ref, target: Target, n_pairs: int = 20) -> Assay | No
             "R": genome_hits(pair.right_seq, ref, (pair.right_start, pair.right_end), max_mismatch=3, clamp=6),
             "probe": genome_hits(probe.wt_seq, ref, (probe.start, probe.end), max_mismatch=2),
         }
-        cov = coverage_for(rm, table, target, pair, probe)
+        cov = coverage_for(rm, table, target, pair, probe, lineages)
         scores = score_assay(cov, pair, probe, inter, sum(hits.values()), ev)
         cand = Assay(target, pair, probe, cov, scores, inter, hits, ev_rows, tolerance=tol)
         if best is None or cand.scores["overall"] > best.scores["overall"]:
@@ -239,10 +250,11 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
     step("get_variants", "Load variant tables around each target", f"{len(samples)} isolates, {len(targets)} targets", t0)
 
     t0 = time.perf_counter()
+    lineage_of = [str(read_resistance(results_dir, x).get("main_lineage") or "unknown") for x in samples]
     assays = []
     for t in targets:
         rm = mats[t.id]
-        a = build_assay(rm, position_table(rm, ref, mask), ref, t)
+        a = build_assay(rm, position_table(rm, ref, mask), ref, t, lineages=lineage_of)
         if a:
             assays.append(a)
     step("design_assays", "Design primers and probes, check specificity and coverage",
@@ -255,6 +267,10 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
         step("check_specificity", "Screen primers against human, non-tuberculous and respiratory genomes",
              "BLAST" if specificity.available() else "cached BLAST results", t0)
     assays.sort(key=lambda a: -a.scores["overall"])
+    t0 = time.perf_counter()
+    multiplex = compatibility(assays) if len(assays) > 1 else None
+    if multiplex:
+        step("check_multiplex", "Check whether the assays can share a tube", f"{len(multiplex['pairs'])} assay pairs", t0)
     cands = [to_candidate(a, i + 1) for i, a in enumerate(assays)]
     best = cands[0] if cands else None
     summary = (
@@ -269,7 +285,9 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
         "request": request or "Design qPCR assays for the main rifampicin, isoniazid and fluoroquinolone resistance mutations.",
         "summary": summary,
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "dataset": {"name": "Bandung active case finding", "bioproject": "PRJNA1433044", "isolates": len(samples), "reference": "NC_000962.3 (H37Rv)"},
+        "dataset": {"name": "Bandung active case finding", "bioproject": "PRJNA1433044", "isolates": len(samples),
+                    "reference": "NC_000962.3 (H37Rv)", "lineages": {k: lineage_of.count(k) for k in sorted(set(lineage_of))}},
         "steps": steps,
         "candidates": cands,
+        "multiplex": multiplex,
     }

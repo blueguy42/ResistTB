@@ -45,6 +45,7 @@ Rules:
   figure like '14/14'. Write plain text: no markdown, no asterisks, no bullet symbols, and never mention tool or field
   names. Keep it under 120 words.
 - Always say the results are in silico only, not tested in the lab, and that they come from the Bandung isolates only.
+- If the result has a multiplex section, say which assays can share a tube and that the grouping is a model.
 - If asked something unrelated to TB assay design, say briefly that you only help with this.
 Targets: {"; ".join(f"{k} = {v}" for k, v in TARGET_DOC.items())}."""
 
@@ -116,6 +117,10 @@ def _compact(report: dict) -> dict:
             }
             for c in report["candidates"]
         ],
+        "multiplex": (None if not report.get("multiplex") else {
+            "tubes": report["multiplex"]["tubes"], "note": report["multiplex"]["note"],
+            "conflicts": [f"{p['a']} x {p['b']}" for p in report["multiplex"]["pairs"] if p["status"] == "conflict"],
+        }),
         "validation": "in silico only",
     }
 

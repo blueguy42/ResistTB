@@ -27,7 +27,15 @@ export interface Oligo {
   mismatch_dtm?: number; // probes only: Tm drop against the other allele, degrees C
 }
 
+export interface LineageCoverage {
+  isolates: number;
+  perfect_match: number;
+  one_mismatch: number;
+  failing: number;
+}
+
 export interface Coverage {
+  by_lineage?: Record<string, LineageCoverage>; // keyed by TB-Profiler main lineage, e.g. "lineage4"
   isolates_total: number;
   perfect_match: number; // isolates with zero mismatches at every oligo
   one_mismatch: number; // isolates with one mismatch outside the 3' end
@@ -67,6 +75,24 @@ export interface Candidate {
   validation: "in_silico";
 }
 
+export interface PairCheck {
+  a: string;
+  b: string;
+  worst_dg: number; // kcal/mol, more negative is a stronger predicted dimer
+  worst_pair: string;
+  status: "compatible" | "caution" | "conflict";
+}
+
+export interface Multiplex {
+  channels_per_tube: number;
+  channels_per_assay: number;
+  max_assays_per_tube: number;
+  thresholds: { caution: number; conflict: number };
+  pairs: PairCheck[];
+  tubes: string[][]; // assay ids grouped into tubes
+  note: string;
+}
+
 export interface Report {
   mock: boolean; // true while the UI runs on demo data
   request: string;
@@ -77,7 +103,9 @@ export interface Report {
     bioproject: string;
     isolates: number;
     reference: string;
+    lineages?: Record<string, number>;
   };
   steps: ToolStep[];
   candidates: Candidate[];
+  multiplex?: Multiplex | null;
 }

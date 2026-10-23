@@ -1,6 +1,6 @@
 "use client";
 
-import type { Candidate, Oligo, Report } from "@/lib/types";
+import type { Candidate, Multiplex, Oligo, Report } from "@/lib/types";
 import { formatPos, gcPercent } from "@/lib/seq";
 import AmpliconDiagram from "./AmpliconDiagram";
 import ScoreBar from "./ScoreBar";
@@ -48,6 +48,91 @@ function CoverageBar({ c }: { c: Candidate["coverage"] }) {
         ))}
         <span>of {c.isolates_total} isolates</span>
       </div>
+    </div>
+  );
+}
+
+function lineageLabel(key: string) {
+  const m = key.match(/^lineage(\d+)$/);
+  return m ? `Lineage ${m[1]}` : key;
+}
+
+function LineageTable({ by }: { by: NonNullable<Candidate["coverage"]["by_lineage"]> }) {
+  const rows = Object.entries(by);
+  return (
+    <div className="mt-4">
+      <div className="mb-1.5 text-xs text-muted">By lineage</div>
+      <table className="w-full text-xs">
+        <tbody>
+          {rows.map(([key, v]) => {
+            const pctExact = v.isolates ? (v.perfect_match / v.isolates) * 100 : 0;
+            return (
+              <tr key={key} className="border-t border-line first:border-0">
+                <td className="whitespace-nowrap py-1.5 pr-3 text-ink">{lineageLabel(key)}</td>
+                <td className="whitespace-nowrap py-1.5 pr-3 tabular-nums text-muted">n = {v.isolates}</td>
+                <td className="w-full min-w-12 py-1.5 pr-3">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
+                    <div className="h-full rounded-full bg-accent" style={{ width: `${pctExact}%` }} />
+                  </div>
+                </td>
+                <td className="whitespace-nowrap py-1.5 text-right tabular-nums">
+                  {v.perfect_match}/{v.isolates}
+                  {v.isolates < 5 && <span className="ml-1 text-warn" title="Too few isolates to read much into">few</span>}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function MultiplexCard({ m, report }: { m: Multiplex; report: Report }) {
+  const label = (id: string) => {
+    const c = report.candidates.find((x) => x.id === id);
+    return c ? `${c.gene} ${c.mutation}` : id;
+  };
+  const tone = { compatible: "text-accent", caution: "text-warn", conflict: "text-bad" } as const;
+  return (
+    <div className="rounded-2xl border border-line bg-surface px-5 py-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 className="text-sm font-medium">Multiplex: which assays can share a tube</h3>
+        <span className="text-xs text-muted">
+          {m.channels_per_tube} channels, {m.channels_per_assay} per assay
+        </span>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-3">
+        {m.tubes.map((tube, i) => (
+          <div key={i} className="rounded-xl border border-line bg-bg px-3 py-2">
+            <div className="text-xs text-muted">Tube {i + 1}</div>
+            <div className="mt-0.5 text-sm font-medium">{tube.map(label).join("  +  ")}</div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 overflow-x-auto">
+        <table className="w-full min-w-[480px] text-left text-xs">
+          <thead className="text-muted">
+            <tr className="border-b border-line">
+              <th className="py-1.5 pr-3 font-normal">Pair</th>
+              <th className="py-1.5 pr-3 text-right font-normal">Worst dimer</th>
+              <th className="py-1.5 pr-3 font-normal">Between</th>
+              <th className="py-1.5 font-normal">Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            {m.pairs.map((p) => (
+              <tr key={`${p.a}|${p.b}`} className="border-b border-line last:border-0">
+                <td className="py-1.5 pr-3">{label(p.a)} × {label(p.b)}</td>
+                <td className="py-1.5 pr-3 text-right tabular-nums">{p.worst_dg.toFixed(1)} kcal/mol</td>
+                <td className="py-1.5 pr-3 font-mono text-[11px] text-muted">{p.worst_pair}</td>
+                <td className={`py-1.5 font-medium ${tone[p.status]}`}>{p.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-3 text-xs text-muted">{m.note} Computed with a thermodynamic model, not tested in a tube.</p>
     </div>
   );
 }
@@ -126,6 +211,7 @@ function Detail({ c }: { c: Candidate }) {
         <section>
           <h3 className="mb-2 text-sm font-medium">Coverage in the isolate set</h3>
           <CoverageBar c={c.coverage} />
+          {c.coverage.by_lineage && <LineageTable by={c.coverage.by_lineage} />}
         </section>
         <section>
           <h3 className="mb-2 text-sm font-medium">Specificity</h3>
@@ -224,6 +310,8 @@ export default function ReportView({
           </tbody>
         </table>
       </div>
+
+      {report.multiplex && <MultiplexCard m={report.multiplex} report={report} />}
 
       <Detail c={selected} />
     </div>
