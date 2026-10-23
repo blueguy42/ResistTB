@@ -20,6 +20,9 @@ source "${CONDA_BASE:-$HOME/miniforge3}/etc/profile.d/conda.sh"
 # Resume: skip if this isolate is already in the bucket.
 if gcloud storage ls "${remote}/DONE" >/dev/null 2>&1; then
     echo "${sample}: already done, skipping" >&2
+    # Snakemake tracks results/<sample>/DONE locally, so recreate it on a fresh disk.
+    mkdir -p "${out}"
+    gcloud storage cp "${remote}/DONE" "${out}/DONE" >/dev/null 2>&1
     exit 0
 fi
 
