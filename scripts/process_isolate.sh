@@ -47,11 +47,19 @@ download_ena() {
     urls=$(curl -fsS "https://www.ebi.ac.uk/ena/portal/api/filereport?accession=${sample}&result=read_run&fields=fastq_ftp&format=tsv&download=true" \
         | tail -n +2 | cut -f2 | tr ';' '\n' | grep -E '_[12]\.fastq\.gz$' || true)
     [[ -n "${urls}" ]] || return 1
+    local pids=() rc=0 p
     for u in ${urls}; do
-        curl -fsS --retry 3 -o "${work}/$(basename "${u}")" "https://${u}" &
+        # -C - resumes a dropped transfer instead of restarting it.
+        curl -fsS --retry 5 --retry-delay 5 --retry-all-errors -C - \
+            -o "${work}/$(basename "${u}")" "https://${u}" &
+        pids+=($!)
     done
-    wait
-    [[ -s "${r1}" && -s "${r2}" ]]
+    for p in "${pids[@]}"; do wait "${p}" || rc=1; done
+    [[ ${rc} -eq 0 && -s "${r1}" && -s "${r2}" ]] || return 1
+    # A truncated gzip passes the size check, so test integrity before using it.
+    gzip -t "${r1}" & pids=($!)
+    gzip -t "${r2}" & pids+=($!)
+    for p in "${pids[@]}"; do wait "${p}" || return 1; done
 }
 
 conda activate snippy
