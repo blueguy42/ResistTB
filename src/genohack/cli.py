@@ -31,6 +31,17 @@ def cmd_windows(args: argparse.Namespace) -> None:
               f"best perfect_frac {windows['perfect_frac'].max():.3f}" if len(windows) else f"{t.id}: no windows")
 
 
+def cmd_report(args: argparse.Namespace) -> None:
+    import json
+
+    from .assay import build_report
+
+    report = build_report(args.results, request=args.request or "", target_ids=args.targets or None)
+    Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+    Path(args.out).write_text(json.dumps(report, indent=2))
+    print(f"{len(report['candidates'])} assays on {report['dataset']['isolates']} isolates -> {args.out}")
+
+
 def main() -> None:
     p = argparse.ArgumentParser(prog="genohack")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -40,6 +51,12 @@ def main() -> None:
     w.add_argument("--flank", type=int, default=250, help="bases either side of the target mutation")
     w.add_argument("--targets", nargs="*", help="target ids, default all")
     w.set_defaults(func=cmd_windows)
+    r = sub.add_parser("report", help="design assays and write the JSON report the interface renders")
+    r.add_argument("--results", default="results")
+    r.add_argument("--out", default="web/data/report.json")
+    r.add_argument("--request", default="")
+    r.add_argument("--targets", nargs="*")
+    r.set_defaults(func=cmd_report)
     args = p.parse_args()
     args.func(args)
 

@@ -116,7 +116,7 @@ function Detail({ c }: { c: Candidate }) {
         </div>
         <div className="space-y-3">
           <ScoreBar label="Conservation" value={c.scores.conservation} />
-          <ScoreBar label="Resistance evidence" value={c.scores.resistance_evidence} />
+          {c.scores.resistance_evidence !== null && <ScoreBar label="Resistance evidence" value={c.scores.resistance_evidence} />}
           <ScoreBar label="Specificity" value={c.scores.specificity} />
           <ScoreBar label="Thermodynamics" value={c.scores.thermodynamics} />
         </div>
@@ -130,8 +130,8 @@ function Detail({ c }: { c: Candidate }) {
         <section>
           <h3 className="mb-2 text-sm font-medium">Specificity</h3>
           <p className="text-sm text-muted">
-            <span className="font-mono text-ink">{c.specificity.human_hits}</span> human hits,{" "}
-            <span className="font-mono text-ink">{c.specificity.ntm_hits}</span> non-tuberculous hits. {c.specificity.note}
+            Human: <span className="font-mono text-ink">{c.specificity.human_hits ?? "not checked"}</span>
+            {" · "}Non-tuberculous: <span className="font-mono text-ink">{c.specificity.ntm_hits ?? "not checked"}</span>. {c.specificity.note}
           </p>
         </section>
         <section>

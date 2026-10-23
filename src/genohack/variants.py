@@ -80,9 +80,19 @@ def position_table(rm: RegionMatrix, ref: np.ndarray, mask: np.ndarray | None = 
             "alt_freq": np.where(covered > 0, alt / np.maximum(covered, 1), np.nan),
             "consensus": [LETTERS[c] for c in consensus],
             "maf": np.where(covered > 0, (covered - top) / np.maximum(covered, 1), np.nan),
+            "n_minor": covered - top,
             "n_indel": rm.indel.sum(axis=0),
             **{f"n_{b}": counts[b] for b in LETTERS},
         }
     )
     table["masked"] = mask[rm.start - 1 : rm.end] if mask is not None else False
     return table
+
+
+def variable_sites(table: pd.DataFrame, max_maf: float = 0.02, min_minor: int = 2) -> np.ndarray:
+    """Boolean per position: varies enough to matter for oligo design.
+
+    A site counts when its minor-allele frequency exceeds max_maf AND at least min_minor isolates carry
+    the minor allele. The count floor stops a single isolate from blocking every window while the isolate
+    set is small; the coverage numbers still count that isolate as a mismatch."""
+    return ((table["maf"].fillna(1.0) > max_maf) & (table["n_minor"] >= min_minor)).to_numpy()

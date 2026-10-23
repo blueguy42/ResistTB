@@ -35,14 +35,14 @@ export interface Coverage {
 }
 
 export interface Specificity {
-  human_hits: number;
-  ntm_hits: number;
+  human_hits: number | null; // null: not checked yet
+  ntm_hits: number | null;
   note: string;
 }
 
 export interface Scores {
   conservation: number; // 0-100
-  resistance_evidence: number;
+  resistance_evidence: number | null; // null when the mutation is not in the WHO catalogue
   specificity: number;
   thermodynamics: number;
   overall: number;
