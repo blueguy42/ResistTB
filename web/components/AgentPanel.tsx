@@ -5,8 +5,8 @@ import type { ToolStep } from "@/lib/types";
 import { ago, type ChatMessage, type Session } from "@/lib/sessions";
 
 const EXAMPLES = [
-  "Design assays for ethambutol resistance",
   "Patients in Bandung treated with rifampicin did not improve. What primers and probes should the assay include?",
+  "Design qPCR assays for the main rifampicin, isoniazid and fluoroquinolone resistance mutations.",
   "Which drugs can you design for?",
 ];
 

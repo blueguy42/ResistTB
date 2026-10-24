@@ -213,7 +213,7 @@ export default function App({ report: initial }: { report: Report }) {
   const tabClass = (on: boolean) =>
     `-mb-px flex items-center gap-2 border-b-2 px-3 py-2 text-sm ${on ? "border-accent text-ink" : "border-transparent text-muted hover:text-ink"}`;
   const count = "rounded-full bg-accent-soft px-1.5 py-0.5 text-[11px] tabular-nums text-accent";
-  const example = "Design assays for ethambutol resistance";
+  const example = "Design qPCR assays for the main rifampicin, isoniazid and fluoroquinolone resistance mutations.";
 
   return (
     <div className="flex min-h-screen flex-col">
