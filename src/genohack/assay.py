@@ -15,6 +15,7 @@ from .isolates import finished_samples, read_resistance
 from . import specificity
 from .multiplex import compatibility
 from .primers import PrimerPair, design_primer_pairs
+from .snapshot import load_snapshot
 from .probes import ProbePair, design_probes
 from .targets import Target, default_targets
 from .thermo import hairpin_dg, homodimer_dg
@@ -235,7 +236,9 @@ def to_candidate(a: Assay, rank: int) -> dict:
     }
 
 
-def build_report(results_dir: str | Path = "results", request: str = "", target_ids: list[str] | None = None, flank: int = 300) -> dict:
+def build_report(results_dir: str | Path = "results", request: str = "", target_ids: list[str] | None = None, flank: int = 300,
+                 snapshot: str | Path | None = None) -> dict:
+    """Design assays and build the report. With `snapshot` (see snapshot.py) the per-isolate files are not read."""
     steps, t_all = [], time.perf_counter()
 
     def step(tool: str, label: str, detail: str, t0: float) -> None:
@@ -244,13 +247,20 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
 
     t0 = time.perf_counter()
     ref, mask, genes = load_reference(), load_mask(), load_genes()
-    samples = finished_samples(results_dir)
     targets = [t for t in default_targets(genes) if not target_ids or t.id in target_ids]
-    mats = build_region_matrices(results_dir, {t.id: (t.pos - flank, t.pos + flank) for t in targets}, samples)
+    if snapshot:
+        samples, lineage_of, mats, snap_flank = load_snapshot(snapshot)
+        if snap_flank != flank:
+            raise ValueError(f"snapshot was made with flank {snap_flank}, not {flank}")
+    else:
+        samples = finished_samples(results_dir)
+        mats = build_region_matrices(results_dir, {t.id: (t.pos - flank, t.pos + flank) for t in targets}, samples)
+        lineage_of = None
     step("get_variants", "Load variant tables around each target", f"{len(samples)} isolates, {len(targets)} targets", t0)
 
     t0 = time.perf_counter()
-    lineage_of = [str(read_resistance(results_dir, x).get("main_lineage") or "unknown") for x in samples]
+    if lineage_of is None:
+        lineage_of = [str(read_resistance(results_dir, x).get("main_lineage") or "unknown") for x in samples]
     assays = []
     for t in targets:
         rm = mats[t.id]

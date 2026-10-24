@@ -36,10 +36,17 @@ def cmd_report(args: argparse.Namespace) -> None:
 
     from .assay import build_report
 
-    report = build_report(args.results, request=args.request or "", target_ids=args.targets or None)
+    report = build_report(args.results, request=args.request or "", target_ids=args.targets or None, snapshot=args.snapshot)
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(report, indent=2))
     print(f"{len(report['candidates'])} assays on {report['dataset']['isolates']} isolates -> {args.out}")
+
+
+def cmd_snapshot(args: argparse.Namespace) -> None:
+    from .snapshot import write_snapshot
+
+    out = write_snapshot(args.results, args.out, flank=args.flank)
+    print(f"snapshot -> {out} ({Path(out).stat().st_size / 1024:.0f} KB)")
 
 
 def main() -> None:
@@ -56,7 +63,13 @@ def main() -> None:
     r.add_argument("--out", default="web/data/report.json")
     r.add_argument("--request", default="")
     r.add_argument("--targets", nargs="*")
+    r.add_argument("--snapshot", default=None, help="use a snapshot file instead of reading --results")
     r.set_defaults(func=cmd_report)
+    s = sub.add_parser("snapshot", help="precompute the variant windows so the design runs without results/")
+    s.add_argument("--results", default="results")
+    s.add_argument("--out", default="resources/snapshot_windows.npz")
+    s.add_argument("--flank", type=int, default=300)
+    s.set_defaults(func=cmd_snapshot)
     args = p.parse_args()
     args.func(args)
 

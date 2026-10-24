@@ -5,7 +5,8 @@ import type { Report, ToolStep } from "@/lib/types";
 import AgentPanel from "./AgentPanel";
 import ReportView from "./ReportView";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+// Same host as the page, so localhost, 127.0.0.1 and a LAN address all reach the API on this machine.
+const apiBase = () => process.env.NEXT_PUBLIC_API_URL ?? `http://${window.location.hostname}:8000`;
 
 type Turn = { role: "user" | "model"; text: string };
 
@@ -77,7 +78,7 @@ export default function App({ report: initial }: { report: Report }) {
       const prior = history.current.slice();
       history.current.push({ role: "user", text });
       try {
-        const res = await fetch(`${API}/api/chat`, {
+        const res = await fetch(`${apiBase()}/api/chat`, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ message: text, history: prior }),
@@ -97,12 +98,13 @@ export default function App({ report: initial }: { report: Report }) {
             if (line.startsWith("data: ")) handle(JSON.parse(line.slice(6)) as ChatEvent);
           }
         }
-      } catch {
+      } catch (err) {
         if (initial.mock) {
           replay();
           return;
         }
-        setError("Could not reach the backend. Start it with: uvicorn genohack.api:app --port 8000");
+        const why = err instanceof Error ? err.message : String(err);
+        setError(`Chat failed (${why}). Is the backend running? uvicorn genohack.api:app --port 8000, API at ${apiBase()}`);
       } finally {
         setRunning(false);
       }

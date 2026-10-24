@@ -17,12 +17,18 @@ from google.oauth2.credentials import Credentials
 
 from .assay import build_report
 from .genome import load_genes
+from .snapshot import DEFAULT_SNAPSHOT
 from .targets import default_targets
 
 PROJECT = os.environ.get("GENOHACK_PROJECT", "haduh-512512")
 LOCATION = os.environ.get("GENOHACK_LOCATION", "global")
 MODEL = os.environ.get("GENOHACK_MODEL", "gemini-3.5-flash-lite")
 RESULTS = os.environ.get("GENOHACK_RESULTS", "results")
+# A precomputed copy of the variant windows (see snapshot.py). Set GENOHACK_SNAPSHOT to a file to use it, or leave
+# it unset: the bundled snapshot is used only when there is no results/ folder, as in a small container.
+SNAPSHOT = os.environ.get("GENOHACK_SNAPSHOT") or (
+    str(DEFAULT_SNAPSHOT) if not __import__("pathlib").Path(RESULTS).exists() and DEFAULT_SNAPSHOT.exists() else None
+)
 MAX_TURNS = 5
 
 TARGETS = {t.id: t for t in default_targets(load_genes())}
@@ -129,9 +135,9 @@ def run_design(targets: list[str]) -> dict:
     ids = [t for t in dict.fromkeys(targets) if t in TARGETS]
     if not ids:
         raise ValueError("no valid targets")
-    key = (tuple(sorted(ids)), RESULTS, len(list(__import__("pathlib").Path(RESULTS).glob("*/DONE"))))
+    key = (tuple(sorted(ids)), SNAPSHOT or RESULTS, 0 if SNAPSHOT else len(list(__import__("pathlib").Path(RESULTS).glob("*/DONE"))))
     if key not in _report_cache:
-        _report_cache[key] = build_report(RESULTS, target_ids=ids)
+        _report_cache[key] = build_report(RESULTS, target_ids=ids, snapshot=SNAPSHOT)
     return _report_cache[key]
 
 
@@ -177,7 +183,7 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
                 try:
                     if call.name != "design_assays":
                         raise ValueError(f"unknown tool {call.name}")
-                    report = run_design(list(args.get("targets", [])))
+                    report = {**run_design(list(args.get("targets", []))), "request": message}  # the cache holds the default text
                     result = _compact(report)
                     yield {"type": "report", "report": report}
                 except Exception as exc:

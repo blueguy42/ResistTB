@@ -16,7 +16,8 @@ from . import agent
 app = FastAPI(title="ChatGP-TB")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("GENOHACK_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(","),
+    allow_origins=[o for o in os.environ.get("GENOHACK_ORIGINS", "").split(",") if o],
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1|\[::1\])(:\d+)?",  # any local dev port, so a busy 3000 does not break chat
     allow_methods=["GET", "POST"],
     allow_headers=["content-type"],
 )
@@ -30,7 +31,7 @@ class ChatIn(BaseModel):
 
 @app.get("/api/health")
 def health() -> dict:
-    return {"ok": True, "model": agent.MODEL, "location": agent.LOCATION, "results": agent.RESULTS}
+    return {"ok": True, "model": agent.MODEL, "location": agent.LOCATION, "results": agent.RESULTS, "snapshot": agent.SNAPSHOT}
 
 
 @app.get("/api/report")
