@@ -34,6 +34,17 @@ mkdir -p "${REPO}/data" "${REPO}/logs"
 cp "${REPO}/resources/isolates_extra.tsv" "${REPO}/data/isolates.tsv"
 chown -R runner:runner "${REPO}"
 
+# Settings for the stall watchdog (scripts/watchdog_vm.sh), which runs from a systemd timer with no environment of its own.
+cat > /etc/genohack-run.env <<EOF
+REPO=${REPO}
+RUN_USER=runner
+BUCKET=${BUCKET}
+DESIGN_BIOPROJECT=${PROJECTS}
+SHARD_INDEX=${SHARD_INDEX:-0}
+SHARD_COUNT=${SHARD_COUNT:-1}
+EOF
+bash "${REPO}/scripts/install_watchdog_vm.sh" || echo "watchdog install failed (the run continues without it)"
+
 # Copy logs to the bucket every 10 minutes (a background loop, so it also covers a crash).
 ( while true; do
     gcloud storage cp "${LOG}" "${REPO}/logs/run_full.log" "${BUCKET}/runlogs/${VM}/" >/dev/null 2>&1
