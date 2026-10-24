@@ -1,0 +1,5545 @@
+{
+ "generated_at": "2026-10-24T09:42:33+00:00",
+ "isolates": 222,
+ "regions": {
+  "Bandung": 222
+ },
+ "targets": [
+  {
+   "id": "rpoB_S450L",
+   "gene": "rpoB",
+   "mutation": "p.Ser450Leu",
+   "drug": "Rifampicin",
+   "genome_pos": 761155,
+   "resistant_isolates": 10859,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 83,
+   "scores": {
+    "conservation": 95,
+    "thermodynamics": 50,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 83
+   },
+   "exact_matches": 212,
+   "isolates": 222,
+   "likely_fail": 2,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "katG_S315T",
+   "gene": "katG",
+   "mutation": "p.Ser315Thr",
+   "drug": "Isoniazid",
+   "genome_pos": 2155168,
+   "resistant_isolates": 16302,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 85,
+    "specificity": 50,
+    "resistance_evidence": 98,
+    "overall": 85
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    2155109,
+    2155215
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "inhA_c-15",
+   "gene": "fabG1",
+   "mutation": "c.-15C>T",
+   "drug": "Isoniazid, ethionamide",
+   "genome_pos": 1673425,
+   "resistant_isolates": 4449,
+   "who_ppv": 0.97,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 84,
+    "specificity": 100,
+    "resistance_evidence": 97,
+    "overall": 94
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1673387,
+    1673497
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "gyrA_D94G",
+   "gene": "gyrA",
+   "mutation": "p.Asp94Gly",
+   "drug": "Fluoroquinolones",
+   "genome_pos": 7582,
+   "resistant_isolates": 2128,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 92,
+    "thermodynamics": 68,
+    "specificity": 100,
+    "resistance_evidence": 94,
+    "overall": 87
+   },
+   "exact_matches": 205,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    7539,
+    7697
+   ],
+   "tolerance": 0.05,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rpsL_p.Lys43Arg",
+   "gene": "rpsL",
+   "mutation": "p.Lys43Arg",
+   "drug": "Streptomycin",
+   "genome_pos": 781687,
+   "resistant_isolates": 4715,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 97,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 97
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    781596,
+    781742
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "embB_p.Met306Val",
+   "gene": "embB",
+   "mutation": "p.Met306Val",
+   "drug": "Ethambutol",
+   "genome_pos": 4247429,
+   "resistant_isolates": 3245,
+   "who_ppv": 0.83,
+   "status": "designed",
+   "overall": 81,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 68,
+    "specificity": 75,
+    "resistance_evidence": 83,
+    "overall": 81
+   },
+   "exact_matches": 217,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247362,
+    4247470
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "embB_p.Met306Ile",
+   "gene": "embB",
+   "mutation": "p.Met306Ile",
+   "drug": "Ethambutol",
+   "genome_pos": 4247431,
+   "resistant_isolates": 1953,
+   "who_ppv": 0.63,
+   "status": "designed",
+   "overall": 84,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 71,
+    "specificity": 100,
+    "resistance_evidence": 63,
+    "overall": 84
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    4247362,
+    4247470
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rrs_n.1401A>G",
+   "gene": "rrs",
+   "mutation": "n.1401A>G",
+   "drug": "Amikacin, Capreomycin, Kanamycin",
+   "genome_pos": 1473246,
+   "resistant_isolates": 1682,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 92,
+    "specificity": 100,
+    "resistance_evidence": 94,
+    "overall": 96
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    1473184,
+    1473317
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrA_p.Ala90Val",
+   "gene": "gyrA",
+   "mutation": "p.Ala90Val",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 7570,
+   "resistant_isolates": 1311,
+   "who_ppv": 0.89,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 67,
+    "specificity": 100,
+    "resistance_evidence": 89,
+    "overall": 88
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    7539,
+    7697
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rpsL_p.Lys88Arg",
+   "gene": "rpsL",
+   "mutation": "p.Lys88Arg",
+   "drug": "Streptomycin",
+   "genome_pos": 781822,
+   "resistant_isolates": 1280,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 97,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 91,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 97
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    781722,
+    781861
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Asp435Val",
+   "gene": "rpoB",
+   "mutation": "p.Asp435Val",
+   "drug": "Rifampicin",
+   "genome_pos": 761110,
+   "resistant_isolates": 1154,
+   "who_ppv": 0.99,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "embB_p.Gln497Arg",
+   "gene": "embB",
+   "mutation": "p.Gln497Arg",
+   "drug": "Ethambutol",
+   "genome_pos": 4248003,
+   "resistant_isolates": 999,
+   "who_ppv": 0.82,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 80,
+    "specificity": 100,
+    "resistance_evidence": 82,
+    "overall": 90
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247976,
+    4248092
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "inhA_c.-154G>A",
+   "gene": "inhA",
+   "mutation": "c.-154G>A",
+   "drug": "Ethionamide, Isoniazid",
+   "genome_pos": 1674048,
+   "resistant_isolates": 745,
+   "who_ppv": 0.92,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 86,
+    "specificity": 75,
+    "resistance_evidence": 92,
+    "overall": 89
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    1674018,
+    1674139
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.His445Asp",
+   "gene": "rpoB",
+   "mutation": "p.His445Asp",
+   "drug": "Rifampicin",
+   "genome_pos": 761139,
+   "resistant_isolates": 608,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 97,
+    "thermodynamics": 92,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 96
+   },
+   "exact_matches": 216,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rrs_n.517C>T",
+   "gene": "rrs",
+   "mutation": "n.517C>T",
+   "drug": "Streptomycin",
+   "genome_pos": 1472362,
+   "resistant_isolates": 600,
+   "who_ppv": 0.92,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 75,
+    "specificity": 100,
+    "resistance_evidence": 92,
+    "overall": 91
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1472317,
+    1472427
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.His445Tyr",
+   "gene": "rpoB",
+   "mutation": "p.His445Tyr",
+   "drug": "Rifampicin",
+   "genome_pos": 761139,
+   "resistant_isolates": 593,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 97,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 95
+   },
+   "exact_matches": 215,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rrs_n.514A>C",
+   "gene": "rrs",
+   "mutation": "n.514A>C",
+   "drug": "Streptomycin",
+   "genome_pos": 1472359,
+   "resistant_isolates": 550,
+   "who_ppv": 0.97,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 75,
+    "specificity": 100,
+    "resistance_evidence": 97,
+    "overall": 92
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1472317,
+    1472427
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrA_p.Asp94Ala",
+   "gene": "gyrA",
+   "mutation": "p.Asp94Ala",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 7582,
+   "resistant_isolates": 441,
+   "who_ppv": 0.84,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 92,
+    "thermodynamics": 81,
+    "specificity": 100,
+    "resistance_evidence": 84,
+    "overall": 89
+   },
+   "exact_matches": 205,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    7539,
+    7697
+   ],
+   "tolerance": 0.05,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "inhA_c.-770T>C",
+   "gene": "inhA",
+   "mutation": "c.-770T>C",
+   "drug": "Ethionamide, Isoniazid",
+   "genome_pos": 1673432,
+   "resistant_isolates": 388,
+   "who_ppv": 0.96,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 89,
+    "specificity": 100,
+    "resistance_evidence": 96,
+    "overall": 95
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1673341,
+    1673497
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrA_p.Asp94Asn",
+   "gene": "gyrA",
+   "mutation": "p.Asp94Asn",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 7581,
+   "resistant_isolates": 375,
+   "who_ppv": 0.92,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 92,
+    "thermodynamics": 85,
+    "specificity": 100,
+    "resistance_evidence": 92,
+    "overall": 92
+   },
+   "exact_matches": 205,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    7539,
+    7697
+   ],
+   "tolerance": 0.05,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rpoB_p.Asp435Tyr",
+   "gene": "rpoB",
+   "mutation": "p.Asp435Tyr",
+   "drug": "Rifampicin",
+   "genome_pos": 761109,
+   "resistant_isolates": 341,
+   "who_ppv": 0.79,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "inhA_c.-779G>T",
+   "gene": "inhA",
+   "mutation": "c.-779G>T",
+   "drug": "Ethionamide, Isoniazid",
+   "genome_pos": 1673423,
+   "resistant_isolates": 339,
+   "who_ppv": 0.93,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 73,
+    "specificity": 100,
+    "resistance_evidence": 93,
+    "overall": 90
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1673341,
+    1673497
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "embB_p.Gly406Ala",
+   "gene": "embB",
+   "mutation": "p.Gly406Ala",
+   "drug": "Ethambutol",
+   "genome_pos": 4247730,
+   "resistant_isolates": 328,
+   "who_ppv": 0.62,
+   "status": "designed",
+   "overall": 57,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 32,
+    "specificity": 25,
+    "resistance_evidence": 62,
+    "overall": 57
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247695,
+    4247837
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "eis_c.-12C>T",
+   "gene": "eis",
+   "mutation": "c.-12C>T",
+   "drug": "Kanamycin",
+   "genome_pos": 2715344,
+   "resistant_isolates": 324,
+   "who_ppv": 0.47,
+   "status": "designed",
+   "overall": 78,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 61,
+    "specificity": 100,
+    "resistance_evidence": 47,
+    "overall": 78
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2715319,
+    2715395
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "embB_p.Asp354Ala",
+   "gene": "embB",
+   "mutation": "p.Asp354Ala",
+   "drug": "Ethambutol",
+   "genome_pos": 4247574,
+   "resistant_isolates": 301,
+   "who_ppv": 0.69,
+   "status": "designed",
+   "overall": 81,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 76,
+    "specificity": 75,
+    "resistance_evidence": 69,
+    "overall": 81
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247510,
+    4247668
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Leu452Pro",
+   "gene": "rpoB",
+   "mutation": "p.Leu452Pro",
+   "drug": "Rifampicin",
+   "genome_pos": 761161,
+   "resistant_isolates": 281,
+   "who_ppv": 0.73,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "embB_p.Gly406Asp",
+   "gene": "embB",
+   "mutation": "p.Gly406Asp",
+   "drug": "Ethambutol",
+   "genome_pos": 4247730,
+   "resistant_isolates": 274,
+   "who_ppv": 0.56,
+   "status": "designed",
+   "overall": 61,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 48,
+    "specificity": 25,
+    "resistance_evidence": 56,
+    "overall": 61
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247695,
+    4247838
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrA_p.Ser91Pro",
+   "gene": "gyrA",
+   "mutation": "p.Ser91Pro",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 7572,
+   "resistant_isolates": 274,
+   "who_ppv": 0.84,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 63,
+    "specificity": 100,
+    "resistance_evidence": 84,
+    "overall": 85
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    7539,
+    7697
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "eis_c.-14C>T",
+   "gene": "eis",
+   "mutation": "c.-14C>T",
+   "drug": "Amikacin, Kanamycin",
+   "genome_pos": 2715346,
+   "resistant_isolates": 249,
+   "who_ppv": 0.8,
+   "status": "designed",
+   "overall": 84,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 60,
+    "specificity": 100,
+    "resistance_evidence": 80,
+    "overall": 84
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2715237,
+    2715395
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Ser450Trp",
+   "gene": "rpoB",
+   "mutation": "p.Ser450Trp",
+   "drug": "Rifampicin",
+   "genome_pos": 761155,
+   "resistant_isolates": 238,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 84,
+   "scores": {
+    "conservation": 95,
+    "thermodynamics": 52,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 84
+   },
+   "exact_matches": 212,
+   "isolates": 222,
+   "likely_fail": 2,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "eis_c.-10G>A",
+   "gene": "eis",
+   "mutation": "c.-10G>A",
+   "drug": "Kanamycin",
+   "genome_pos": 2715342,
+   "resistant_isolates": 234,
+   "who_ppv": 0.7,
+   "status": "designed",
+   "overall": 84,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 68,
+    "specificity": 100,
+    "resistance_evidence": 70,
+    "overall": 84
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2715237,
+    2715395
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrA_p.Asp94Tyr",
+   "gene": "gyrA",
+   "mutation": "p.Asp94Tyr",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 7581,
+   "resistant_isolates": 229,
+   "who_ppv": 0.92,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 92,
+    "thermodynamics": 85,
+    "specificity": 100,
+    "resistance_evidence": 92,
+    "overall": 91
+   },
+   "exact_matches": 205,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    7539,
+    7697
+   ],
+   "tolerance": 0.05,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.His445Leu",
+   "gene": "rpoB",
+   "mutation": "p.His445Leu",
+   "drug": "Rifampicin",
+   "genome_pos": 761140,
+   "resistant_isolates": 217,
+   "who_ppv": 0.92,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 96,
+    "thermodynamics": 91,
+    "specificity": 100,
+    "resistance_evidence": 92,
+    "overall": 94
+   },
+   "exact_matches": 213,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rpoB_p.Leu430Pro",
+   "gene": "rpoB",
+   "mutation": "p.Leu430Pro",
+   "drug": "Rifampicin",
+   "genome_pos": 761095,
+   "resistant_isolates": 215,
+   "who_ppv": 0.54,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 92,
+    "specificity": 100,
+    "resistance_evidence": 54,
+    "overall": 88
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761030,
+    761122
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "inhA_p.Ser94Ala",
+   "gene": "inhA",
+   "mutation": "p.Ser94Ala",
+   "drug": "Ethionamide, Isoniazid",
+   "genome_pos": 1674481,
+   "resistant_isolates": 213,
+   "who_ppv": 0.89,
+   "status": "designed",
+   "overall": 82,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 80,
+    "specificity": 50,
+    "resistance_evidence": 89,
+    "overall": 82
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1674384,
+    1674531
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "katG_p.Ser315Asn",
+   "gene": "katG",
+   "mutation": "p.Ser315Asn",
+   "drug": "Isoniazid",
+   "genome_pos": 2155168,
+   "resistant_isolates": 206,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 75,
+    "specificity": 75,
+    "resistance_evidence": 98,
+    "overall": 87
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    2155109,
+    2155215
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "embB_p.Tyr319Ser",
+   "gene": "embB",
+   "mutation": "p.Tyr319Ser",
+   "drug": "Ethambutol",
+   "genome_pos": 4247469,
+   "resistant_isolates": 204,
+   "who_ppv": 0.81,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 78,
+    "specificity": 100,
+    "resistance_evidence": 81,
+    "overall": 90
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247361,
+    4247520
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "embB_p.Gly406Ser",
+   "gene": "embB",
+   "mutation": "p.Gly406Ser",
+   "drug": "Ethambutol",
+   "genome_pos": 4247729,
+   "resistant_isolates": 187,
+   "who_ppv": 0.71,
+   "status": "designed",
+   "overall": 64,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 66,
+    "specificity": 0,
+    "resistance_evidence": 71,
+    "overall": 64
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247696,
+    4247782
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "eis_c.-37G>T",
+   "gene": "eis",
+   "mutation": "c.-37G>T",
+   "drug": "Kanamycin",
+   "genome_pos": 2715369,
+   "resistant_isolates": 182,
+   "who_ppv": 0.82,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 62,
+    "specificity": 100,
+    "resistance_evidence": 82,
+    "overall": 85
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2715318,
+    2715395
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "inhA_c.-770T>A",
+   "gene": "inhA",
+   "mutation": "c.-770T>A",
+   "drug": "Ethionamide, Isoniazid",
+   "genome_pos": 1673432,
+   "resistant_isolates": 166,
+   "who_ppv": 0.95,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 89,
+    "specificity": 100,
+    "resistance_evidence": 95,
+    "overall": 96
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1673388,
+    1673501
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.His57Asp",
+   "gene": "pncA",
+   "mutation": "p.His57Asp",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289073,
+   "resistant_isolates": 166,
+   "who_ppv": 0.99,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 82,
+    "specificity": 100,
+    "resistance_evidence": 99,
+    "overall": 95
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289102
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Asp435Gly",
+   "gene": "rpoB",
+   "mutation": "p.Asp435Gly",
+   "drug": "Rifampicin",
+   "genome_pos": 761110,
+   "resistant_isolates": 148,
+   "who_ppv": 0.95,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "embB_p.Gln497Lys",
+   "gene": "embB",
+   "mutation": "p.Gln497Lys",
+   "drug": "Ethambutol",
+   "genome_pos": 4248002,
+   "resistant_isolates": 145,
+   "who_ppv": 0.74,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 73,
+    "specificity": 100,
+    "resistance_evidence": 74,
+    "overall": 87
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247976,
+    4248092
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "embB_p.Met306Leu",
+   "gene": "embB",
+   "mutation": "p.Met306Leu",
+   "drug": "Ethambutol",
+   "genome_pos": 4247429,
+   "resistant_isolates": 145,
+   "who_ppv": 0.74,
+   "status": "designed",
+   "overall": 81,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 73,
+    "specificity": 75,
+    "resistance_evidence": 74,
+    "overall": 81
+   },
+   "exact_matches": 217,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247362,
+    4247470
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_c.-11A>G",
+   "gene": "pncA",
+   "mutation": "c.-11A>G",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289252,
+   "resistant_isolates": 141,
+   "who_ppv": 0.93,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 81,
+    "specificity": 100,
+    "resistance_evidence": 93,
+    "overall": 93
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289224,
+    2289314
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.His445Arg",
+   "gene": "rpoB",
+   "mutation": "p.His445Arg",
+   "drug": "Rifampicin",
+   "genome_pos": 761140,
+   "resistant_isolates": 136,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 96,
+    "thermodynamics": 91,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 96
+   },
+   "exact_matches": 213,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rpoB_p.His445Asn",
+   "gene": "rpoB",
+   "mutation": "p.His445Asn",
+   "drug": "Rifampicin",
+   "genome_pos": 761139,
+   "resistant_isolates": 126,
+   "who_ppv": 0.6,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 60,
+    "overall": 89
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rpoB_p.Ile491Phe",
+   "gene": "rpoB",
+   "mutation": "p.Ile491Phe",
+   "drug": "Rifampicin",
+   "genome_pos": 761277,
+   "resistant_isolates": 116,
+   "who_ppv": 0.57,
+   "status": "designed",
+   "overall": 83,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 88,
+    "specificity": 75,
+    "resistance_evidence": 57,
+    "overall": 83
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    761242,
+    761385
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rplC_p.Cys154Arg",
+   "gene": "rplC",
+   "mutation": "p.Cys154Arg",
+   "drug": "Linezolid",
+   "genome_pos": 801268,
+   "resistant_isolates": 102,
+   "who_ppv": 0.81,
+   "status": "designed",
+   "overall": 86,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 65,
+    "specificity": 100,
+    "resistance_evidence": 81,
+    "overall": 86
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    801156,
+    801306
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrA_p.Asp94His",
+   "gene": "gyrA",
+   "mutation": "p.Asp94His",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 7581,
+   "resistant_isolates": 99,
+   "who_ppv": 0.93,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 92,
+    "thermodynamics": 81,
+    "specificity": 100,
+    "resistance_evidence": 93,
+    "overall": 91
+   },
+   "exact_matches": 205,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    7539,
+    7697
+   ],
+   "tolerance": 0.05,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rpoB_p.Val170Phe",
+   "gene": "rpoB",
+   "mutation": "p.Val170Phe",
+   "drug": "Rifampicin",
+   "genome_pos": 760314,
+   "resistant_isolates": 89,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 96
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    760228,
+    760360
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Gln125*",
+   "gene": "gid",
+   "mutation": "p.Gln125*",
+   "drug": "Streptomycin",
+   "genome_pos": 4407830,
+   "resistant_isolates": 87,
+   "who_ppv": 0.81,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 78,
+    "specificity": 100,
+    "resistance_evidence": 81,
+    "overall": 90
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407756,
+    4407912
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.His51Arg",
+   "gene": "pncA",
+   "mutation": "p.His51Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289090,
+   "resistant_isolates": 82,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 69,
+    "specificity": 100,
+    "resistance_evidence": 94,
+    "overall": 90
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289038,
+    2289125
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gln141Pro",
+   "gene": "pncA",
+   "mutation": "p.Gln141Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288820,
+   "resistant_isolates": 75,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 71,
+    "specificity": 100,
+    "resistance_evidence": 94,
+    "overall": 90
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288740,
+    2288899
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gln10Pro",
+   "gene": "pncA",
+   "mutation": "p.Gln10Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289213,
+   "resistant_isolates": 70,
+   "who_ppv": 0.93,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 62,
+    "specificity": 100,
+    "resistance_evidence": 93,
+    "overall": 87
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Gln432Pro",
+   "gene": "rpoB",
+   "mutation": "p.Gln432Pro",
+   "drug": "Rifampicin",
+   "genome_pos": 761101,
+   "resistant_isolates": 69,
+   "who_ppv": 0.99,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "ethA_p.Asn379Asp",
+   "gene": "ethA",
+   "mutation": "p.Asn379Asp",
+   "drug": "Ethionamide",
+   "genome_pos": 4326339,
+   "resistant_isolates": 61,
+   "who_ppv": 0.42,
+   "status": "designed",
+   "overall": 86,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 92,
+    "specificity": 100,
+    "resistance_evidence": 42,
+    "overall": 86
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 2,
+   "amplicon": [
+    4326257,
+    4326411
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrB_p.Glu501Asp",
+   "gene": "gyrB",
+   "mutation": "p.Glu501Asp",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 6742,
+   "resistant_isolates": 61,
+   "who_ppv": 0.86,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 89,
+    "specificity": 75,
+    "resistance_evidence": 86,
+    "overall": 89
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    6694,
+    6802
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Val139Ala",
+   "gene": "pncA",
+   "mutation": "p.Val139Ala",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288826,
+   "resistant_isolates": 59,
+   "who_ppv": 0.92,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 92,
+    "overall": 94
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288740,
+    2288899
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Met1?",
+   "gene": "ethA",
+   "mutation": "p.Met1?",
+   "drug": "Ethionamide",
+   "genome_pos": 4327472,
+   "resistant_isolates": 58,
+   "who_ppv": 0.54,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 54,
+    "overall": 88
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4327355,
+    4327504
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gln10Arg",
+   "gene": "pncA",
+   "mutation": "p.Gln10Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289213,
+   "resistant_isolates": 57,
+   "who_ppv": 0.95,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 61,
+    "specificity": 100,
+    "resistance_evidence": 95,
+    "overall": 87
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gly132Ala",
+   "gene": "pncA",
+   "mutation": "p.Gly132Ala",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288847,
+   "resistant_isolates": 57,
+   "who_ppv": 0.97,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 85,
+    "specificity": 100,
+    "resistance_evidence": 97,
+    "overall": 95
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288740,
+    2288899
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Pro84Leu",
+   "gene": "gid",
+   "mutation": "p.Pro84Leu",
+   "drug": "Streptomycin",
+   "genome_pos": 4407952,
+   "resistant_isolates": 56,
+   "who_ppv": 0.61,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 91,
+    "specificity": 100,
+    "resistance_evidence": 61,
+    "overall": 89
+   },
+   "exact_matches": 217,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407893,
+    4408007
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.His57Arg",
+   "gene": "pncA",
+   "mutation": "p.His57Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289072,
+   "resistant_isolates": 56,
+   "who_ppv": 0.92,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 77,
+    "specificity": 100,
+    "resistance_evidence": 92,
+    "overall": 92
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289102
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_c.-7T>C",
+   "gene": "ethA",
+   "mutation": "c.-7T>C",
+   "drug": "Ethionamide",
+   "genome_pos": 4327480,
+   "resistant_isolates": 53,
+   "who_ppv": 0.44,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 44,
+    "overall": 85
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4327421,
+    4327546
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Thr76Pro",
+   "gene": "pncA",
+   "mutation": "p.Thr76Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289016,
+   "resistant_isolates": 52,
+   "who_ppv": 0.95,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 95,
+    "overall": 95
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rrs_n.878G>A",
+   "gene": "rrs",
+   "mutation": "n.878G>A",
+   "drug": "Streptomycin",
+   "genome_pos": 1472723,
+   "resistant_isolates": 50,
+   "who_ppv": 0.91,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 75,
+    "specificity": 100,
+    "resistance_evidence": 91,
+    "overall": 90
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    1472610,
+    1472753
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.His51Asp",
+   "gene": "pncA",
+   "mutation": "p.His51Asp",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289091,
+   "resistant_isolates": 48,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 74,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 92
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289038,
+    2289125
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "embB_p.Asp328Tyr",
+   "gene": "embB",
+   "mutation": "p.Asp328Tyr",
+   "drug": "Ethambutol",
+   "genome_pos": 4247495,
+   "resistant_isolates": 46,
+   "who_ppv": 0.9,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 83,
+    "specificity": 100,
+    "resistance_evidence": 90,
+    "overall": 93
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247451,
+    4247526
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gly97Asp",
+   "gene": "pncA",
+   "mutation": "p.Gly97Asp",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288952,
+   "resistant_isolates": 46,
+   "who_ppv": 0.9,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 71,
+    "specificity": 100,
+    "resistance_evidence": 90,
+    "overall": 89
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288829,
+    2288976
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Gln432Lys",
+   "gene": "rpoB",
+   "mutation": "p.Gln432Lys",
+   "drug": "Rifampicin",
+   "genome_pos": 761100,
+   "resistant_isolates": 46,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 89,
+    "specificity": 75,
+    "resistance_evidence": 100,
+    "overall": 91
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761030,
+    761123
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrB_p.Asp461Asn",
+   "gene": "gyrB",
+   "mutation": "p.Asp461Asn",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 6620,
+   "resistant_isolates": 44,
+   "who_ppv": 0.71,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 69,
+    "specificity": 100,
+    "resistance_evidence": 71,
+    "overall": 85
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    6591,
+    6673
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu27Pro",
+   "gene": "pncA",
+   "mutation": "p.Leu27Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289162,
+   "resistant_isolates": 44,
+   "who_ppv": 1.0,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "gyrA_p.Gly88Cys",
+   "gene": "gyrA",
+   "mutation": "p.Gly88Cys",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 7563,
+   "resistant_isolates": 43,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 86,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 55,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 86
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    7539,
+    7697
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Asp49Gly",
+   "gene": "pncA",
+   "mutation": "p.Asp49Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289096,
+   "resistant_isolates": 43,
+   "who_ppv": 0.96,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 78,
+    "specificity": 100,
+    "resistance_evidence": 96,
+    "overall": 93
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289037,
+    2289125
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Thr135Pro",
+   "gene": "pncA",
+   "mutation": "p.Thr135Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288839,
+   "resistant_isolates": 43,
+   "who_ppv": 0.98,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "pncA_p.Cys14Arg",
+   "gene": "pncA",
+   "mutation": "p.Cys14Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289202,
+   "resistant_isolates": 42,
+   "who_ppv": 0.98,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 98,
+    "overall": 95
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu4Ser",
+   "gene": "pncA",
+   "mutation": "p.Leu4Ser",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289231,
+   "resistant_isolates": 42,
+   "who_ppv": 0.93,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 88,
+    "specificity": 75,
+    "resistance_evidence": 93,
+    "overall": 90
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289196,
+    2289315
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.His71Arg",
+   "gene": "pncA",
+   "mutation": "p.His71Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289030,
+   "resistant_isolates": 38,
+   "who_ppv": 0.95,
+   "status": "designed",
+   "overall": 80,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 52,
+    "specificity": 75,
+    "resistance_evidence": 95,
+    "overall": 80
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Ser441Leu",
+   "gene": "rpoB",
+   "mutation": "p.Ser441Leu",
+   "drug": "Rifampicin",
+   "genome_pos": 761128,
+   "resistant_isolates": 38,
+   "who_ppv": 0.97,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 97,
+    "thermodynamics": 83,
+    "specificity": 100,
+    "resistance_evidence": 97,
+    "overall": 94
+   },
+   "exact_matches": 216,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "embB_p.Gly406Cys",
+   "gene": "embB",
+   "mutation": "p.Gly406Cys",
+   "drug": "Ethambutol",
+   "genome_pos": 4247729,
+   "resistant_isolates": 36,
+   "who_ppv": 0.56,
+   "status": "designed",
+   "overall": 63,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 75,
+    "specificity": 0,
+    "resistance_evidence": 56,
+    "overall": 63
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247695,
+    4247782
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Arg207Gly",
+   "gene": "ethA",
+   "mutation": "p.Arg207Gly",
+   "drug": "Ethionamide",
+   "genome_pos": 4326855,
+   "resistant_isolates": 36,
+   "who_ppv": 0.6,
+   "status": "designed",
+   "overall": 80,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 78,
+    "specificity": 75,
+    "resistance_evidence": 60,
+    "overall": 80
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4326830,
+    4326962
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "embB_p.Tyr319Cys",
+   "gene": "embB",
+   "mutation": "p.Tyr319Cys",
+   "drug": "Ethambutol",
+   "genome_pos": 4247469,
+   "resistant_isolates": 34,
+   "who_ppv": 0.53,
+   "status": "designed",
+   "overall": 81,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 69,
+    "specificity": 100,
+    "resistance_evidence": 53,
+    "overall": 81
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4247361,
+    4247519
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.His71Tyr",
+   "gene": "pncA",
+   "mutation": "p.His71Tyr",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289031,
+   "resistant_isolates": 34,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 87,
+    "specificity": 75,
+    "resistance_evidence": 94,
+    "overall": 90
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Val7Gly",
+   "gene": "pncA",
+   "mutation": "p.Val7Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289222,
+   "resistant_isolates": 34,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 81,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 75,
+    "specificity": 50,
+    "resistance_evidence": 94,
+    "overall": 81
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289196,
+    2289313
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Gly73Ala",
+   "gene": "gid",
+   "mutation": "p.Gly73Ala",
+   "drug": "Streptomycin",
+   "genome_pos": 4407985,
+   "resistant_isolates": 33,
+   "who_ppv": 0.7,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 70,
+    "overall": 90
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407928,
+    4408066
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Met434Ile",
+   "gene": "rpoB",
+   "mutation": "p.Met434Ile",
+   "drug": "Rifampicin",
+   "genome_pos": 761108,
+   "resistant_isolates": 33,
+   "who_ppv": 0.94,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "ethA_p.Ser399*",
+   "gene": "ethA",
+   "mutation": "p.Ser399*",
+   "drug": "Ethionamide",
+   "genome_pos": 4326278,
+   "resistant_isolates": 32,
+   "who_ppv": 0.91,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 65,
+    "specificity": 100,
+    "resistance_evidence": 91,
+    "overall": 88
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    4326190,
+    4326339
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrB_p.Ala504Val",
+   "gene": "gyrB",
+   "mutation": "p.Ala504Val",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 6750,
+   "resistant_isolates": 32,
+   "who_ppv": 0.76,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 92,
+    "specificity": 75,
+    "resistance_evidence": 76,
+    "overall": 88
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    6694,
+    6802
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Pro54Leu",
+   "gene": "pncA",
+   "mutation": "p.Pro54Leu",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289081,
+   "resistant_isolates": 32,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 90,
+    "specificity": 75,
+    "resistance_evidence": 94,
+    "overall": 91
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289036,
+    2289127
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Trp68Gly",
+   "gene": "pncA",
+   "mutation": "p.Trp68Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289040,
+   "resistant_isolates": 32,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 76,
+    "specificity": 100,
+    "resistance_evidence": 94,
+    "overall": 92
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Leu430Arg",
+   "gene": "rpoB",
+   "mutation": "p.Leu430Arg",
+   "drug": "Rifampicin",
+   "genome_pos": 761095,
+   "resistant_isolates": 32,
+   "who_ppv": 0.91,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 91,
+    "overall": 95
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761030,
+    761122
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrB_p.Asn499Thr",
+   "gene": "gyrB",
+   "mutation": "p.Asn499Thr",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 6735,
+   "resistant_isolates": 31,
+   "who_ppv": 0.7,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 76,
+    "specificity": 100,
+    "resistance_evidence": 70,
+    "overall": 87
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    6659,
+    6802
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu172Pro",
+   "gene": "pncA",
+   "mutation": "p.Leu172Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288727,
+   "resistant_isolates": 31,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 75,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 66,
+    "specificity": 25,
+    "resistance_evidence": 100,
+    "overall": 75
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpsL_p.Lys88Met",
+   "gene": "rpsL",
+   "mutation": "p.Lys88Met",
+   "drug": "Streptomycin",
+   "genome_pos": 781822,
+   "resistant_isolates": 31,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 97,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 97
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    781722,
+    781861
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Tyr147*",
+   "gene": "ethA",
+   "mutation": "p.Tyr147*",
+   "drug": "Ethionamide",
+   "genome_pos": 4327033,
+   "resistant_isolates": 29,
+   "who_ppv": 0.49,
+   "status": "designed",
+   "overall": 82,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 74,
+    "specificity": 100,
+    "resistance_evidence": 49,
+    "overall": 82
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    4326942,
+    4327088
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "katG_p.Met1?",
+   "gene": "katG",
+   "mutation": "p.Met1?",
+   "drug": "Isoniazid",
+   "genome_pos": 2156109,
+   "resistant_isolates": 29,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 97,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 97
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2156075,
+    2156205
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Ile133Thr",
+   "gene": "pncA",
+   "mutation": "p.Ile133Thr",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288844,
+   "resistant_isolates": 29,
+   "who_ppv": 0.62,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 62,
+    "overall": 88
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288819,
+    2288963
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu120Pro",
+   "gene": "pncA",
+   "mutation": "p.Leu120Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288883,
+   "resistant_isolates": 28,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 82,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 94
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288829,
+    2288963
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Gln432Leu",
+   "gene": "rpoB",
+   "mutation": "p.Gln432Leu",
+   "drug": "Rifampicin",
+   "genome_pos": 761101,
+   "resistant_isolates": 28,
+   "who_ppv": 0.97,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "pncA_p.Ile5Ser",
+   "gene": "pncA",
+   "mutation": "p.Ile5Ser",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289228,
+   "resistant_isolates": 27,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 86,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 90,
+    "specificity": 50,
+    "resistance_evidence": 100,
+    "overall": 86
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289196,
+    2289313
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Asp63Ala",
+   "gene": "pncA",
+   "mutation": "p.Asp63Ala",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289054,
+   "resistant_isolates": 26,
+   "who_ppv": 0.84,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 59,
+    "specificity": 100,
+    "resistance_evidence": 84,
+    "overall": 85
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289102
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Tyr103*",
+   "gene": "pncA",
+   "mutation": "p.Tyr103*",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288933,
+   "resistant_isolates": 26,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 96
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288829,
+    2288976
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_c.-11A>C",
+   "gene": "pncA",
+   "mutation": "c.-11A>C",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289252,
+   "resistant_isolates": 24,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 89,
+    "specificity": 75,
+    "resistance_evidence": 100,
+    "overall": 92
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289196,
+    2289313
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Ser59Pro",
+   "gene": "pncA",
+   "mutation": "p.Ser59Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289067,
+   "resistant_isolates": 24,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 85,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 95
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Glu99*",
+   "gene": "gid",
+   "mutation": "p.Glu99*",
+   "drug": "Streptomycin",
+   "genome_pos": 4407908,
+   "resistant_isolates": 23,
+   "who_ppv": 0.85,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 87,
+    "specificity": 75,
+    "resistance_evidence": 85,
+    "overall": 88
+   },
+   "exact_matches": 217,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407877,
+    4407948
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Ser136*",
+   "gene": "gid",
+   "mutation": "p.Ser136*",
+   "drug": "Streptomycin",
+   "genome_pos": 4407796,
+   "resistant_isolates": 23,
+   "who_ppv": 0.68,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 68,
+    "overall": 90
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407756,
+    4407912
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Ile31Ser",
+   "gene": "pncA",
+   "mutation": "p.Ile31Ser",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289150,
+   "resistant_isolates": 23,
+   "who_ppv": 0.85,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 62,
+    "specificity": 100,
+    "resistance_evidence": 85,
+    "overall": 85
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rrs_n.1484G>T",
+   "gene": "rrs",
+   "mutation": "n.1484G>T",
+   "drug": "Amikacin, Capreomycin, Kanamycin",
+   "genome_pos": 1473329,
+   "resistant_isolates": 23,
+   "who_ppv": 0.96,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 89,
+    "specificity": 100,
+    "resistance_evidence": 96,
+    "overall": 96
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1473244,
+    1473400
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Ala134Glu",
+   "gene": "gid",
+   "mutation": "p.Ala134Glu",
+   "drug": "Streptomycin",
+   "genome_pos": 4407802,
+   "resistant_isolates": 22,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 83,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 95
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407756,
+    4407912
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Asp8Gly",
+   "gene": "pncA",
+   "mutation": "p.Asp8Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289219,
+   "resistant_isolates": 22,
+   "who_ppv": 0.96,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 70,
+    "specificity": 100,
+    "resistance_evidence": 96,
+    "overall": 90
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289086,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Ser67Pro",
+   "gene": "pncA",
+   "mutation": "p.Ser67Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289043,
+   "resistant_isolates": 22,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 70,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 91
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Val105Glu",
+   "gene": "gid",
+   "mutation": "p.Val105Glu",
+   "drug": "Streptomycin",
+   "genome_pos": 4407889,
+   "resistant_isolates": 21,
+   "who_ppv": 0.91,
+   "status": "designed",
+   "overall": 73,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 68,
+    "specificity": 25,
+    "resistance_evidence": 91,
+    "overall": 73
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407816,
+    4407948
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrB_p.Ser447Phe",
+   "gene": "gyrB",
+   "mutation": "p.Ser447Phe",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 6579,
+   "resistant_isolates": 21,
+   "who_ppv": 0.53,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 52,
+    "overall": 87
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    6450,
+    6609
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Ala146Val",
+   "gene": "pncA",
+   "mutation": "p.Ala146Val",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288805,
+   "resistant_isolates": 21,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 72,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 92
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Asp435Glu",
+   "gene": "rpoB",
+   "mutation": "p.Asp435Glu",
+   "drug": "Rifampicin",
+   "genome_pos": 761111,
+   "resistant_isolates": 21,
+   "who_ppv": 1.0,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "rpoB_p.His445Gln",
+   "gene": "rpoB",
+   "mutation": "p.His445Gln",
+   "drug": "Rifampicin",
+   "genome_pos": 761141,
+   "resistant_isolates": 21,
+   "who_ppv": 0.91,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 96,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 91,
+    "overall": 93
+   },
+   "exact_matches": 213,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "tlyA_p.Asn236Lys",
+   "gene": "tlyA",
+   "mutation": "p.Asn236Lys",
+   "drug": "Capreomycin",
+   "genome_pos": 1918647,
+   "resistant_isolates": 21,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 71,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 70,
+    "specificity": 0,
+    "resistance_evidence": 100,
+    "overall": 71
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1918531,
+    1918671
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "tlyA_p.Gly232Asp",
+   "gene": "tlyA",
+   "mutation": "p.Gly232Asp",
+   "drug": "Capreomycin",
+   "genome_pos": 1918634,
+   "resistant_isolates": 21,
+   "who_ppv": 0.91,
+   "status": "designed",
+   "overall": 67,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 64,
+    "specificity": 0,
+    "resistance_evidence": 91,
+    "overall": 67
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1918531,
+    1918668
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.His48Gln",
+   "gene": "gid",
+   "mutation": "p.His48Gln",
+   "drug": "Streptomycin",
+   "genome_pos": 4408059,
+   "resistant_isolates": 20,
+   "who_ppv": 0.8,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 80,
+    "overall": 92
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407928,
+    4408086
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrA_p.Asp89Asn",
+   "gene": "gyrA",
+   "mutation": "p.Asp89Asn",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 7566,
+   "resistant_isolates": 20,
+   "who_ppv": 0.77,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 67,
+    "specificity": 100,
+    "resistance_evidence": 77,
+    "overall": 85
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    7538,
+    7697
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "katG_p.Ser315Ile",
+   "gene": "katG",
+   "mutation": "p.Ser315Ile",
+   "drug": "Isoniazid",
+   "genome_pos": 2155168,
+   "resistant_isolates": 20,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 86,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 73,
+    "specificity": 75,
+    "resistance_evidence": 100,
+    "overall": 86
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    2155109,
+    2155215
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "pncA_p.His71Pro",
+   "gene": "pncA",
+   "mutation": "p.His71Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289030,
+   "resistant_isolates": 20,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 81,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 52,
+    "specificity": 75,
+    "resistance_evidence": 100,
+    "overall": 81
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Lys48Thr",
+   "gene": "pncA",
+   "mutation": "p.Lys48Thr",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289099,
+   "resistant_isolates": 20,
+   "who_ppv": 0.43,
+   "status": "designed",
+   "overall": 82,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 77,
+    "specificity": 100,
+    "resistance_evidence": 43,
+    "overall": 82
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289037,
+    2289125
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Trp68Cys",
+   "gene": "pncA",
+   "mutation": "p.Trp68Cys",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289038,
+   "resistant_isolates": 20,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 85,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 96
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Ser390Phe",
+   "gene": "ethA",
+   "mutation": "p.Ser390Phe",
+   "drug": "Ethionamide",
+   "genome_pos": 4326305,
+   "resistant_isolates": 19,
+   "who_ppv": 0.79,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 91,
+    "specificity": 100,
+    "resistance_evidence": 79,
+    "overall": 93
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 2,
+   "amplicon": [
+    4326257,
+    4326411
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrB_p.Asn499Asp",
+   "gene": "gyrB",
+   "mutation": "p.Asn499Asp",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 6734,
+   "resistant_isolates": 19,
+   "who_ppv": 0.73,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 73,
+    "overall": 91
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    6606,
+    6759
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrB_p.Asp461His",
+   "gene": "gyrB",
+   "mutation": "p.Asp461His",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 6620,
+   "resistant_isolates": 19,
+   "who_ppv": 0.83,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 70,
+    "specificity": 100,
+    "resistance_evidence": 83,
+    "overall": 88
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    6591,
+    6704
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "inhA_c.-770T>G",
+   "gene": "inhA",
+   "mutation": "c.-770T>G",
+   "drug": "Ethionamide, Isoniazid",
+   "genome_pos": 1673432,
+   "resistant_isolates": 19,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 96
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1673341,
+    1673497
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gly97Cys",
+   "gene": "pncA",
+   "mutation": "p.Gly97Cys",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288953,
+   "resistant_isolates": 19,
+   "who_ppv": 0.95,
+   "status": "designed",
+   "overall": 86,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 74,
+    "specificity": 75,
+    "resistance_evidence": 95,
+    "overall": 86
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288905,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu151Ser",
+   "gene": "pncA",
+   "mutation": "p.Leu151Ser",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288790,
+   "resistant_isolates": 19,
+   "who_ppv": 0.76,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 79,
+    "specificity": 100,
+    "resistance_evidence": 76,
+    "overall": 89
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Lys96Thr",
+   "gene": "pncA",
+   "mutation": "p.Lys96Thr",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288955,
+   "resistant_isolates": 19,
+   "who_ppv": 0.95,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 86,
+    "specificity": 75,
+    "resistance_evidence": 95,
+    "overall": 90
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288905,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Val125Gly",
+   "gene": "pncA",
+   "mutation": "p.Val125Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288868,
+   "resistant_isolates": 19,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 77,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 93
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288829,
+    2288963
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rrl_n.2814G>T",
+   "gene": "rrl",
+   "mutation": "n.2814G>T",
+   "drug": "Linezolid",
+   "genome_pos": 1476471,
+   "resistant_isolates": 19,
+   "who_ppv": 0.83,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 97,
+    "thermodynamics": 64,
+    "specificity": 100,
+    "resistance_evidence": 83,
+    "overall": 85
+   },
+   "exact_matches": 215,
+   "isolates": 222,
+   "likely_fail": 7,
+   "amplicon": [
+    1476359,
+    1476501
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Asp12Ala",
+   "gene": "pncA",
+   "mutation": "p.Asp12Ala",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289207,
+   "resistant_isolates": 18,
+   "who_ppv": 0.72,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 81,
+    "specificity": 100,
+    "resistance_evidence": 72,
+    "overall": 88
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Asp136Gly",
+   "gene": "pncA",
+   "mutation": "p.Asp136Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288835,
+   "resistant_isolates": 18,
+   "who_ppv": 0.75,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 85,
+    "specificity": 100,
+    "resistance_evidence": 75,
+    "overall": 90
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288740,
+    2288899
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Trp68Arg",
+   "gene": "pncA",
+   "mutation": "p.Trp68Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289040,
+   "resistant_isolates": 18,
+   "who_ppv": 0.95,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 79,
+    "specificity": 100,
+    "resistance_evidence": 95,
+    "overall": 93
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Tyr34Asp",
+   "gene": "pncA",
+   "mutation": "p.Tyr34Asp",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289142,
+   "resistant_isolates": 18,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 81,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 94
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Val180Phe",
+   "gene": "pncA",
+   "mutation": "p.Val180Phe",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288704,
+   "resistant_isolates": 18,
+   "who_ppv": 0.9,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 70,
+    "specificity": 100,
+    "resistance_evidence": 90,
+    "overall": 89
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288651,
+    2288778
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Ala341Val",
+   "gene": "ethA",
+   "mutation": "p.Ala341Val",
+   "drug": "Ethionamide",
+   "genome_pos": 4326452,
+   "resistant_isolates": 17,
+   "who_ppv": 0.71,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 71,
+    "overall": 90
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4326381,
+    4326531
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Ser70Asn",
+   "gene": "gid",
+   "mutation": "p.Ser70Asn",
+   "drug": "Streptomycin",
+   "genome_pos": 4407994,
+   "resistant_isolates": 17,
+   "who_ppv": 0.85,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 85,
+    "overall": 94
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407928,
+    4408086
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Arg154Gly",
+   "gene": "pncA",
+   "mutation": "p.Arg154Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288782,
+   "resistant_isolates": 17,
+   "who_ppv": 0.71,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 85,
+    "specificity": 100,
+    "resistance_evidence": 71,
+    "overall": 90
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gly108Arg",
+   "gene": "pncA",
+   "mutation": "p.Gly108Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288920,
+   "resistant_isolates": 17,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 92,
+    "specificity": 100,
+    "resistance_evidence": 94,
+    "overall": 96
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288829,
+    2288963
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Thr47Ala",
+   "gene": "pncA",
+   "mutation": "p.Thr47Ala",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289103,
+   "resistant_isolates": 17,
+   "who_ppv": 0.61,
+   "status": "designed",
+   "overall": 65,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 76,
+    "specificity": 0,
+    "resistance_evidence": 61,
+    "overall": 65
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289038,
+    2289126
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rrs_n.1402C>T",
+   "gene": "rrs",
+   "mutation": "n.1402C>T",
+   "drug": "Amikacin, Capreomycin, Kanamycin",
+   "genome_pos": 1473247,
+   "resistant_isolates": 17,
+   "who_ppv": 0.85,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 85,
+    "overall": 94
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    1473184,
+    1473317
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "gyrA_p.Gly88Ala",
+   "gene": "gyrA",
+   "mutation": "p.Gly88Ala",
+   "drug": "Levofloxacin, Moxifloxacin",
+   "genome_pos": 7564,
+   "resistant_isolates": 16,
+   "who_ppv": 0.57,
+   "status": "designed",
+   "overall": 79,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 58,
+    "specificity": 100,
+    "resistance_evidence": 57,
+    "overall": 79
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    7539,
+    7697
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "ethA_p.Gln359*",
+   "gene": "ethA",
+   "mutation": "p.Gln359*",
+   "drug": "Ethionamide",
+   "genome_pos": 4326399,
+   "resistant_isolates": 15,
+   "who_ppv": 0.68,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 85,
+    "specificity": 100,
+    "resistance_evidence": 68,
+    "overall": 89
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4326313,
+    4326471
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Ala146Thr",
+   "gene": "pncA",
+   "mutation": "p.Ala146Thr",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288806,
+   "resistant_isolates": 15,
+   "who_ppv": 0.79,
+   "status": "designed",
+   "overall": 86,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 67,
+    "specificity": 100,
+    "resistance_evidence": 79,
+    "overall": 86
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu120Arg",
+   "gene": "pncA",
+   "mutation": "p.Leu120Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288883,
+   "resistant_isolates": 15,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 96
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288829,
+    2288963
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu182Ser",
+   "gene": "pncA",
+   "mutation": "p.Leu182Ser",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288697,
+   "resistant_isolates": 15,
+   "who_ppv": 0.79,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 79,
+    "specificity": 100,
+    "resistance_evidence": 79,
+    "overall": 89
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288651,
+    2288778
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu4Trp",
+   "gene": "pncA",
+   "mutation": "p.Leu4Trp",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289231,
+   "resistant_isolates": 15,
+   "who_ppv": 0.94,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 90,
+    "specificity": 75,
+    "resistance_evidence": 94,
+    "overall": 91
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289196,
+    2289315
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Val139Gly",
+   "gene": "pncA",
+   "mutation": "p.Val139Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288826,
+   "resistant_isolates": 15,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 58,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 87
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288740,
+    2288899
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Asn437Asp",
+   "gene": "rpoB",
+   "mutation": "p.Asn437Asp",
+   "drug": "Rifampicin",
+   "genome_pos": 761115,
+   "resistant_isolates": 15,
+   "who_ppv": 0.71,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "rpsL_p.Lys88Gln",
+   "gene": "rpsL",
+   "mutation": "p.Lys88Gln",
+   "drug": "Streptomycin",
+   "genome_pos": 781821,
+   "resistant_isolates": 15,
+   "who_ppv": 0.79,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 83,
+    "specificity": 100,
+    "resistance_evidence": 79,
+    "overall": 90
+   },
+   "exact_matches": 217,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    781722,
+    781861
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Trp391*",
+   "gene": "ethA",
+   "mutation": "p.Trp391*",
+   "drug": "Ethionamide",
+   "genome_pos": 4326301,
+   "resistant_isolates": 14,
+   "who_ppv": 0.4,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 91,
+    "specificity": 100,
+    "resistance_evidence": 40,
+    "overall": 85
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 2,
+   "amplicon": [
+    4326257,
+    4326411
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Gly73Glu",
+   "gene": "gid",
+   "mutation": "p.Gly73Glu",
+   "drug": "Streptomycin",
+   "genome_pos": 4407985,
+   "resistant_isolates": 14,
+   "who_ppv": 0.88,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 80,
+    "specificity": 100,
+    "resistance_evidence": 88,
+    "overall": 91
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407928,
+    4408066
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "katG_p.Ser315Arg",
+   "gene": "katG",
+   "mutation": "p.Ser315Arg",
+   "drug": "Isoniazid",
+   "genome_pos": 2155167,
+   "resistant_isolates": 14,
+   "who_ppv": 0.93,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 96,
+    "thermodynamics": 83,
+    "specificity": 75,
+    "resistance_evidence": 93,
+    "overall": 87
+   },
+   "exact_matches": 213,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    2155109,
+    2155215
+   ],
+   "tolerance": 0.05,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "pncA_p.Asp8Asn",
+   "gene": "pncA",
+   "mutation": "p.Asp8Asn",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289220,
+   "resistant_isolates": 14,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 83,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 61,
+    "specificity": 75,
+    "resistance_evidence": 100,
+    "overall": 83
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289196,
+    2289313
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Cys72Arg",
+   "gene": "pncA",
+   "mutation": "p.Cys72Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289028,
+   "resistant_isolates": 14,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 83,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 95
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gln10His",
+   "gene": "pncA",
+   "mutation": "p.Gln10His",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289212,
+   "resistant_isolates": 14,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 65,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 89
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Pro69Leu",
+   "gene": "pncA",
+   "mutation": "p.Pro69Leu",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289036,
+   "resistant_isolates": 14,
+   "who_ppv": 0.74,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 88,
+    "specificity": 100,
+    "resistance_evidence": 74,
+    "overall": 91
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Thr142Ala",
+   "gene": "pncA",
+   "mutation": "p.Thr142Ala",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288818,
+   "resistant_isolates": 14,
+   "who_ppv": 0.88,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 84,
+    "specificity": 100,
+    "resistance_evidence": 88,
+    "overall": 92
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288740,
+    2288899
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Val128Gly",
+   "gene": "pncA",
+   "mutation": "p.Val128Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288859,
+   "resistant_isolates": 14,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 81,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 94
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288829,
+    2288963
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Arg292*",
+   "gene": "ethA",
+   "mutation": "p.Arg292*",
+   "drug": "Ethionamide",
+   "genome_pos": 4326600,
+   "resistant_isolates": 13,
+   "who_ppv": 0.81,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 78,
+    "specificity": 100,
+    "resistance_evidence": 81,
+    "overall": 89
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    4326512,
+    4326651
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Trp256*",
+   "gene": "ethA",
+   "mutation": "p.Trp256*",
+   "drug": "Ethionamide",
+   "genome_pos": 4326706,
+   "resistant_isolates": 13,
+   "who_ppv": 0.43,
+   "status": "designed",
+   "overall": 83,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 83,
+    "specificity": 100,
+    "resistance_evidence": 43,
+    "overall": 83
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    4326604,
+    4326761
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Ala200Glu",
+   "gene": "gid",
+   "mutation": "p.Ala200Glu",
+   "drug": "Streptomycin",
+   "genome_pos": 4407604,
+   "resistant_isolates": 13,
+   "who_ppv": 0.87,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 83,
+    "specificity": 100,
+    "resistance_evidence": 87,
+    "overall": 92
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407569,
+    4407653
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Ala134Val",
+   "gene": "pncA",
+   "mutation": "p.Ala134Val",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288841,
+   "resistant_isolates": 13,
+   "who_ppv": 0.93,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 79,
+    "specificity": 100,
+    "resistance_evidence": 93,
+    "overall": 92
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288818,
+    2288963
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Asp12Gly",
+   "gene": "pncA",
+   "mutation": "p.Asp12Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289207,
+   "resistant_isolates": 13,
+   "who_ppv": 0.81,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 81,
+    "overall": 92
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gly97Ser",
+   "gene": "pncA",
+   "mutation": "p.Gly97Ser",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288953,
+   "resistant_isolates": 13,
+   "who_ppv": 0.87,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 75,
+    "specificity": 75,
+    "resistance_evidence": 87,
+    "overall": 85
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288905,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Phe58Leu",
+   "gene": "pncA",
+   "mutation": "p.Phe58Leu",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289068,
+   "resistant_isolates": 13,
+   "who_ppv": 0.76,
+   "status": "designed",
+   "overall": 79,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 63,
+    "specificity": 75,
+    "resistance_evidence": 76,
+    "overall": 79
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Thr142Met",
+   "gene": "pncA",
+   "mutation": "p.Thr142Met",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288817,
+   "resistant_isolates": 13,
+   "who_ppv": 0.93,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 77,
+    "specificity": 75,
+    "resistance_evidence": 93,
+    "overall": 87
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Gln429His",
+   "gene": "rpoB",
+   "mutation": "p.Gln429His",
+   "drug": "Rifampicin",
+   "genome_pos": 761093,
+   "resistant_isolates": 13,
+   "who_ppv": 0.93,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 89,
+    "specificity": 100,
+    "resistance_evidence": 93,
+    "overall": 95
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761030,
+    761122
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rrl_n.2270G>T",
+   "gene": "rrl",
+   "mutation": "n.2270G>T",
+   "drug": "Linezolid",
+   "genome_pos": 1475927,
+   "resistant_isolates": 13,
+   "who_ppv": 0.76,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 67,
+    "specificity": 100,
+    "resistance_evidence": 76,
+    "overall": 85
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    1475893,
+    1476006
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "Rv0678_p.Ile67Ser",
+   "gene": "Rv0678",
+   "mutation": "p.Ile67Ser",
+   "drug": "Bedaquiline, Clofazimine",
+   "genome_pos": 779189,
+   "resistant_isolates": 12,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 90,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 66,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 90
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    779067,
+    779226
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Leu35Arg",
+   "gene": "ethA",
+   "mutation": "p.Leu35Arg",
+   "drug": "Ethionamide",
+   "genome_pos": 4327370,
+   "resistant_isolates": 12,
+   "who_ppv": 0.86,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 86,
+    "specificity": 100,
+    "resistance_evidence": 86,
+    "overall": 93
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4327284,
+    4327439
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "katG_p.Trp328Leu",
+   "gene": "katG",
+   "mutation": "p.Trp328Leu",
+   "drug": "Isoniazid",
+   "genome_pos": 2155129,
+   "resistant_isolates": 12,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 95,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 84,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 95
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    2155104,
+    2155215
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.His57Tyr",
+   "gene": "pncA",
+   "mutation": "p.His57Tyr",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289073,
+   "resistant_isolates": 12,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 79,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 94
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289102
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Ile6Thr",
+   "gene": "pncA",
+   "mutation": "p.Ile6Thr",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289225,
+   "resistant_isolates": 12,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 64,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 89
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    2289107,
+    2289254
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Met175Val",
+   "gene": "pncA",
+   "mutation": "p.Met175Val",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288719,
+   "resistant_isolates": 12,
+   "who_ppv": 0.8,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 64,
+    "specificity": 100,
+    "resistance_evidence": 80,
+    "overall": 85
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Ser164Pro",
+   "gene": "pncA",
+   "mutation": "p.Ser164Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288752,
+   "resistant_isolates": 12,
+   "who_ppv": 0.92,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 68,
+    "specificity": 100,
+    "resistance_evidence": 92,
+    "overall": 89
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Thr160Pro",
+   "gene": "pncA",
+   "mutation": "p.Thr160Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288764,
+   "resistant_isolates": 12,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 86,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 96
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Val21Gly",
+   "gene": "pncA",
+   "mutation": "p.Val21Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289180,
+   "resistant_isolates": 12,
+   "who_ppv": 0.86,
+   "status": "designed",
+   "overall": 86,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 64,
+    "specificity": 100,
+    "resistance_evidence": 86,
+    "overall": 86
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Asp435Ala",
+   "gene": "rpoB",
+   "mutation": "p.Asp435Ala",
+   "drug": "Rifampicin",
+   "genome_pos": 761110,
+   "resistant_isolates": 12,
+   "who_ppv": 0.67,
+   "status": "no_design",
+   "reason": "No primer pair with a probe between its primers passed the checks, even with positions that vary in up to 20% of isolates allowed and the primers kept away from the SNP to leave room for the probe."
+  },
+  {
+   "id": "rpoB_p.Met434Val",
+   "gene": "rpoB",
+   "mutation": "p.Met434Val",
+   "drug": "Rifampicin",
+   "genome_pos": 761106,
+   "resistant_isolates": 12,
+   "who_ppv": 0.86,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 75,
+    "specificity": 100,
+    "resistance_evidence": 86,
+    "overall": 89
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761032,
+    761129
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "Rv0678_p.Met146Thr",
+   "gene": "Rv0678",
+   "mutation": "p.Met146Thr",
+   "drug": "Bedaquiline, Clofazimine",
+   "genome_pos": 779426,
+   "resistant_isolates": 11,
+   "who_ppv": 0.23,
+   "status": "designed",
+   "overall": 69,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 82,
+    "specificity": 50,
+    "resistance_evidence": 23,
+    "overall": 69
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    779318,
+    779473
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "ddn_p.Leu49Pro",
+   "gene": "ddn",
+   "mutation": "p.Leu49Pro",
+   "drug": "Delamanid",
+   "genome_pos": 3986989,
+   "resistant_isolates": 11,
+   "who_ppv": 0.85,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 60,
+    "specificity": 100,
+    "resistance_evidence": 85,
+    "overall": 85
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    3986914,
+    3987050
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "ethA_p.Ser57Tyr",
+   "gene": "ethA",
+   "mutation": "p.Ser57Tyr",
+   "drug": "Ethionamide",
+   "genome_pos": 4327304,
+   "resistant_isolates": 11,
+   "who_ppv": 0.92,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 83,
+    "specificity": 100,
+    "resistance_evidence": 92,
+    "overall": 93
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4327278,
+    4327374
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Trp45*",
+   "gene": "gid",
+   "mutation": "p.Trp45*",
+   "drug": "Streptomycin",
+   "genome_pos": 4408068,
+   "resistant_isolates": 11,
+   "who_ppv": 0.58,
+   "status": "designed",
+   "overall": 67,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 83,
+    "specificity": 0,
+    "resistance_evidence": 58,
+    "overall": 67
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4408023,
+    4408179
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gln122*",
+   "gene": "pncA",
+   "mutation": "p.Gln122*",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288878,
+   "resistant_isolates": 11,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 96
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288829,
+    2288963
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "gid_p.Leu74*",
+   "gene": "gid",
+   "mutation": "p.Leu74*",
+   "drug": "Streptomycin",
+   "genome_pos": 4407982,
+   "resistant_isolates": 10,
+   "who_ppv": 0.83,
+   "status": "designed",
+   "overall": 92,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 84,
+    "specificity": 100,
+    "resistance_evidence": 83,
+    "overall": 92
+   },
+   "exact_matches": 221,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    4407893,
+    4408007
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Asp49Ala",
+   "gene": "pncA",
+   "mutation": "p.Asp49Ala",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289096,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 93,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 76,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 93
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2289037,
+    2289125
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Gly97Arg",
+   "gene": "pncA",
+   "mutation": "p.Gly97Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288953,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 88,
+    "specificity": 75,
+    "resistance_evidence": 100,
+    "overall": 91
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288905,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu19Pro",
+   "gene": "pncA",
+   "mutation": "p.Leu19Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289186,
+   "resistant_isolates": 10,
+   "who_ppv": 0.91,
+   "status": "designed",
+   "overall": 83,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 67,
+    "specificity": 75,
+    "resistance_evidence": 91,
+    "overall": 83
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Leu85Pro",
+   "gene": "pncA",
+   "mutation": "p.Leu85Pro",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288988,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 97,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 97
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Lys96Arg",
+   "gene": "pncA",
+   "mutation": "p.Lys96Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288955,
+   "resistant_isolates": 10,
+   "who_ppv": 0.83,
+   "status": "designed",
+   "overall": 85,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 77,
+    "specificity": 75,
+    "resistance_evidence": 83,
+    "overall": 85
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288905,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Lys96Glu",
+   "gene": "pncA",
+   "mutation": "p.Lys96Glu",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288956,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 76,
+    "specificity": 75,
+    "resistance_evidence": 100,
+    "overall": 88
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288905,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Met175Arg",
+   "gene": "pncA",
+   "mutation": "p.Met175Arg",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288718,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 80,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 94
+   },
+   "exact_matches": 220,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288686,
+    2288845
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Phe94Leu",
+   "gene": "pncA",
+   "mutation": "p.Phe94Leu",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288960,
+   "resistant_isolates": 10,
+   "who_ppv": 0.77,
+   "status": "designed",
+   "overall": 91,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 77,
+    "overall": 91
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288905,
+    2289056
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Pro62Leu",
+   "gene": "pncA",
+   "mutation": "p.Pro62Leu",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289057,
+   "resistant_isolates": 10,
+   "who_ppv": 0.91,
+   "status": "designed",
+   "overall": 88,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 65,
+    "specificity": 100,
+    "resistance_evidence": 91,
+    "overall": 88
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288946,
+    2289105
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Val180Ala",
+   "gene": "pncA",
+   "mutation": "p.Val180Ala",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2288703,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 100,
+    "thermodynamics": 86,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 96
+   },
+   "exact_matches": 222,
+   "isolates": 222,
+   "likely_fail": 0,
+   "amplicon": [
+    2288651,
+    2288778
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": true,
+   "specificity_checked": false
+  },
+  {
+   "id": "pncA_p.Val9Gly",
+   "gene": "pncA",
+   "mutation": "p.Val9Gly",
+   "drug": "Pyrazinamide",
+   "genome_pos": 2289216,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 87,
+   "scores": {
+    "conservation": 98,
+    "thermodynamics": 58,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 87
+   },
+   "exact_matches": 218,
+   "isolates": 222,
+   "likely_fail": 3,
+   "amplicon": [
+    2289085,
+    2289243
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Arg448Gln",
+   "gene": "rpoB",
+   "mutation": "p.Arg448Gln",
+   "drug": "Rifampicin",
+   "genome_pos": 761149,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 96,
+   "scores": {
+    "conservation": 96,
+    "thermodynamics": 90,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 96
+   },
+   "exact_matches": 213,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rpoB_p.Gln429Leu",
+   "gene": "rpoB",
+   "mutation": "p.Gln429Leu",
+   "drug": "Rifampicin",
+   "genome_pos": 761092,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 82,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 94
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761032,
+    761122
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  },
+  {
+   "id": "rpoB_p.Leu449Met",
+   "gene": "rpoB",
+   "mutation": "p.Leu449Met",
+   "drug": "Rifampicin",
+   "genome_pos": 761151,
+   "resistant_isolates": 10,
+   "who_ppv": 1.0,
+   "status": "designed",
+   "overall": 94,
+   "scores": {
+    "conservation": 93,
+    "thermodynamics": 87,
+    "specificity": 100,
+    "resistance_evidence": 100,
+    "overall": 94
+   },
+   "exact_matches": 206,
+   "isolates": 222,
+   "likely_fail": 6,
+   "amplicon": [
+    761103,
+    761252
+   ],
+   "tolerance": 0.05,
+   "probe_room_fallback": false,
+   "specificity_checked": true
+  },
+  {
+   "id": "rpoB_p.Ser431Gly",
+   "gene": "rpoB",
+   "mutation": "p.Ser431Gly",
+   "drug": "Rifampicin",
+   "genome_pos": 761097,
+   "resistant_isolates": 10,
+   "who_ppv": 0.91,
+   "status": "designed",
+   "overall": 89,
+   "scores": {
+    "conservation": 99,
+    "thermodynamics": 72,
+    "specificity": 100,
+    "resistance_evidence": 91,
+    "overall": 89
+   },
+   "exact_matches": 219,
+   "isolates": 222,
+   "likely_fail": 1,
+   "amplicon": [
+    761030,
+    761122
+   ],
+   "tolerance": 0.02,
+   "probe_room_fallback": false,
+   "specificity_checked": false
+  }
+ ]
+}

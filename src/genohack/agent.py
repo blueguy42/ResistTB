@@ -17,8 +17,9 @@ from google.oauth2.credentials import Credentials
 
 from .assay import build_report
 from .genome import load_genes
+from .lookup import find_targets
 from .snapshot import DEFAULT_SNAPSHOT
-from .targets import default_targets
+from .targets import all_targets
 
 PROJECT = os.environ.get("GENOHACK_PROJECT", "haduh-512512")
 LOCATION = os.environ.get("GENOHACK_LOCATION", "global")
@@ -31,7 +32,8 @@ SNAPSHOT = os.environ.get("GENOHACK_SNAPSHOT") or (
 )
 MAX_TURNS = 5
 
-TARGETS = {t.id: t for t in default_targets(load_genes())}
+TARGETS = {t.id: t for t in all_targets(load_genes())}
+MAX_TARGETS = 6  # per request: each design takes a few seconds and the report and tubes get unreadable beyond this
 TARGET_DOC = {
     "rpoB_S450L": "rifampicin resistance (rpoB Ser450Leu)",
     "katG_S315T": "isoniazid resistance (katG Ser315Thr)",
@@ -40,39 +42,65 @@ TARGET_DOC = {
 }
 
 SYSTEM = f"""You are ChatGP-TB, an assistant that designs qPCR primers and allele-specific probes for drug-resistant
-Mycobacterium tuberculosis, using genomes from Indonesian patients.
+Mycobacterium tuberculosis, using public genomes from the regions named in each result.
+
+What you can design: a probe for any single-base resistance change in the WHO catalogue that was seen in at least 10
+resistant isolates ({len(TARGETS)} targets across all drugs). Mutations that are loss-of-function, insertions or
+deletions, or rare cannot be one allele-specific probe.
 
 Rules:
-- Call design_assays to get any primer, probe, score or coverage. Never invent or estimate numbers or sequences.
-- Pick targets from the drugs the user names: rifampicin -> rpoB_S450L; isoniazid -> katG_S315T and inhA_c-15;
-  fluoroquinolones -> gyrA_D94G. If the user names no drug, use all four. Do not add targets they did not ask for.
-- After the tool returns, summarise in plain language: which assay ranks first and why, the coverage, and the main
-  limits. Quote numbers exactly as returned, and give each assay's isolate_matches sentence word for word, without saying that name. Never write a coverage
-  figure like '14/14'. Write plain text: no markdown, no asterisks, no bullet symbols, and never mention tool or field
-  names. Keep it under 120 words.
+- Call a tool for every primer, probe, score, coverage or WHO count. Never invent or estimate numbers or sequences.
+- find_targets takes a drug, drug class, gene or variant the user names and returns its target ids, how many WHO variants
+  exist, how many can be designed, and an explanation. Use it for any drug, gene or variant, and whenever the user asks
+  what is possible. Then call design_assays with the best ids, at most {MAX_TARGETS}: the user's own choice if they named
+  variants, otherwise the first two or three that find_targets lists.
+- For the main drugs you may call design_assays directly: rifampicin -> rpoB_S450L; isoniazid -> katG_S315T and
+  inhA_c-15; fluoroquinolones -> gyrA_D94G. If the user names no drug, use those four.
+- If find_targets says nothing can be designed for a drug or gene, do not say it is out of scope. Say in plain words what
+  the WHO catalogue lists and why one probe cannot cover it, quoting the explanation.
+- When find_targets shows that most of a drug's or gene's WHO variants cannot be designed (not_probeable is larger than
+  designable_targets), say so in one sentence with its numbers (the numbers only, never the field names), before the assay summary: an assay
+  then covers only a small part of that drug's resistance.
+- After design_assays, summarise in plain language: which assay ranks first and why, the coverage, and the main limits.
+  Quote numbers exactly as returned, and give each assay's isolate_matches sentence word for word, without saying that
+  name. Never write a coverage figure like '14/14'. Write plain text: no markdown, no asterisks, no bullet symbols, and
+  never mention tool or field names. Keep it under 150 words.
 - Always say the results are in silico only, not tested in the lab, and that they were designed and measured on the same
   isolates, which come from the regions named in the result (see regions).
 - If the user asks how an assay does in a region, quote that region's region_matches sentence word for word.
 - If the result has a multiplex section, say which assays can share a tube and that the grouping is a model.
-- If asked something unrelated to TB assay design, say briefly that you only help with this.
-Targets: {"; ".join(f"{k} = {v}" for k, v in TARGET_DOC.items())}."""
+- Assays for variants close together in one gene share primers' binding sites, so say they are alternatives, not a panel.
+- Only if asked something unrelated to TB assay design, say briefly that you only help with this.
+The four main targets: {"; ".join(f"{k} = {v}" for k, v in TARGET_DOC.items())}."""
 
 TOOLS = [
     types.Tool(function_declarations=[
         types.FunctionDeclaration(
+            name="find_targets",
+            description="Look up the WHO resistance catalogue for a drug, drug class, gene or variant: how many variants exist, "
+                        "how many can be a single allele-specific probe, which have a design here (with ids), and why the rest "
+                        "cannot. Use it before design_assays for anything beyond the four main targets.",
+            parameters_json_schema={
+                "type": "object",
+                "properties": {"query": {"type": "string", "description": "A drug (ethambutol), class (fluoroquinolones), gene (embB) or variant (Met306Val)."}},
+                "required": ["query"],
+            },
+        ),
+        types.FunctionDeclaration(
             name="design_assays",
             description="Design and score qPCR primer pairs and wild-type/mutant probes for resistance targets, "
-                        "using the finished isolates from all regions together. Returns ranked assays with scores and coverage.",
+                        f"using the finished isolates from all regions together. At most {MAX_TARGETS} targets. "
+                        "Returns ranked assays with scores and coverage.",
             parameters_json_schema={
                 "type": "object",
                 "properties": {"targets": {
                     "type": "array", "minItems": 1,
-                    "items": {"type": "string", "enum": list(TARGETS)},
-                    "description": "Targets to design for. " + "; ".join(f"{k}: {v}" for k, v in TARGET_DOC.items()),
+                    "items": {"type": "string"},
+                    "description": "Target ids from find_targets, or the main four: " + "; ".join(f"{k}: {v}" for k, v in TARGET_DOC.items()),
                 }},
                 "required": ["targets"],
             },
-        )
+        ),
     ])
 ]
 
@@ -138,9 +166,9 @@ def _compact(report: dict) -> dict:
 
 
 def run_design(targets: list[str]) -> dict:
-    ids = [t for t in dict.fromkeys(targets) if t in TARGETS]
+    ids = [t for t in dict.fromkeys(targets) if t in TARGETS][:MAX_TARGETS]
     if not ids:
-        raise ValueError("no valid targets")
+        raise ValueError("none of those ids is a target; use find_targets to get valid ids")
     key = (tuple(sorted(ids)), SNAPSHOT or RESULTS, 0 if SNAPSHOT else len(list(__import__("pathlib").Path(RESULTS).glob("*/DONE"))))
     if key not in _report_cache:
         _report_cache[key] = build_report(RESULTS, target_ids=ids, snapshot=SNAPSHOT)
@@ -182,20 +210,30 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
                 step_no += 1
                 sid = f"s{step_no}"
                 args = dict(call.args or {})
-                label = "Design primers and probes, check specificity and coverage"
-                yield {"type": "step", "step": {"id": sid, "tool": call.name, "label": label,
-                                                  "detail": ", ".join(args.get("targets", [])), "status": "running"}}
+                if call.name == "find_targets":
+                    label, detail = "Look up the WHO catalogue for targets", str(args.get("query", ""))
+                else:
+                    label, detail = "Design primers and probes, check specificity and coverage", ", ".join(args.get("targets", []))
+                yield {"type": "step", "step": {"id": sid, "tool": call.name, "label": label, "detail": detail, "status": "running"}}
                 t1 = time.perf_counter()
                 try:
-                    if call.name != "design_assays":
+                    if call.name == "find_targets":
+                        result = find_targets(str(args.get("query", "")))
+                    elif call.name == "design_assays":
+                        asked = list(args.get("targets", []))
+                        report = {**run_design(asked), "request": message}  # the cache holds the default text
+                        result = _compact(report)
+                        used = {c["id"] for c in report["candidates"]}
+                        left = [t for t in dict.fromkeys(asked) if t not in used]
+                        if left:
+                            result["not_designed"] = (f"These ids were skipped or have no design: {', '.join(left)}. At most "
+                                                      f"{MAX_TARGETS} targets are designed per request, and some targets have no design.")
+                        yield {"type": "report", "report": report}
+                    else:
                         raise ValueError(f"unknown tool {call.name}")
-                    report = {**run_design(list(args.get("targets", []))), "request": message}  # the cache holds the default text
-                    result = _compact(report)
-                    yield {"type": "report", "report": report}
                 except Exception as exc:
                     result = {"error": str(exc)}
-                yield {"type": "step", "step": {"id": sid, "tool": call.name, "label": label,
-                                                  "detail": ", ".join(args.get("targets", [])),
+                yield {"type": "step", "step": {"id": sid, "tool": call.name, "label": label, "detail": detail,
                                                   "status": "done", "seconds": round(time.perf_counter() - t1, 1)}}
                 replies.append(types.Part.from_function_response(name=call.name, response={"result": result}))
             contents.append(types.Content(role="user", parts=replies))

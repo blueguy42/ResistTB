@@ -14,7 +14,16 @@ def _strip(report: dict) -> dict:
     return {k: v for k, v in report.items() if k not in ("generated_at", "steps")}
 
 
-@pytest.mark.skipif(not RESULTS.exists() or not DEFAULT_SNAPSHOT.exists(), reason="needs results/ and the snapshot")
+def _snapshot_matches_results() -> bool:
+    """Only comparable when the snapshot was made from the isolates now in results/ (it goes stale while a run syncs)."""
+    if not RESULTS.exists() or not DEFAULT_SNAPSHOT.exists():
+        return False
+    from genohack.isolates import finished_samples
+
+    return load_snapshot(DEFAULT_SNAPSHOT).samples == finished_samples(RESULTS)
+
+
+@pytest.mark.skipif(not _snapshot_matches_results(), reason="needs a snapshot made from the isolates now in results/")
 def test_snapshot_report_matches_results():
     ids = ["inhA_c-15", "gyrA_D94G"]
     from_results = build_report(RESULTS, target_ids=ids)

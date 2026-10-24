@@ -18,7 +18,7 @@ from .primers import PrimerPair, design_primer_pairs
 from .regions import describe, load_regions, sample_region
 from .snapshot import load_snapshot
 from .probes import ProbePair, design_probes
-from .targets import Target, default_targets
+from .targets import Target, all_targets, default_targets
 from .thermo import hairpin_dg, homodimer_dg
 from .variants import RegionMatrix, build_region_matrices, position_table
 from .who import evidence_for, evidence_score
@@ -38,6 +38,7 @@ class Assay:
     evidence: pd.DataFrame
     off_target: dict | None = None  # predicted off-target products per group, when the database is available
     tolerance: float = 0.02  # variable sites above this frequency were avoided; larger means the design had to relax
+    target_margin: int = 0  # > 0: the first attempt left no room for a probe, so primers were kept this far from the SNP
 
 
 def _clip01(x: float) -> float:
@@ -115,11 +116,24 @@ def score_assay(cov: dict, pair: PrimerPair, probe: ProbePair, inter: dict, hits
 TOLERANCE_LADDER = (0.02, 0.05, 0.10, 0.20)
 
 
+PROBE_ROOM = 26  # bases each primer must keep from the SNP in the fallback attempt, so a 20-30 base probe fits between them
+
+
 def build_assay(rm, table, ref, target: Target, n_pairs: int = 20, lineages: list[str] | None = None,
                 regions: list[str] | None = None) -> Assay | None:
+    """First the normal design. If no primer pair leaves room for a probe (Primer3 may place its best pairs right next to
+    the SNP), try again with primers kept PROBE_ROOM bases away from it. Targets that already had a design are unchanged."""
+    for margin, n in ((0, n_pairs), (PROBE_ROOM, 3 * n_pairs)):
+        found = _build_assay(rm, table, ref, target, n, lineages, regions, margin)
+        if found:
+            return found
+    return None
+
+
+def _build_assay(rm, table, ref, target: Target, n_pairs: int, lineages, regions, margin: int) -> Assay | None:
     """Design at the strictest variable-site tolerance that yields both primers and a probe; relax only if needed."""
     for tol in TOLERANCE_LADDER:
-        pairs = design_primer_pairs(rm, table, target.pos, n=n_pairs, max_maf=tol)
+        pairs = design_primer_pairs(rm, table, target.pos, n=n_pairs, max_maf=tol, target_margin=margin)
         probes = design_probes(table, target, max_maf=tol)
         if pairs and probes:
             break
@@ -144,7 +158,7 @@ def build_assay(rm, table, ref, target: Target, n_pairs: int = 20, lineages: lis
         }
         cov = coverage_for(rm, table, target, pair, probe, lineages, regions)
         scores = score_assay(cov, pair, probe, inter, sum(hits.values()), ev)
-        cand = Assay(target, pair, probe, cov, scores, inter, hits, ev_rows, tolerance=tol)
+        cand = Assay(target, pair, probe, cov, scores, inter, hits, ev_rows, tolerance=tol, target_margin=margin)
         if best is None or cand.scores["overall"] > best.scores["overall"]:
             best = cand
     return best
@@ -225,6 +239,9 @@ def to_candidate(a: Assay, rank: int, scope: str = "") -> dict:
     ]
     if c["failing"]:
         caveats.append(f"{c['failing']} isolates carry a variant likely to break the assay.")
+    if a.target_margin:
+        caveats.append(f"The first design attempt left no room for a probe between the primers, so both primers were kept at "
+                       f"least {a.target_margin} bases from the SNP.")
     if a.tolerance > 0.02:
         caveats.append(f"No design avoided every variable site, so oligos were allowed over sites varying in up to "
                        f"{100 * a.tolerance:.0f}% of isolates; isolates carrying them count as mismatches in the coverage.")
@@ -251,13 +268,16 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
 
     t0 = time.perf_counter()
     ref, mask, genes = load_reference(), load_mask(), load_genes()
-    targets = [t for t in default_targets(genes) if not target_ids or t.id in target_ids]
+    # No ids asked for: the four main targets. Otherwise any WHO target by its id, in the order asked.
+    by_id = {t.id: t for t in all_targets(genes)}
+    targets = [by_id[i] for i in dict.fromkeys(target_ids) if i in by_id] if target_ids else default_targets(genes)
     reg_table = load_regions()
     if snapshot:
         snap = load_snapshot(snapshot)
         if snap.flank != flank:
             raise ValueError(f"snapshot was made with flank {snap.flank}, not {flank}")
         samples, mats, lineage_of, region_of = snap.samples, snap.mats, snap.lineage, snap.region
+        targets = [t for t in targets if t.id in mats]  # a snapshot holds windows only for the targets it was built with
     else:
         samples = finished_samples(results_dir)
         mats = build_region_matrices(results_dir, {t.id: (t.pos - flank, t.pos + flank) for t in targets}, samples)

@@ -49,6 +49,15 @@ def cmd_snapshot(args: argparse.Namespace) -> None:
     print(f"snapshot -> {out} ({Path(out).stat().st_size / 1024:.0f} KB)")
 
 
+def cmd_library(args: argparse.Namespace) -> None:
+    from .library import build_library
+
+    lib = build_library(args.snapshot, args.out)
+    rows = lib["targets"]
+    ok = sum(r["status"] == "designed" for r in rows)
+    print(f"{ok} of {len(rows)} targets designed -> {args.out}")
+
+
 def main() -> None:
     p = argparse.ArgumentParser(prog="genohack")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -70,6 +79,10 @@ def main() -> None:
     s.add_argument("--out", default="resources/snapshot_windows.npz")
     s.add_argument("--flank", type=int, default=300)
     s.set_defaults(func=cmd_snapshot)
+    lb = sub.add_parser("library", help="design every WHO target once and save a summary the chat lookup reads")
+    lb.add_argument("--snapshot", default="resources/snapshot_windows.npz")
+    lb.add_argument("--out", default="resources/design_library.json")
+    lb.set_defaults(func=cmd_library)
     args = p.parse_args()
     args.func(args)
 

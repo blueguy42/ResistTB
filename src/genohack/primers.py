@@ -51,6 +51,7 @@ def design_primer_pairs(
     tm_range: tuple[float, float] = (58.0, 64.0),
     max_maf: float = 0.02,
     min_minor: int = 2,
+    target_margin: int = 0,
 ) -> list[PrimerPair]:
     """Pairs whose amplicon includes `target_pos`, with primers kept off any position that varies by more
     than `max_maf` (see variable_sites), is masked, has an indel, or is poorly covered. Sequence comes
@@ -66,7 +67,8 @@ def design_primer_pairs(
     args = {
         "SEQUENCE_ID": rm.name,
         "SEQUENCE_TEMPLATE": "".join(table["consensus"]),
-        "SEQUENCE_TARGET": [target_pos - rm.start, 1],
+        # target_margin > 0 keeps both primers that many bases away from the SNP, so a probe fits between them.
+        "SEQUENCE_TARGET": [target_pos - rm.start - target_margin, 1 + 2 * target_margin],
         "SEQUENCE_EXCLUDED_REGION": excluded,
     }
     glob = {

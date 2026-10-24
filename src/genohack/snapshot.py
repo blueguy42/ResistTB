@@ -14,7 +14,7 @@ import numpy as np
 from .genome import load_genes
 from .isolates import finished_samples, read_resistance
 from .regions import load_regions, sample_region
-from .targets import default_targets
+from .targets import all_targets
 from .variants import RegionMatrix, build_region_matrices
 
 DEFAULT_SNAPSHOT = Path(__file__).resolve().parents[2] / "resources" / "snapshot_windows.npz"
@@ -31,7 +31,7 @@ class Snapshot:
 
 def write_snapshot(results_dir: str | Path, out: str | Path = DEFAULT_SNAPSHOT, flank: int = 300) -> Path:
     samples = finished_samples(results_dir)
-    targets = default_targets(load_genes())
+    targets = all_targets(load_genes())
     mats = build_region_matrices(results_dir, {t.id: (t.pos - flank, t.pos + flank) for t in targets}, samples)
     lineage = [str(read_resistance(results_dir, s).get("main_lineage") or "unknown") for s in samples]
     regions = load_regions()
