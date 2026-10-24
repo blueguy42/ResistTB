@@ -70,7 +70,7 @@ export function ago(ms: number, now = Date.now()): string {
 
 // ---- storage -------------------------------------------------------------------------------------------------------
 
-const DB_NAME = "chatgp-tb";
+const DB_NAME = "resisttb";
 const STORE = "sessions";
 
 function openDb(): Promise<IDBDatabase> {

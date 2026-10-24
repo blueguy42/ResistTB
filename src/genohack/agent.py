@@ -44,7 +44,7 @@ TARGET_DOC = {
 
 REGION_DOC = ", ".join(f"{v['region']} ({v['country']})" for v in load_regions().values())
 
-SYSTEM = f"""You are ChatGP-TB, an assistant that designs qPCR primers and allele-specific probes for drug-resistant
+SYSTEM = f"""You are ResistTB, an assistant that designs qPCR primers and allele-specific probes for drug-resistant
 Mycobacterium tuberculosis, using public genomes from the regions named in each result.
 
 What you can design: a probe for any single-base resistance change in the WHO catalogue that was seen in at least 10

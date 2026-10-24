@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>ChatGP-TB progress report</title><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>ResistTB progress report</title><style>
 @page { size: A4; margin: 13mm; }
 * { box-sizing: border-box; }
 body { font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; color: #1c1c1a; font-size: 9.6pt; line-height: 1.5; margin: 0; }
@@ -30,11 +30,11 @@ h2.refs-h { margin-top: 8pt; }
 .legend { font-size: 7.4pt; color: #5f5e5a; margin: 0 0 3pt; }
 img.shot { width: 100%; height: 88mm; object-fit: cover; object-position: top; border: 0.6pt solid #d8d6cf; border-radius: 4pt; }
 </style></head><body>
-<h1>ChatGP-TB: progress report</h1>
+<h1>ResistTB: progress report</h1>
 <p class="sub">GenoHack 2026 &middot; genomics-guided primer and probe design for drug-resistant TB &middot; status on 24 October 2026 &middot; all results are in silico</p>
 
 <h2>Summary</h2>
-<p>ChatGP-TB turns 222 public <i>M. tuberculosis</i> genomes from Bandung (BioProject PRJNA1433044) into qPCR primers and allele-specific probes for four resistance hotspots, using snippy [8], FreeBayes [9], TB-Profiler [11], Primer3 [16], BLAST+ [17] and the WHO mutation catalogue [5]; the per-isolate processing is modelled on the Nextstrain TB build [22], and the design ideas draw on TOAST [20] and PrimeGen [21]. Each design is checked against every isolate, screened for off-target amplification in human, non-tuberculous mycobacterial and respiratory-bacterial genomes, scored, and tested for whether assays can share a tube. A Gemini agent (Vertex AI) turns a chat request into a call to this design tool; a web interface shows the ranked result. The data run finished: all 222 isolates processed in about 9.5 hours on one cloud VM. <b>Nothing has been tested in a tube.</b></p>
+<p>ResistTB turns 222 public <i>M. tuberculosis</i> genomes from Bandung (BioProject PRJNA1433044) into qPCR primers and allele-specific probes for four resistance hotspots, using snippy [8], FreeBayes [9], TB-Profiler [11], Primer3 [16], BLAST+ [17] and the WHO mutation catalogue [5]; the per-isolate processing is modelled on the Nextstrain TB build [22], and the design ideas draw on TOAST [20] and PrimeGen [21]. Each design is checked against every isolate, screened for off-target amplification in human, non-tuberculous mycobacterial and respiratory-bacterial genomes, scored, and tested for whether assays can share a tube. A Gemini agent (Vertex AI) turns a chat request into a call to this design tool; a web interface shows the ranked result. The data run finished: all 222 isolates processed in about 9.5 hours on one cloud VM. <b>Nothing has been tested in a tube.</b></p>
 
 <h2>Status</h2>
 <table>
@@ -69,7 +69,7 @@ img.shot { width: 100%; height: 88mm; object-fit: cover; object-position: top; b
 
 <div class="fig">
 <h2>Interface (final data)</h2>
-<img class="shot" src="interface_screenshot.png" alt="ChatGP-TB interface showing four ranked assays, the multiplex card and the inhA detail panel">
+<img class="shot" src="interface_screenshot.png" alt="ResistTB interface showing four ranked assays, the multiplex card and the inhA detail panel">
 <p class="cap">Chat panel on the left, ranked assays and multiplex card on the right (top of the page shown; the per-assay detail is below it).</p>
 <h2>Cloud and cost</h2>
 <table>

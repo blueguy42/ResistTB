@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MAX_SESSIONS, deleteSession, loadSessions, newSession, saveSession, type Session } from "./sessions";
 
-const ACTIVE_KEY = "chatgp-tb:active";
+const ACTIVE_KEY = "resisttb:active";
 
 const remember = (id: string) => {
   try {

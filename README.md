@@ -1,4 +1,4 @@
-# genohack: ChatGP-TB
+# genohack: ResistTB
 
 **Start here:** [`docs/HANDOVER.md`](docs/HANDOVER.md) (full handover: pipeline, data, cloud, limitations, next steps) and [`docs/progress_report.pdf`](docs/progress_report.pdf) (4-page summary).
 

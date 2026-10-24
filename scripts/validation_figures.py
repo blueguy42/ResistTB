@@ -1,4 +1,4 @@
-"""Validation figures for the ChatGP-TB design.
+"""Validation figures for the ResistTB design.
 
 Fig 1 analog (after TOAST, BMC Genomics 2025, Fig 1): resistance genes as a circos plot with WHO-catalogue positions,
 variants observed in the 222 isolates and the four designed amplicons, plus a per-target zoom that checks every
@@ -173,7 +173,7 @@ for i, (sector, r) in enumerate(zip(circos.sectors, regions)):
             t4.scatter([cand["genome_pos"] - rs], [0.5], vmin=0, vmax=1, marker="v", s=55, c="red", ec="black", lw=0.6)
 circos.plotfig(ax=ax_c)
 fig.text(0.02, 0.925, "A  Resistance loci, variants and designed amplicons", fontsize=13, weight="bold")
-ax_c.text(0, 0, f"ChatGP-TB\n4 amplicons\n{n_iso} isolates", ha="center", va="center", fontsize=12, weight="bold")
+ax_c.text(0, 0, f"ResistTB\n4 amplicons\n{n_iso} isolates", ha="center", va="center", fontsize=12, weight="bold")
 fig.legend(
     handles=[
         Patch(fc="#d9d9d9", ec="gray", label="Outer ring: resistance genes (WHO grade 1-2 list)"),

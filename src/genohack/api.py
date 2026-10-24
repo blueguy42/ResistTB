@@ -17,7 +17,7 @@ from . import agent
 
 ORIGINS = [o.strip() for o in os.environ.get("GENOHACK_ORIGINS", "").split(",") if o.strip()]
 
-app = FastAPI(title="ChatGP-TB")
+app = FastAPI(title="ResistTB")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ORIGINS,

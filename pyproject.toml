@@ -1,7 +1,7 @@
 [project]
 name = "genohack"
 version = "0.1.0"
-description = "ChatGP-TB design library"
+description = "ResistTB design library"
 requires-python = ">=3.11"
 dependencies = ["numpy", "pandas", "primer3-py", "biopython", "fastapi", "uvicorn", "google-genai", "google-auth", "openpyxl"]
 

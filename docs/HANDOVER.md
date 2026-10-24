@@ -1,4 +1,4 @@
-# ChatGP-TB handover (version 2)
+# ResistTB handover (version 2)
 
 Written 2026-10-24 about 19:15 WIB (12:15 UTC), replacing the morning version. It is meant for a new chat that
 continues the work. Facts were checked against the repo, the cloud project and the running VM on that date, unless a
@@ -14,7 +14,7 @@ at that moment, and section 15 is the exact runbook.
 
 ## 1. Summary
 
-ChatGP-TB turns public *Mycobacterium tuberculosis* (TB) genomes into qPCR primer and allele-specific probe designs for
+ResistTB turns public *Mycobacterium tuberculosis* (TB) genomes into qPCR primer and allele-specific probe designs for
 drug-resistance variants. A cloud VM processes sequencing reads into per-isolate variant calls. A Python library then
 designs primers and probes on the **population consensus** of those isolates, checks them against every isolate (overall,
 by lineage, by region), screens for off-target amplification, scores them and checks multiplexing. A Gemini agent on
@@ -50,7 +50,7 @@ chat; the draft is in the master document, pages 68-72.
 | Agent (Gemini) + API | **Done** (tested on partial pooled data) |
 | Web interface | **Done** (sessions, library, minimize, onboarding) |
 | Tracked data in git (`web/data/*.json`, `resources/design_library.json`, `resources/snapshot_windows.npz`) | **Bandung-only.** Not yet rebuilt on pooled data |
-| Cloud Run `chatgp-tb` | **Live, public, but an old build** (4 targets, Bandung-only, no sessions) |
+| Cloud Run `resisttb` | **Live, public, but an old build** (4 targets, Bandung-only, no sessions) |
 | Rebuild on pooled data + redeploy | **Waiting for the VM run** |
 | Delete VM and disk | **Waiting for the user's explicit OK** |
 | Held-out validation (other Indonesian projects, 779 runs) | Not started |
@@ -302,16 +302,16 @@ alerts; **nothing stops spending automatically**). Quotas: E2_CPUS 24 per region
 | Artifact Registry `cloud-run-source-deploy` | container images, about 110 MB |
 | Nothing else | no other disks, snapshots or reserved IPs (checked) |
 
-### 9.2 Cloud Run `chatgp-tb` (asia-southeast1)
+### 9.2 Cloud Run `resisttb` (asia-southeast1)
 
-URL `https://chatgp-tb-zqrp2hdbia-as.a.run.app`, **public** (`allUsers` has `run.invoker`), revision `chatgp-tb-00001-tjp`, min 0 / max 1 instance, 1 vCPU / 1 GiB,
-concurrency 4, timeout 120 s, service account `chatgp-tb-run@haduh-512512.iam.gserviceaccount.com` (only `roles/aiplatform.user`),
+URL `https://resisttb-zqrp2hdbia-as.a.run.app`, **public** (`allUsers` has `run.invoker`), revision `resisttb-00001-tjp`, min 0 / max 1 instance, 1 vCPU / 1 GiB,
+concurrency 4, timeout 120 s, service account `resisttb-run@haduh-512512.iam.gserviceaccount.com` (only `roles/aiplatform.user`),
 env `GENOHACK_PROJECT=haduh-512512`, `GENOHACK_LOCATION=global`. It runs the **old build** (4 targets, Bandung only, 9 KB snapshot,
 no regions, library or sessions). A redeploy is part of the runbook (section 15). Public means anyone can spend Gemini quota, bounded by the rate limits (20 chats/IP/h, 300/day) and the budget alert.
 
 ### 9.3 Identity, network, APIs
 
-- Service accounts: `chatgp-tb-run` (Cloud Run), `genohack-vm` (storage.objectAdmin on the bucket), default compute SA 66604371416-compute@ (roles/editor and, granted this session, `roles/cloudbuild.builds.builder`; the Cloud Build SA also has it). The grant was needed because the first source deploy failed with PERMISSION_DENIED.
+- Service accounts: `resisttb-run` (Cloud Run), `genohack-vm` (storage.objectAdmin on the bucket), default compute SA 66604371416-compute@ (roles/editor and, granted this session, `roles/cloudbuild.builds.builder`; the Cloud Build SA also has it). The grant was needed because the first source deploy failed with PERMISSION_DENIED.
 - Firewall: `allow-iap-ssh` (35.235.240.0/20), `default-allow-icmp`, `default-allow-internal`, and **`default-allow-ssh` and `default-allow-rdp` still open to 0.0.0.0/0** (recommend deleting). A project-wide `ssh-keys` metadata entry exists.
 - APIs enabled: compute, storage, aiplatform, billingbudgets, cloudbilling, run, artifactregistry, cloudbuild.
 - Vertex AI: `gemini-3.5-flash-lite`, location `global`, billed to this project. Cost per chat is unknown (not measured).
@@ -471,15 +471,15 @@ Prerequisites: `gcloud auth login`; Cloud Build SA and compute SA hold `roles/cl
 Check the upload set first (should be about 75 files, under 10 MB): `gcloud meta list-files-for-upload .`
 
 ```bash
-gcloud run deploy chatgp-tb --source . --project haduh-512512 --region asia-southeast1 \
-  --service-account chatgp-tb-run@haduh-512512.iam.gserviceaccount.com \
+gcloud run deploy resisttb --source . --project haduh-512512 --region asia-southeast1 \
+  --service-account resisttb-run@haduh-512512.iam.gserviceaccount.com \
   --min-instances 0 --max-instances 1 --memory 1Gi --cpu 1 --concurrency 4 --timeout 120 \
   --set-env-vars GENOHACK_PROJECT=haduh-512512,GENOHACK_LOCATION=global
 ```
 
 The service is currently public (`allUsers` invoker). A redeploy keeps IAM; if it is ever recreated, re-grant with
-`gcloud run services add-iam-policy-binding chatgp-tb --member=allUsers --role=roles/run.invoker --region asia-southeast1 --project haduh-512512`.
-Verify: `curl https://chatgp-tb-zqrp2hdbia-as.a.run.app/api/health`, then run a design and a chat from the page. Check the page shows 456 isolates and three regions.
+`gcloud run services add-iam-policy-binding resisttb --member=allUsers --role=roles/run.invoker --region asia-southeast1 --project haduh-512512`.
+Verify: `curl https://resisttb-zqrp2hdbia-as.a.run.app/api/health`, then run a design and a chat from the page. Check the page shows 456 isolates and three regions.
 
 The container (python:3.13-slim) runs from source (`PYTHONPATH=/app/src`) and copies `src`, `resources`, `ref/NC_000962.3.fasta`, `ref/mask.bed`,
 `web/data/report.json`, `web/site`. It needs no results folder and no BLAST database (snapshot + cache).

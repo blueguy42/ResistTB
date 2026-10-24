@@ -1,4 +1,4 @@
-# ChatGP-TB API: FastAPI + the design library, no per-isolate data (it reads resources/snapshot_windows.npz).
+# ResistTB API: FastAPI + the design library, no per-isolate data (it reads resources/snapshot_windows.npz).
 # Run from the source tree, not as an installed package: the code finds ref/, resources/ and web/data/ relative to it.
 FROM python:3.13-slim
 

@@ -38,7 +38,7 @@ export default function Onboarding({
     <section aria-label="Welcome" className="rounded-2xl border border-accent bg-surface px-5 py-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className="text-base font-semibold">{mode === "first" ? "Welcome to ChatGP-TB" : "How ChatGP-TB works"}</h2>
+          <h2 className="text-base font-semibold">{mode === "first" ? "Welcome to ResistTB" : "How ResistTB works"}</h2>
           <p className="mt-0.5 text-sm text-muted">Find which drug-resistance mutations occur in each region, and get qPCR primers and probes designed for them, from real genomes.</p>
         </div>
         <button type="button" onClick={onClose} aria-label="Close the welcome card" className="rounded-md px-2 py-1 text-xs text-muted hover:text-ink">

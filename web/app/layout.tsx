@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ChatGP-TB",
+  title: "ResistTB",
   description: "Genomics-guided primer and probe design for drug-resistant tuberculosis",
 };
 

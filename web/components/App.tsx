@@ -45,8 +45,8 @@ export default function App({ report: initial }: { report: Report }) {
     let stored: string | null = null;
     let seen: string | null = null;
     try {
-      stored = localStorage.getItem("chatgp-tb:assistant");
-      seen = localStorage.getItem("chatgp-tb:welcome");
+      stored = localStorage.getItem("resisttb:assistant");
+      seen = localStorage.getItem("resisttb:welcome");
     } catch {
       /* storage blocked: use the defaults every time */
     }
@@ -63,7 +63,7 @@ export default function App({ report: initial }: { report: Report }) {
   const toggleCollapsed = useCallback(() => {
     setCollapsed((c) => {
       try {
-        localStorage.setItem("chatgp-tb:assistant", c ? "open" : "collapsed");
+        localStorage.setItem("resisttb:assistant", c ? "open" : "collapsed");
       } catch {
         /* blocked */
       }
@@ -75,7 +75,7 @@ export default function App({ report: initial }: { report: Report }) {
   const closeWelcome = useCallback(() => {
     setWelcome("hidden");
     try {
-      localStorage.setItem("chatgp-tb:welcome", "seen");
+      localStorage.setItem("resisttb:welcome", "seen");
     } catch {
       /* blocked: it will show again next visit */
     }
@@ -232,7 +232,7 @@ export default function App({ report: initial }: { report: Report }) {
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-sm font-semibold text-surface">GP</div>
             <div>
-              <h1 className="text-base font-semibold leading-tight">ChatGP-TB</h1>
+              <h1 className="text-base font-semibold leading-tight">ResistTB</h1>
               <p className="text-xs text-muted">Genomics-guided primer and probe design for drug-resistant tuberculosis</p>
             </div>
           </div>
