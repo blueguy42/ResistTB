@@ -67,8 +67,9 @@ type Groups = NonNullable<Candidate["coverage"]["by_lineage"]>;
 function CoverageGroups({ coverage }: { coverage: Candidate["coverage"] }) {
   const lineages = coverage.by_lineage;
   const regions = coverage.by_region;
-  const hasRegions = !!regions && Object.keys(regions).length > 1;
-  const [mode, setMode] = useState<"lineage" | "region">(hasRegions ? "region" : "lineage");
+  const hasRegions = !!regions && Object.keys(regions).length > 0; // the switch shows whenever region data exists
+  const manyRegions = !!regions && Object.keys(regions).length > 1; // and starts on regions when there is more than one
+  const [mode, setMode] = useState<"lineage" | "region">(manyRegions ? "region" : "lineage");
   const active = mode === "region" && hasRegions ? "region" : "lineage";
   const by: Groups | undefined = active === "region" ? regions : lineages;
   if (!by) return null;
