@@ -4,3 +4,4 @@ channels:
   - bioconda
 dependencies:
   - tb-profiler=6.6.5
+  - snpeff=5.2   # 5.3+ needs Java 21, but this env's GATK pins Java 17: a fresh solve picks 5.3.0a and snpEff crashes
