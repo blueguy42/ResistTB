@@ -1,21 +1,26 @@
 {
   "mock": false,
   "request": "Design qPCR assays for the main rifampicin, isoniazid and fluoroquinolone resistance mutations.",
-  "summary": "I designed 4 candidate assays on 222 isolates from Bandung. The top-ranked is inhA promoter c.-15C>T (overall 94), matching 221 of 222 isolates exactly. Results are in silico only.",
-  "generated_at": "2026-10-24T08:39:16+00:00",
+  "summary": "I designed 4 candidate assays on 456 isolates from Bandung, Guangdong and Tamil Nadu pooled into one design set. The top-ranked is inhA promoter c.-15C>T (overall 94), matching 441 of 456 isolates exactly. Results are in silico only.",
+  "generated_at": "2026-10-24T16:53:19+00:00",
   "dataset": {
-    "name": "Bandung active case finding",
-    "bioproject": "PRJNA1433044",
-    "isolates": 222,
+    "name": "Bandung active case finding + Guangdong clinical strains + Tamil Nadu prevalence survey",
+    "bioproject": "PRJNA1256943, PRJNA1433044, PRJNA898845",
+    "isolates": 456,
     "reference": "NC_000962.3 (H37Rv)",
     "lineages": {
-      "lineage1": 8,
-      "lineage2": 94,
-      "lineage2;lineage4": 3,
-      "lineage4": 117
+      "lineage1": 58,
+      "lineage1;lineage3": 1,
+      "lineage2": 249,
+      "lineage2;lineage4": 4,
+      "lineage3": 5,
+      "lineage4": 138,
+      "unknown": 1
     },
     "regions": {
-      "Bandung": 222
+      "Bandung": 222,
+      "Guangdong": 173,
+      "Tamil Nadu": 61
     }
   },
   "steps": [
@@ -23,9 +28,9 @@
       "id": "s1",
       "tool": "get_variants",
       "label": "Load variant tables around each target",
-      "detail": "222 isolates, 4 targets",
+      "detail": "456 isolates, 4 targets",
       "status": "done",
-      "seconds": 0.0
+      "seconds": 0.1
     },
     {
       "id": "s2",
@@ -33,7 +38,7 @@
       "label": "Design primers and probes, check specificity and coverage",
       "detail": "Primer3, thermodynamic alignment, H37Rv near-match scan",
       "status": "done",
-      "seconds": 11.8
+      "seconds": 13.0
     },
     {
       "id": "s3",
@@ -112,49 +117,101 @@
         }
       ],
       "scores": {
-        "conservation": 100,
+        "conservation": 97,
         "thermodynamics": 84,
         "specificity": 100,
         "resistance_evidence": 97,
         "overall": 94
       },
       "coverage": {
-        "isolates_total": 222,
-        "perfect_match": 221,
-        "one_mismatch": 1,
-        "failing": 0,
+        "isolates_total": 456,
+        "perfect_match": 441,
+        "one_mismatch": 11,
+        "failing": 4,
+        "mutant": 19,
+        "called": 456,
         "by_lineage": {
           "lineage1": {
-            "isolates": 8,
-            "perfect_match": 8,
+            "mutant": 3,
+            "called": 58,
+            "isolates": 58,
+            "perfect_match": 48,
+            "one_mismatch": 8,
+            "failing": 2
+          },
+          "lineage1;lineage3": {
+            "mutant": 0,
+            "called": 1,
+            "isolates": 1,
+            "perfect_match": 1,
             "one_mismatch": 0,
             "failing": 0
           },
           "lineage2": {
-            "isolates": 94,
-            "perfect_match": 94,
-            "one_mismatch": 0,
+            "mutant": 15,
+            "called": 249,
+            "isolates": 249,
+            "perfect_match": 248,
+            "one_mismatch": 1,
             "failing": 0
           },
           "lineage2;lineage4": {
-            "isolates": 3,
-            "perfect_match": 3,
+            "mutant": 0,
+            "called": 4,
+            "isolates": 4,
+            "perfect_match": 4,
+            "one_mismatch": 0,
+            "failing": 0
+          },
+          "lineage3": {
+            "mutant": 0,
+            "called": 5,
+            "isolates": 5,
+            "perfect_match": 5,
             "one_mismatch": 0,
             "failing": 0
           },
           "lineage4": {
-            "isolates": 117,
-            "perfect_match": 116,
-            "one_mismatch": 1,
-            "failing": 0
+            "mutant": 1,
+            "called": 138,
+            "isolates": 138,
+            "perfect_match": 135,
+            "one_mismatch": 2,
+            "failing": 1
+          },
+          "unknown": {
+            "mutant": 0,
+            "called": 1,
+            "isolates": 1,
+            "perfect_match": 0,
+            "one_mismatch": 0,
+            "failing": 1
           }
         },
         "by_region": {
           "Bandung": {
+            "mutant": 3,
+            "called": 222,
             "isolates": 222,
             "perfect_match": 221,
             "one_mismatch": 1,
             "failing": 0
+          },
+          "Guangdong": {
+            "mutant": 13,
+            "called": 173,
+            "isolates": 173,
+            "perfect_match": 171,
+            "one_mismatch": 1,
+            "failing": 1
+          },
+          "Tamil Nadu": {
+            "mutant": 3,
+            "called": 61,
+            "isolates": 61,
+            "perfect_match": 49,
+            "one_mismatch": 9,
+            "failing": 3
           }
         }
       },
@@ -165,13 +222,14 @@
       },
       "reasons": [
         "WHO catalogue: Assoc w R. Ethionamide: grade 1, resistant in 2,166 and susceptible in 745 isolates (positive predictive value 0.74); Isoniazid: grade 1, resistant in 4,449 and susceptible in 161 isolates (positive predictive value 0.97).",
-        "221 of 222 isolates match every oligo exactly (100%).",
+        "441 of 456 isolates match every oligo exactly (97%).",
         "Probes separate the two alleles by an estimated 4.5 C (wild-type) and 4.3 C (mutant)."
       ],
       "caveats": [
-        "Coverage is measured on 222 isolates from Bandung, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
+        "Coverage is measured on 456 isolates from Bandung, Guangdong and Tamil Nadu, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
         "Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; a screen is not proof of no cross-reaction.",
-        "Probe discrimination is a thermodynamic estimate (4.3 C at worst), not a measurement."
+        "Probe discrimination is a thermodynamic estimate (4.3 C at worst), not a measurement.",
+        "4 isolates carry a variant likely to break the assay."
       ],
       "validation": "in_silico"
     },
@@ -234,49 +292,101 @@
         }
       ],
       "scores": {
-        "conservation": 92,
+        "conservation": 90,
         "thermodynamics": 68,
         "specificity": 100,
         "resistance_evidence": 94,
-        "overall": 87
+        "overall": 86
       },
       "coverage": {
-        "isolates_total": 222,
-        "perfect_match": 205,
-        "one_mismatch": 14,
-        "failing": 3,
+        "isolates_total": 456,
+        "perfect_match": 412,
+        "one_mismatch": 20,
+        "failing": 24,
+        "mutant": 6,
+        "called": 450,
         "by_lineage": {
           "lineage1": {
-            "isolates": 8,
-            "perfect_match": 7,
-            "one_mismatch": 1,
+            "mutant": 0,
+            "called": 58,
+            "isolates": 58,
+            "perfect_match": 52,
+            "one_mismatch": 6,
+            "failing": 0
+          },
+          "lineage1;lineage3": {
+            "mutant": 0,
+            "called": 1,
+            "isolates": 1,
+            "perfect_match": 1,
+            "one_mismatch": 0,
             "failing": 0
           },
           "lineage2": {
-            "isolates": 94,
-            "perfect_match": 93,
+            "mutant": 5,
+            "called": 245,
+            "isolates": 249,
+            "perfect_match": 230,
             "one_mismatch": 0,
-            "failing": 1
+            "failing": 19
           },
           "lineage2;lineage4": {
-            "isolates": 3,
-            "perfect_match": 2,
+            "mutant": 0,
+            "called": 3,
+            "isolates": 4,
+            "perfect_match": 3,
             "one_mismatch": 0,
             "failing": 1
           },
+          "lineage3": {
+            "mutant": 0,
+            "called": 5,
+            "isolates": 5,
+            "perfect_match": 4,
+            "one_mismatch": 1,
+            "failing": 0
+          },
           "lineage4": {
-            "isolates": 117,
-            "perfect_match": 103,
+            "mutant": 1,
+            "called": 137,
+            "isolates": 138,
+            "perfect_match": 122,
             "one_mismatch": 13,
+            "failing": 3
+          },
+          "unknown": {
+            "mutant": 0,
+            "called": 1,
+            "isolates": 1,
+            "perfect_match": 0,
+            "one_mismatch": 0,
             "failing": 1
           }
         },
         "by_region": {
           "Bandung": {
+            "mutant": 1,
+            "called": 220,
             "isolates": 222,
             "perfect_match": 205,
             "one_mismatch": 14,
             "failing": 3
+          },
+          "Guangdong": {
+            "mutant": 4,
+            "called": 169,
+            "isolates": 173,
+            "perfect_match": 154,
+            "one_mismatch": 0,
+            "failing": 19
+          },
+          "Tamil Nadu": {
+            "mutant": 1,
+            "called": 61,
+            "isolates": 61,
+            "perfect_match": 53,
+            "one_mismatch": 6,
+            "failing": 2
           }
         }
       },
@@ -287,14 +397,14 @@
       },
       "reasons": [
         "WHO catalogue: Assoc w R. Levofloxacin: grade 1, resistant in 2,128 and susceptible in 131 isolates (positive predictive value 0.94); Moxifloxacin: grade 1, resistant in 1,692 and susceptible in 260 isolates (positive predictive value 0.87).",
-        "205 of 222 isolates match every oligo exactly (92%).",
+        "412 of 456 isolates match every oligo exactly (90%).",
         "Probes separate the two alleles by an estimated 5.3 C (wild-type) and 4.6 C (mutant)."
       ],
       "caveats": [
-        "Coverage is measured on 222 isolates from Bandung, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
+        "Coverage is measured on 456 isolates from Bandung, Guangdong and Tamil Nadu, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
         "Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; a screen is not proof of no cross-reaction.",
         "Probe discrimination is a thermodynamic estimate (4.6 C at worst), not a measurement.",
-        "3 isolates carry a variant likely to break the assay.",
+        "24 isolates carry a variant likely to break the assay.",
         "No design avoided every variable site, so oligos were allowed over sites varying in up to 5% of isolates; isolates carrying them count as mismatches in the coverage."
       ],
       "validation": "in_silico"
@@ -358,49 +468,101 @@
         }
       ],
       "scores": {
-        "conservation": 99,
+        "conservation": 94,
         "thermodynamics": 85,
         "specificity": 50,
         "resistance_evidence": 98,
-        "overall": 85
+        "overall": 83
       },
       "coverage": {
-        "isolates_total": 222,
-        "perfect_match": 219,
-        "one_mismatch": 2,
-        "failing": 1,
+        "isolates_total": 456,
+        "perfect_match": 429,
+        "one_mismatch": 14,
+        "failing": 13,
+        "mutant": 105,
+        "called": 451,
         "by_lineage": {
           "lineage1": {
-            "isolates": 8,
-            "perfect_match": 7,
-            "one_mismatch": 1,
+            "mutant": 2,
+            "called": 56,
+            "isolates": 58,
+            "perfect_match": 44,
+            "one_mismatch": 5,
+            "failing": 9
+          },
+          "lineage1;lineage3": {
+            "mutant": 0,
+            "called": 1,
+            "isolates": 1,
+            "perfect_match": 1,
+            "one_mismatch": 0,
             "failing": 0
           },
           "lineage2": {
-            "isolates": 94,
-            "perfect_match": 93,
+            "mutant": 89,
+            "called": 248,
+            "isolates": 249,
+            "perfect_match": 242,
+            "one_mismatch": 5,
+            "failing": 2
+          },
+          "lineage2;lineage4": {
+            "mutant": 0,
+            "called": 3,
+            "isolates": 4,
+            "perfect_match": 3,
             "one_mismatch": 0,
             "failing": 1
           },
-          "lineage2;lineage4": {
-            "isolates": 3,
-            "perfect_match": 3,
+          "lineage3": {
+            "mutant": 4,
+            "called": 5,
+            "isolates": 5,
+            "perfect_match": 5,
             "one_mismatch": 0,
             "failing": 0
           },
           "lineage4": {
-            "isolates": 117,
-            "perfect_match": 116,
-            "one_mismatch": 1,
+            "mutant": 10,
+            "called": 138,
+            "isolates": 138,
+            "perfect_match": 134,
+            "one_mismatch": 4,
             "failing": 0
+          },
+          "unknown": {
+            "mutant": 0,
+            "called": 0,
+            "isolates": 1,
+            "perfect_match": 0,
+            "one_mismatch": 0,
+            "failing": 1
           }
         },
         "by_region": {
           "Bandung": {
+            "mutant": 8,
+            "called": 222,
             "isolates": 222,
             "perfect_match": 219,
             "one_mismatch": 2,
             "failing": 1
+          },
+          "Guangdong": {
+            "mutant": 91,
+            "called": 170,
+            "isolates": 173,
+            "perfect_match": 164,
+            "one_mismatch": 6,
+            "failing": 3
+          },
+          "Tamil Nadu": {
+            "mutant": 6,
+            "called": 59,
+            "isolates": 61,
+            "perfect_match": 46,
+            "one_mismatch": 6,
+            "failing": 9
           }
         }
       },
@@ -411,14 +573,14 @@
       },
       "reasons": [
         "WHO catalogue: Assoc w R. Isoniazid: grade 1, resistant in 16,302 and susceptible in 250 isolates (positive predictive value 0.98).",
-        "219 of 222 isolates match every oligo exactly (99%).",
+        "429 of 456 isolates match every oligo exactly (94%).",
         "Probes separate the two alleles by an estimated 3.4 C (wild-type) and 9.5 C (mutant)."
       ],
       "caveats": [
-        "Coverage is measured on 222 isolates from Bandung, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
+        "Coverage is measured on 456 isolates from Bandung, Guangdong and Tamil Nadu, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
         "Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; a screen is not proof of no cross-reaction.",
         "Probe discrimination is a thermodynamic estimate (3.4 C at worst), not a measurement.",
-        "1 isolates carry a variant likely to break the assay."
+        "13 isolates carry a variant likely to break the assay."
       ],
       "validation": "in_silico"
     },
@@ -481,49 +643,101 @@
         }
       ],
       "scores": {
-        "conservation": 95,
+        "conservation": 84,
         "thermodynamics": 50,
         "specificity": 100,
         "resistance_evidence": 98,
-        "overall": 83
+        "overall": 80
       },
       "coverage": {
-        "isolates_total": 222,
-        "perfect_match": 212,
-        "one_mismatch": 8,
-        "failing": 2,
+        "isolates_total": 456,
+        "perfect_match": 382,
+        "one_mismatch": 42,
+        "failing": 32,
+        "mutant": 67,
+        "called": 448,
         "by_lineage": {
           "lineage1": {
-            "isolates": 8,
-            "perfect_match": 7,
-            "one_mismatch": 1,
-            "failing": 0
+            "mutant": 0,
+            "called": 54,
+            "isolates": 58,
+            "perfect_match": 26,
+            "one_mismatch": 15,
+            "failing": 17
           },
-          "lineage2": {
-            "isolates": 94,
-            "perfect_match": 88,
-            "one_mismatch": 4,
-            "failing": 2
-          },
-          "lineage2;lineage4": {
-            "isolates": 3,
-            "perfect_match": 3,
+          "lineage1;lineage3": {
+            "mutant": 0,
+            "called": 1,
+            "isolates": 1,
+            "perfect_match": 1,
             "one_mismatch": 0,
             "failing": 0
           },
+          "lineage2": {
+            "mutant": 58,
+            "called": 247,
+            "isolates": 249,
+            "perfect_match": 216,
+            "one_mismatch": 22,
+            "failing": 11
+          },
+          "lineage2;lineage4": {
+            "mutant": 0,
+            "called": 3,
+            "isolates": 4,
+            "perfect_match": 3,
+            "one_mismatch": 0,
+            "failing": 1
+          },
+          "lineage3": {
+            "mutant": 3,
+            "called": 5,
+            "isolates": 5,
+            "perfect_match": 4,
+            "one_mismatch": 0,
+            "failing": 1
+          },
           "lineage4": {
-            "isolates": 117,
-            "perfect_match": 114,
-            "one_mismatch": 3,
-            "failing": 0
+            "mutant": 6,
+            "called": 137,
+            "isolates": 138,
+            "perfect_match": 132,
+            "one_mismatch": 5,
+            "failing": 1
+          },
+          "unknown": {
+            "mutant": 0,
+            "called": 1,
+            "isolates": 1,
+            "perfect_match": 0,
+            "one_mismatch": 0,
+            "failing": 1
           }
         },
         "by_region": {
           "Bandung": {
+            "mutant": 5,
+            "called": 221,
             "isolates": 222,
             "perfect_match": 212,
             "one_mismatch": 8,
             "failing": 2
+          },
+          "Guangdong": {
+            "mutant": 59,
+            "called": 171,
+            "isolates": 173,
+            "perfect_match": 147,
+            "one_mismatch": 16,
+            "failing": 10
+          },
+          "Tamil Nadu": {
+            "mutant": 3,
+            "called": 56,
+            "isolates": 61,
+            "perfect_match": 23,
+            "one_mismatch": 18,
+            "failing": 20
           }
         }
       },
@@ -534,14 +748,15 @@
       },
       "reasons": [
         "WHO catalogue: Assoc w R. Rifampicin: grade 1, resistant in 10,859 and susceptible in 226 isolates (positive predictive value 0.98).",
-        "212 of 222 isolates match every oligo exactly (95%).",
+        "382 of 456 isolates match every oligo exactly (84%).",
         "Probes separate the two alleles by an estimated 4.6 C (wild-type) and 5.1 C (mutant)."
       ],
       "caveats": [
-        "Coverage is measured on 222 isolates from Bandung, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
+        "Coverage is measured on 456 isolates from Bandung, Guangdong and Tamil Nadu, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
         "Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; a screen is not proof of no cross-reaction.",
         "Probe discrimination is a thermodynamic estimate (4.6 C at worst), not a measurement.",
-        "2 isolates carry a variant likely to break the assay."
+        "32 isolates carry a variant likely to break the assay.",
+        "No design avoided every variable site, so oligos were allowed over sites varying in up to 5% of isolates; isolates carrying them count as mismatches in the coverage."
       ],
       "validation": "in_silico"
     }

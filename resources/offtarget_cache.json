@@ -1,5 +1,260 @@
 {
+ "AAACCACCTACGAGCTCTTT|GTTCTCTCGGATTGACGGTA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 5
+ },
+ "AACATGGCCTACACGGTTG|CTCTTCGACATCTGAGCCC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AACCAGGACTGAACGGGATA|TCGTGGACATACCGATTTCG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AACCTAGCGTGTACATGTCG|CTGGAATCTCCGGTGTCAG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AAGTCGTTGTGAACAAGGCT|ACATACAGTTCGGACTTGCG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AATCGGAAACCTAGCGTGTA|ATCCTGGAAAAGCGGGAAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ACCATAGACTCGGCGAAATT|CACAAACCGTACCGAACATC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ACCATGGGCAACTACCACC|GGCTTCGGTGTACCTCATC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ACCATGGGCAACTACCAC|GGCTTCGGTGTACCTCAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
  "ACCATGGGCAACTACCAC|GGCTTCGGTGTACCTCATC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ACCGCGGATGATCTTGTAG|TGAAGTTGACGAGTCAGGTC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ACCGGCATCTACTGAACTG|TCTAGGAGAACTACCTGGAGG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ACCGTTGTCGTCCATGTAAT|CCTACAAGGGCATGATGCTT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ACTATCGACGGACAACAAGT|TCAACAAGCGACAGACAAAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AGACGTTGATCAACATCCGG|CGACAGCGGGTTGTTCTG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AGACGTTGATCAACATCCGG|GGGTTGTTCTGGTCCATGAA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AGCTGCAAACCAACTCGAC|ATTGCCACCGATCATTGTGT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AGCTGCAAACCAACTCGA|ATTGCCACCGATCATTGTGT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AGGGTCACAGTCACAGAATC|CCAGACACTGTCGTCGTAAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AGGTTGTAATACCAGCCGAAG|TGATATTCGGCTTCCTGCTC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "AGTAGTAACGCAGGTTCTCG|TCATCCTGACCGTGGTGTT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 5
+ },
+ "AGTGTGAATGCGGCGGTA|GTGGATGCCGTTCAACAAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ATAGTTGGACATGTAGCCGG|GATATTCGGCTTCCTGCTCT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ATCAGGAGCTGCAAACCAA|ATCATTGTGTGCGCCAGA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ATGCTCCATTTCGTCAACTTG|CACCGAGTTTCTTCGAGAGA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ATGGACCCTATATCTGTGGC|CCTCGCAGAAGTCGTTCT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "ATGTTCCAGGCGATACTTCC|CTTGCCGATATCGAACTCGT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CAACCAAGGACTTCCACATC|TAGGCACCCTTGTAGAACAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CAACCACAGGAAGTACTCGA|GTCCATGACCCGCAGTTG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CAAGGGCATGATGCTTTCC|TCAACAAGCGACAGACAAAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CAAGGGTTGGGCTGTTCG|TCCTCTCGTACTAGGGACAG": {
+  "flora": 8,
+  "human": 0,
+  "ntm": 10
+ },
+ "CAATCGAGGCGGTGTTCTA|CAATGATCGGTGGCAATACC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CAATGATCGGTGGCAATACC|GTTCTACAAGGGTGCCTACA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CAATGGCCGAACTGCAGG|CGGTTCGCTGGCTGTATC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CACGACGTGATGGTAGTCC|GTATGGTGGACGTATGCGG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CAGAACAACCCGCTGTCG|GTTTCGATCGGGCACATCC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 1
+ },
+ "CAGAACAACCCGCTGTCG|TCAGGGGTTTCGATCGGG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 2
+ },
+ "CAGACTGGGATGGAAGTCC|GGACTACCATCACGTCGTG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CAGGATCTCGAGGAAACTGT|CTGGAAGAGCTCGTATGGC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CATCAATGTGGAGAAAGCGC|CTTGCCGATATCGAACTCGT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CATCCGGGTGCCCTTGAA|CTCCAAGGGCAAAGGTTTCG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CATGGACCGCTCGATCAG|GTGGATGCCGTTCAACAAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CATGGACCGCTCGATCAG|TGGATGCCGTTCAACAAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCAACAGTTCATCCCGGTTC|TGCTGGTGGACCTGACAG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCAACAGTTCATCCCGGTT|TGCTGGTGGACCTGACAG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCAAGGACTTCCACATCGAC|TAGGCACCCTTGTAGAACAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCACGACGAGGAATAGTCC|CCATCAGCGACTACCTGG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 1
+ },
+ "CCACGACGAGGAATAGTCC|GGACTACCATCACGTCGTG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCACTGCTGAATTGGCTGC|TGGTATCGGCCGACACAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCAGAACAACCCGCTGTC|GGTTTCGATCGGGCACAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCAGAACAACCCGCTGTC|TTTCGATCGGGCACATCC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 2
+ },
+ "CCAGACACTGTCGTCGTAAT|TGATTCAGGGCCGATGAAAT": {
   "flora": 0,
   "human": 0,
   "ntm": 0
@@ -9,12 +264,282 @@
   "human": 0,
   "ntm": 0
  },
+ "CCAGGACTGAACGGGATAC|TAACCCCAGTGCGAAAGTT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCAGTAGGCGGGTTTGCT|TATTACAACCTGCTGGCGCT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCCAGATCTGTCACCATCTC|CCTCCAGGTAGTTCTCCTAGA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCGCAGACGTTGATCAACAT|CGACAGCGGGTTGTTCTG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 6
+ },
+ "CCGGCTACATGTCCAACTAT|CGCCAGCAGGTTGTAATAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCTCCAGGTAGTTCTCCTAGA|GCCCAATTGGTCCTGCAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CCTCGCAGAAGTCGTTCT|GGACCCTATATCTGTGGCTG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CGAACTCGACGTGCAAAAC|GTCGAAGAACGGGTTGATGC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 1
+ },
+ "CGAAGTCGGTAGGCTATGG|TCTAGGAGAACTACCTGGAGG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CGATCCCACCTTCGACAG|GTAATCGCAGATCAGCAACG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 6
+ },
+ "CGATCGAAACCCCTGAGG|CGGTCAGGTACACGATCTC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CGATGTGGAAGTCCTTGGTT|GTATGCGGGCGTTGATCAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CGATGTGGAAGTCCTTGGTT|GTATGCGGGCGTTGATCATC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CGGAGATATAGCTCGCATCC|GCTGGATGAGCGGATTCA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 1
+ },
+ "CGGGACAAGATCAGTAAGGT|GACCTGACTCGTCAACTTCA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CGGGTTGTTCTGGTCCAT|GCAGACGTTGATCAACATCC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 1
+ },
+ "CGTTCTCGTCGACTCCTTC|CTTCCATCCCAGTCTGGAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CGTTCTCGTCGACTCCTTC|GGACTATTCCTCGTCGTGG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CTGACACCGGAGATTCCAG|TGGCAGCTTACTACGTGTC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CTGATCTTCCCCAAGAGTCC|GAACTGTCTCACGACGTTCT": {
+  "flora": 3,
+  "human": 0,
+  "ntm": 10
+ },
  "CTGGAAGAGCTCGTATGGC|TCTCGAGGAAACTGTTGTCC": {
   "flora": 0,
   "human": 0,
   "ntm": 0
  },
+ "CTGGCGCACACAATGATC|GTTCTACAAGGGTGCCTACA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CTGTACGCTCCGGTGTAG|GGACTATTCCTCGTCGTGG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "CTGTCGAAGGTGGGATCG|TCGTGGTGCTCCTTAGAAAG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 10
+ },
+ "CTTCGCGTTGCATCGAATTA|GGTACTAGGTGTGGGTTTCC": {
+  "flora": 3,
+  "human": 0,
+  "ntm": 10
+ },
+ "GAACCCAAATTGGATCAGCA|TTTCGAGTCCAGGAGTTTGA": {
+  "flora": 0,
+  "human": 43,
+  "ntm": 0
+ },
+ "GAACCGCGGATGATCTTGTA|GTGAAGTTGACGAGTCAGGT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 4
+ },
+ "GACACCATTGAACGGTTCAC|TGGTGATGTCCACTTGTTGT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GACCATGGGCAACTACCAC|GGCTTCGGTGTACCTCATC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GACGGTAGGTGGAGAAGAAG|GAGCTCTTTACGCCCAGTAA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 7
+ },
+ "GATCCCACCTTCGACAGC|TGAAGTCGGAGTCGCTAGTA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 6
+ },
+ "GATGATCAACGCCCGCATA|GGCGTCATGGACCCTATATC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GATGTGGAAGTCCTTGGTTG|GTATGCGGGCGTTGATCAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GATTCCCGCTTTTCCAGGAT|GGCCTCGACATTACGTTGAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GCAAGTCCGAACTGTATGTC|TATCGCCTGGAACATCGAAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GCAGACGTTGATCAACATCC|GGGTTGTTCTGGTCCATGA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 1
+ },
+ "GCCACGACGAGGAATAGTC|GGACTACCATCACGTCGTG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GCGATCTGCTTTCCACGT|GTTGATGTCAGGGTGGTGAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GCGCAACCACAGGAAGTA|GTCCATGACCCGCAGTTG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GCGGACTACCATCACGTC|GGCCACGACGAGGAATAG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GCTGACATCATCATTACCGC|GGTGTAGCCAACCGTGTA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GGACTATTCCTCGTCGTGG|TAGGCACCCTTGTAGAACAC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GGGTACGACGTGCGAAAG|GTGAACCGTTCAATGGTGTC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GGTTGTAATACCAGCCGAAG|TGATATTCGGCTTCCTGCTC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
  "GGTTTCGATCGGGCACAT|TTCATGGACCAGAACAACCC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GTAACCAGGACTGAACGGG|TCGTGGACATACCGATTTCG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GTCCCAGGGGTTGTAGTG|TACGGTGGAAGAACGTGC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 1
+ },
+ "GTCGCGCAGGAAGTAGAG|TTAATACCTGGATGTACCGCC": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GTCTGCGATCTTCGGACC|TTCGAGGAGCTCACCGAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GTGGATATCGGTAGCGGAG|TCTCTCGAAGAAACTCGGTG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "GTTCTACAAGGGTGCCTACA|TCTGGCGCACACAATGAT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "TACTGGGGTCTATGTCCTGA|TGGTGGTTTCTGTAATGGGT": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "TCAAGAGTCAGACGGTGTTC|TTGTCAATGGTCTCGTCGAA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 4
+ },
+ "TCACCTGCGAATTCCTCTTT|TGTTCTTAGCGTCGTAGTCG": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 0
+ },
+ "TCACGTCATGAAAGTCGGTA|TTCGTGGTGCTCCTTAGAAA": {
+  "flora": 0,
+  "human": 0,
+  "ntm": 10
+ },
+ "TCGACTACGACGCTAAGAAC|TGCGACACGATGTAGGTG": {
   "flora": 0,
   "human": 0,
   "ntm": 0

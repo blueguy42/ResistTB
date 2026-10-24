@@ -148,16 +148,26 @@ def build_assay(rm, table, ref, target: Target, n_pairs: int = 20, lineages: lis
 
 
 def _build_assay(rm, table, ref, target: Target, n_pairs: int, lineages, regions, margin: int) -> Assay | None:
-    """Design at the strictest variable-site tolerance that yields both primers and a probe; relax only if needed."""
+    """Design at the strictest variable-site tolerance that yields both primers and a probe. Relax further only if needed:
+    when the best design so far has near-matches elsewhere in H37Rv, a looser rung may offer cleaner primers (the strict
+    rung can leave Primer3 only a few similar pairs), so keep whichever rung scores higher."""
+    ev_rows = evidence_for(target)
+    ev = evidence_score(ev_rows)
+    best: Assay | None = None
     for tol in TOLERANCE_LADDER:
         pairs = design_primer_pairs(rm, table, target.pos, n=n_pairs, max_maf=tol, target_margin=margin)
         probes = design_probes(table, target, max_maf=tol)
-        if pairs and probes:
+        if not (pairs and probes):
+            continue
+        found = _best_of_pairs(rm, table, ref, target, pairs, probes, lineages, regions, margin, tol, ev_rows, ev)
+        if found and (best is None or found.scores["overall"] > best.scores["overall"]):
+            best = found
+        if best is not None and sum(best.hits.values()) == 0:
             break
-    else:
-        return None
-    ev_rows = evidence_for(target)
-    ev = evidence_score(ev_rows)
+    return best
+
+
+def _best_of_pairs(rm, table, ref, target, pairs, probes, lineages, regions, margin, tol, ev_rows, ev) -> Assay | None:
     best: Assay | None = None
     for pair in pairs:
         inside = [p for p in probes if p.start > pair.left_end + 1 and p.end < pair.right_start - 1]
