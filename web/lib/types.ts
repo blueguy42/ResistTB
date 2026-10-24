@@ -28,6 +28,8 @@ export interface Oligo {
 }
 
 export interface LineageCoverage {
+  mutant?: number; // isolates carrying the resistance allele at the target position
+  called?: number; // isolates with a called base there
   isolates: number;
   perfect_match: number;
   one_mismatch: number;
@@ -127,6 +129,7 @@ export interface LibraryTarget {
   isolates?: number;
   likely_fail?: number;
   by_region?: Record<string, [number, number]>; // region -> [exact matches, isolates]
+  mutation_by_region?: Record<string, [number, number]>; // "overall" or region -> [isolates carrying the variant, isolates with a called base]; present for every target
   reason?: string; // why there is no design
   probe_room_fallback?: boolean;
 }

@@ -295,7 +295,6 @@ export default function App({ report: initial }: { report: Report }) {
                   isolates={shown.dataset.isolates}
                   regions={Object.keys(shown.dataset.regions ?? {})}
                   designed={designed}
-                  total={library.targets.length}
                   onTry={() => {
                     if (welcome === "first") closeWelcome();
                     else setWelcome("hidden");

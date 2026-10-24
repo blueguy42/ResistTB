@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
 
-from .assay import annotate_off_target, build_assay, to_candidate
+from .assay import annotate_off_target, build_assay, mutation_counts, to_candidate
 from .genome import load_genes, load_mask, load_reference
 from .snapshot import DEFAULT_SNAPSHOT, load_snapshot
 from .targets import Target, all_targets
@@ -45,6 +45,8 @@ def design_one(target: Target, snap, ref, mask) -> dict:
         "genome_pos": target.pos, "resistant_isolates": target.n_resistant,
         "who_ppv": None if ev.empty else round(float(ev["ppv"].max()), 2),
     }
+    # Prevalence of the resistance allele needs no design, so every target gets it.
+    row["mutation_by_region"] = mutation_counts(rm, target, snap.region)
     assay = build_assay(rm, table, ref, target, lineages=snap.lineage, regions=snap.region)
     if assay is None:
         return {**row, "status": "no_design", "reason": _why_not(target, table, str(ref[target.pos - 1]))}

@@ -67,6 +67,7 @@ Rules:
 - Always say the results are in silico only, not tested in the lab, and that they were designed and measured on the same
   isolates, which come from the regions named in the result (see regions).
 - If the user asks how an assay does in a region, quote that region's region_matches sentence word for word.
+- If the user asks which mutations occur in a region, or how common a variant is there, quote the region_mutation_carriers sentences word for word; never estimate a count.
 - If the result has a multiplex section, say which assays can share a tube and that the grouping is a model.
 - Assays for variants close together in one gene share primers' binding sites, so say they are alternatives, not a panel.
 - Questions about patients are in scope. For example "people treated with a drug but not improving, which primers and probes
@@ -175,6 +176,9 @@ def _compact(report: dict) -> dict:
                 **({"region_matches": {r: f"In {r}, {v['perfect_match']} of {v['isolates']} isolates match every oligo exactly; "
                                           f"{v['failing']} {'is' if v['failing'] == 1 else 'are'} likely to fail"
                                           for r, v in c["coverage"]["by_region"].items()}}
+                   if len(c["coverage"].get("by_region", {})) > 1 else {}),
+                **({"region_mutation_carriers": {r: f"In {r}, {v['mutant']} of {v['called']} isolates carry this variant"
+                                                    for r, v in c["coverage"]["by_region"].items() if v.get("called")}}
                    if len(c["coverage"].get("by_region", {})) > 1 else {}),
             }
             for c in report["candidates"]

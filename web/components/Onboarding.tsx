@@ -7,7 +7,6 @@ export default function Onboarding({
   isolates,
   regions,
   designed,
-  total,
   onTry,
   onClose,
 }: {
@@ -15,26 +14,24 @@ export default function Onboarding({
   isolates: number;
   regions: string[];
   designed: number;
-  total: number;
   onTry: () => void;
   onClose: () => void;
 }) {
-  const where = regions.length > 1 ? `${regions.slice(0, -1).join(", ")} and ${regions[regions.length - 1]}` : regions[0] ?? "";
   const steps = [
     {
       n: "1",
       title: "Ask",
-      body: "Use the chat in your own words, for example about patients who did not improve on a drug, or just a drug or gene name.",
+      body: `Use the chat in your own words, for example "Which rifampicin resistance mutations are common in ${regions[0] ?? "Bandung"}?" A drug, gene or patient scenario works too.`,
     },
     {
       n: "2",
       title: "Or pick",
-      body: `Open the Target library, filter by drug, and choose up to 6 of the ${designed} resistance variants (of ${total} in the WHO catalogue) that have a design.`,
+      body: `Open the Target library, choose a region to see which resistance variants occur there and how often, then pick up to 6 of the ${designed} variants that have a design.`,
     },
     {
       n: "3",
       title: "Read",
-      body: `Results rank each assay and show its primers and probes, how many of the ${isolates} isolates it matches, and the split by region${where ? ` (${where})` : ""}.`,
+      body: `Results show, for each variant, how many isolates carry it in each region, then rank the assay and show its primers, probes and how many of the ${isolates} isolates it matches.`,
     },
   ];
   return (
@@ -42,7 +39,7 @@ export default function Onboarding({
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className="text-base font-semibold">{mode === "first" ? "Welcome to ChatGP-TB" : "How ChatGP-TB works"}</h2>
-          <p className="mt-0.5 text-sm text-muted">Design qPCR primers and allele-specific probes for drug-resistant tuberculosis, from real genomes.</p>
+          <p className="mt-0.5 text-sm text-muted">Find which drug-resistance mutations occur in each region, and get qPCR primers and probes designed for them, from real genomes.</p>
         </div>
         <button type="button" onClick={onClose} aria-label="Close the welcome card" className="rounded-md px-2 py-1 text-xs text-muted hover:text-ink">
           Close

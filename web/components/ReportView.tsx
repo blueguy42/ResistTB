@@ -77,7 +77,7 @@ function CoverageGroups({ coverage }: { coverage: Candidate["coverage"] }) {
   return (
     <div className="mt-4">
       <div className="mb-1.5 flex items-center justify-between text-xs text-muted">
-        <span>{active === "region" ? "By region" : "By lineage"}</span>
+        <span>{active === "region" ? "By region: who carries the variant, and how well the assay matches" : "By lineage"}</span>
         {hasRegions && lineages && (
           <div role="group" aria-label="Group coverage by" className="flex overflow-hidden rounded-md border border-line">
             {(["region", "lineage"] as const).map((m) => (
@@ -102,6 +102,16 @@ function CoverageGroups({ coverage }: { coverage: Candidate["coverage"] }) {
               <tr key={key} className="border-t border-line first:border-0">
                 <td className="whitespace-nowrap py-1.5 pr-3 text-ink">{active === "region" ? key : lineageLabel(key)}</td>
                 <td className="whitespace-nowrap py-1.5 pr-3 tabular-nums text-muted">n = {v.isolates}</td>
+                <td
+                  className="whitespace-nowrap py-1.5 pr-3 tabular-nums"
+                  title="Isolates carrying this resistance variant, of those with a called base at the position"
+                >
+                  {v.mutant !== undefined && v.called ? (
+                    <span className={v.mutant > 0 ? "text-ink" : "text-muted"}>
+                      {v.mutant}/{v.called} carry it ({((v.mutant / v.called) * 100).toFixed(1)}%)
+                    </span>
+                  ) : null}
+                </td>
                 <td className="w-full min-w-12 py-1.5 pr-3">
                   <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
                     <div className="h-full rounded-full bg-accent" style={{ width: `${pctExact}%` }} />

@@ -24,6 +24,8 @@ export default function TargetLibrary({
   const [query, setQuery] = useState("");
   const [showNoDesign, setShowNoDesign] = useState(false);
   const [picked, setPicked] = useState<string[]>([]);
+  const [region, setRegion] = useState("All regions");
+  const [view, setView] = useState<"mutation" | "oligo">("mutation");
 
   const drugs = useMemo(() => {
     const count = new Map<string, number>();
@@ -35,13 +37,19 @@ export default function TargetLibrary({
   const regionNames = Object.keys(library.regions);
   const multiRegion = regionNames.length > 1;
 
+  // Carriers of the variant in the chosen region (all regions together when none is chosen).
+  const carriers = (t: LibraryTarget) => t.mutation_by_region?.[region === "All regions" ? "overall" : region]?.[0] ?? 0;
+
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const inRegion = region !== "All regions";
     return library.targets
       .filter((t) => (showNoDesign || t.status === "designed") && (drug === "All drugs" || drugsOf(t).includes(drug)))
       .filter((t) => !q || `${t.gene} ${t.mutation} ${t.id}`.toLowerCase().includes(q))
-      .sort((a, b) => b.resistant_isolates - a.resistant_isolates);
-  }, [library, drug, query, showNoDesign]);
+      .filter((t) => !inRegion || (t.mutation_by_region?.[region]?.[0] ?? 0) > 0)
+      .sort((a, b) => (inRegion ? carriers(b) - carriers(a) : b.resistant_isolates - a.resistant_isolates));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [library, drug, query, showNoDesign, region]);
 
   const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : p.length < MAX_PICK ? [...p, id] : p));
 
@@ -49,12 +57,33 @@ export default function TargetLibrary({
     <section className="rounded-2xl border border-line bg-surface px-5 py-4" aria-label="Target library">
       <h3 className="text-sm font-medium">Target library</h3>
       <p className="mt-1 text-xs text-muted">
-        {designed} of {library.targets.length} WHO resistance variants have a design on {library.isolates} isolates
+        {designed} WHO resistance variants have a design on {library.isolates} isolates
         {multiRegion ? ` from ${regionNames.length} regions` : ""}. Pick up to {MAX_PICK} to design them together.
       </p>
 
       <>
           <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+            {multiRegion && (
+              <>
+                <label className="flex items-center gap-1.5">
+                  <span className="text-muted">Region</span>
+                  <select value={region} onChange={(e) => setRegion(e.target.value)} className="rounded-md border border-line bg-bg px-2 py-1">
+                    <option>All regions</option>
+                    {regionNames.map((r) => (
+                      <option key={r}>{r}</option>
+                    ))}
+                  </select>
+                </label>
+                <div role="group" aria-label="Region columns show" className="flex overflow-hidden rounded-md border border-line">
+                  {([["mutation", "Mutation carriers"], ["oligo", "Oligo matches"]] as const).map(([m, label]) => (
+                    <button key={m} type="button" aria-pressed={view === m} onClick={() => setView(m)}
+                      className={`px-2 py-1 ${view === m ? "bg-accent-soft text-ink" : "text-muted hover:text-ink"}`}>
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
             <label className="flex items-center gap-1.5">
               <span className="text-muted">Drug</span>
               <select
@@ -98,7 +127,7 @@ export default function TargetLibrary({
                   <th className="py-1.5 pr-3 text-right font-normal">Exact match</th>
                   {multiRegion &&
                     regionNames.map((r) => (
-                      <th key={r} className="py-1.5 pr-3 text-right font-normal" title={`Isolates from ${r} matching every oligo exactly`}>
+                      <th key={r} className="py-1.5 pr-3 text-right font-normal" title={view === "mutation" ? `Isolates from ${r} carrying this variant, of those with a called base` : `Isolates from ${r} matching every oligo exactly`}>
                         {r}
                       </th>
                     ))}
@@ -138,7 +167,13 @@ export default function TargetLibrary({
                       {multiRegion &&
                         regionNames.map((r) => (
                           <td key={r} className="py-1.5 pr-3 text-right tabular-nums">
-                            {ok && t.by_region?.[r] ? `${t.by_region[r][0]}/${t.by_region[r][1]}` : "–"}
+                            {view === "mutation"
+                              ? t.mutation_by_region?.[r]
+                                ? `${t.mutation_by_region[r][0]}/${t.mutation_by_region[r][1]}`
+                                : "–"
+                              : ok && t.by_region?.[r]
+                                ? `${t.by_region[r][0]}/${t.by_region[r][1]}`
+                                : "–"}
                           </td>
                         ))}
                     </tr>

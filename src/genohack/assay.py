@@ -45,6 +45,19 @@ def _clip01(x: float) -> float:
     return float(min(1.0, max(0.0, x)))
 
 
+def mutation_counts(rm: RegionMatrix, target: Target, labels: list[str] | None) -> dict:
+    """How many isolates carry the resistance allele at the target position, overall and per label (e.g. region).
+    Each count is [carrying, with a called base]; snippy calls are near-fixed, so this is not heteroresistance."""
+    col = rm.codes[:, target.pos - rm.start]
+    mutant, called = col == "ACGT".index(target.alt), col != MISSING
+    out = {"overall": [int(mutant.sum()), int(called.sum())]}
+    if labels is not None:
+        for lab in sorted(set(labels)):
+            sel = np.array([x == lab for x in labels])
+            out[lab] = [int((mutant & sel).sum()), int((called & sel).sum())]
+    return out
+
+
 def coverage_for(rm: RegionMatrix, table: pd.DataFrame, target: Target, pair: PrimerPair, probe: ProbePair,
                  lineages: list[str] | None = None, regions: list[str] | None = None) -> dict:
     """Per-isolate match to the oligos. The SNP position is excluded from the mismatch count because the
@@ -61,6 +74,7 @@ def coverage_for(rm: RegionMatrix, table: pd.DataFrame, target: Target, pair: Pr
     crit = np.array(critical)
     mism = (rm.codes[:, idx] != cons[idx]) | rm.indel[:, idx]
     called = rm.codes[:, target.pos - rm.start] != MISSING
+    mutant = rm.codes[:, target.pos - rm.start] == "ACGT".index(target.alt)
     n_mm = mism.sum(axis=1) + (~called)
     critical_hit = mism[:, crit].any(axis=1) | (~called)
     perfect = n_mm == 0
@@ -71,6 +85,8 @@ def coverage_for(rm: RegionMatrix, table: pd.DataFrame, target: Target, pair: Pr
         "perfect_match": int(perfect.sum()),
         "one_mismatch": int(one.sum()),
         "failing": int(fail.sum()),
+        "mutant": int(mutant.sum()),
+        "called": int(called.sum()),
     }
     for key, labels in (("by_lineage", lineages), ("by_region", regions)):
         if labels is None:
@@ -78,7 +94,8 @@ def coverage_for(rm: RegionMatrix, table: pd.DataFrame, target: Target, pair: Pr
         by: dict[str, dict] = {}
         for lab in sorted(set(labels)):
             sel = np.array([x == lab for x in labels])
-            by[lab] = {"isolates": int(sel.sum()), "perfect_match": int((perfect & sel).sum()),
+            by[lab] = {"mutant": int((mutant & sel).sum()), "called": int((called & sel).sum()),
+                       "isolates": int(sel.sum()), "perfect_match": int((perfect & sel).sum()),
                        "one_mismatch": int((one & sel).sum()), "failing": int((fail & sel).sum())}
         out[key] = by
     return out
