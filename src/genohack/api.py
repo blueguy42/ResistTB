@@ -83,6 +83,7 @@ def _caller(request: Request) -> str:
 
 class DesignIn(BaseModel):
     targets: list[str]
+    regions: list[str] = []
 
 
 @app.post("/api/design")
@@ -94,7 +95,7 @@ def design(body: DesignIn, request: Request) -> JSONResponse:
     if not ids:
         return JSONResponse({"error": "none of those ids is a target"}, status_code=400)
     try:
-        report = agent.run_design(ids)
+        report = agent.run_design(ids, body.regions)
     except ValueError as exc:
         return JSONResponse({"error": str(exc)}, status_code=400)
     return JSONResponse({**report, "request": "Target library: " + ", ".join(c["id"] for c in report["candidates"])})

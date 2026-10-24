@@ -18,7 +18,7 @@ export default function TargetLibrary({
   library: Library;
   current: string[]; // ids shown in the report now
   busy: boolean;
-  onDesign: (ids: string[]) => void;
+  onDesign: (ids: string[], region?: string) => void;
 }) {
   const [drug, setDrug] = useState("All drugs");
   const [query, setQuery] = useState("");
@@ -194,10 +194,10 @@ export default function TargetLibrary({
             <button
               type="button"
               disabled={busy || picked.length === 0}
-              onClick={() => onDesign(picked)}
+              onClick={() => onDesign(picked, region === "All regions" ? undefined : region)}
               className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-surface transition-opacity disabled:opacity-40"
             >
-              {busy ? "Designing…" : `Design selected (${picked.length})`}
+              {busy ? "Designing…" : `Design selected (${picked.length})${region === "All regions" ? "" : ` on ${region} only`}`}
             </button>
             {picked.length > 0 && (
               <button type="button" onClick={() => setPicked([])} className="text-xs text-muted hover:text-ink">

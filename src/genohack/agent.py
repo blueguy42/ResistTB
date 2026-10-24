@@ -66,6 +66,8 @@ Rules:
   never mention tool or field names. Keep it under 150 words.
 - Always say the results are in silico only, not tested in the lab, and that they were designed and measured on the same
   isolates, which come from the regions named in the result (see regions).
+- If the user names a region (Bandung, Guangdong, Tamil Nadu), pass it in design_assays regions so the design and its
+  numbers use that region's isolates alone; if they name none, leave regions out.
 - If the user asks how an assay does in a region, quote that region's region_matches sentence word for word.
 - If the user asks which mutations occur in a region, or how common a variant is there, quote the region_mutation_carriers sentences word for word; never estimate a count.
 - If the result has a multiplex section, say which assays can share a tube and that the grouping is a model.
@@ -109,7 +111,7 @@ TOOLS = [
         types.FunctionDeclaration(
             name="design_assays",
             description="Design and score qPCR primer pairs and wild-type/mutant probes for resistance targets, "
-                        f"using the finished isolates from all regions together. At most {MAX_TARGETS} targets. "
+                        f"using the finished isolates from all regions together, or only the regions named. At most {MAX_TARGETS} targets. "
                         "Returns ranked assays with scores and coverage.",
             parameters_json_schema={
                 "type": "object",
@@ -117,6 +119,10 @@ TOOLS = [
                     "type": "array", "minItems": 1,
                     "items": {"type": "string"},
                     "description": "Target ids from find_targets, or the main four: " + "; ".join(f"{k}: {v}" for k, v in TARGET_DOC.items()),
+                }, "regions": {
+                    "type": "array", "items": {"type": "string"},
+                    "description": "Only when the user names a region (for example Bandung, Guangdong or Tamil Nadu): design and measure "
+                                   "on that region's isolates alone. Leave out to use all regions together.",
                 }},
                 "required": ["targets"],
             },
@@ -191,13 +197,14 @@ def _compact(report: dict) -> dict:
     }
 
 
-def run_design(targets: list[str]) -> dict:
+def run_design(targets: list[str], regions: list[str] | None = None) -> dict:
     ids = [t for t in dict.fromkeys(targets) if t in TARGETS][:MAX_TARGETS]
     if not ids:
         raise ValueError("none of those ids is a target; use find_targets to get valid ids")
-    key = (tuple(sorted(ids)), SNAPSHOT or RESULTS, 0 if SNAPSHOT else len(list(__import__("pathlib").Path(RESULTS).glob("*/DONE"))))
+    regs = tuple(sorted(r.strip().lower() for r in regions or [] if r.strip()))
+    key = (tuple(sorted(ids)), regs, SNAPSHOT or RESULTS, 0 if SNAPSHOT else len(list(__import__("pathlib").Path(RESULTS).glob("*/DONE"))))
     if key not in _report_cache:
-        _report_cache[key] = build_report(RESULTS, target_ids=ids, snapshot=SNAPSHOT)
+        _report_cache[key] = build_report(RESULTS, target_ids=ids, snapshot=SNAPSHOT, regions=list(regs))
     return _report_cache[key]
 
 
@@ -254,7 +261,7 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
                         result = find_targets(str(args.get("query", "")))
                     elif call.name == "design_assays":
                         asked = list(args.get("targets", []))
-                        report = {**run_design(asked), "request": message}  # the cache holds the default text
+                        report = {**run_design(asked, list(args.get("regions") or [])), "request": message}  # the cache holds the default text
                         result = _compact(report)
                         used = {c["id"] for c in report["candidates"]}
                         left = [t for t in dict.fromkeys(asked) if t not in used]

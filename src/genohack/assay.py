@@ -274,9 +274,22 @@ def to_candidate(a: Assay, rank: int, scope: str = "") -> dict:
     }
 
 
+def _only_regions(wanted: list[str], samples, lineage_of, region_of, mats):
+    """Keep only the isolates from the named regions (case-insensitive), so the design and its coverage are for them alone."""
+    have = {r.lower(): r for r in set(region_of)}
+    unknown = [w for w in wanted if w.strip().lower() not in have]
+    if unknown:
+        raise ValueError(f"unknown region {', '.join(unknown)}; the data has {', '.join(sorted(have.values()))}")
+    keep_names = {have[w.strip().lower()] for w in wanted}
+    idx = np.array([i for i, r in enumerate(region_of) if r in keep_names])
+    mats = {k: RegionMatrix(m.name, m.start, m.end, [m.samples[i] for i in idx], m.codes[idx], m.indel[idx]) for k, m in mats.items()}
+    return [samples[i] for i in idx], [lineage_of[i] for i in idx], [region_of[i] for i in idx], mats
+
+
 def build_report(results_dir: str | Path = "results", request: str = "", target_ids: list[str] | None = None, flank: int = 300,
-                 snapshot: str | Path | None = None) -> dict:
-    """Design assays and build the report. With `snapshot` (see snapshot.py) the per-isolate files are not read."""
+                 snapshot: str | Path | None = None, regions: list[str] | None = None) -> dict:
+    """Design assays and build the report. With `snapshot` (see snapshot.py) the per-isolate files are not read.
+    With `regions` only the isolates from those regions are used, for the design and the coverage alike."""
     steps, t_all = [], time.perf_counter()
 
     def step(tool: str, label: str, detail: str, t0: float) -> None:
@@ -300,11 +313,13 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
         mats = build_region_matrices(results_dir, {t.id: (t.pos - flank, t.pos + flank) for t in targets}, samples)
         lineage_of = None
         region_of = [sample_region(results_dir, x, reg_table) for x in samples]
+    if lineage_of is None:
+        lineage_of = [str(read_resistance(results_dir, x).get("main_lineage") or "unknown") for x in samples]
+    if regions:
+        samples, lineage_of, region_of, mats = _only_regions(regions, samples, lineage_of, region_of, mats)
     step("get_variants", "Load variant tables around each target", f"{len(samples)} isolates, {len(targets)} targets", t0)
 
     t0 = time.perf_counter()
-    if lineage_of is None:
-        lineage_of = [str(read_resistance(results_dir, x).get("main_lineage") or "unknown") for x in samples]
     assays = []
     for t in targets:
         rm = mats[t.id]

@@ -172,17 +172,17 @@ export default function App({ report: initial }: { report: Report }) {
 
   // Design the targets picked in the library panel: a turn in the chat, with the same report, and no model call.
   const designFromLibrary = useCallback(
-    async (ids: string[]) => {
+    async (ids: string[], region?: string) => {
       if (!active || runningSid) return;
       const sid = active.id;
       const names = ids.map((id) => library.targets.find((t) => t.id === id)).map((t, i) => (t ? `${t.gene} ${t.mutation}` : ids[i]));
-      const msgId = startTurn(sid, `Design from the target library: ${names.join(", ")}`);
+      const msgId = startTurn(sid, `Design from the target library${region ? ` (${region} only)` : ""}: ${names.join(", ")}`);
       setRunningSid(sid);
       try {
         const res = await fetch(`${apiBase()}/api/design`, {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ targets: ids }),
+          body: JSON.stringify({ targets: ids, regions: region ? [region] : [] }),
         });
         if (res.status === 429) throw new Error("LIMIT:The design limit was reached. Please try again later.");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -229,7 +229,6 @@ export default function App({ report: initial }: { report: Report }) {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="hidden max-w-[28rem] truncate rounded-full border border-line px-3 py-1 text-xs text-muted xl:inline">{shown.dataset.name}</span>
             <button
               type="button"
               onClick={() => {

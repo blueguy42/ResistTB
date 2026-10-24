@@ -18,6 +18,12 @@ function pct(n: number, total: number) {
   return total ? Math.floor((n / total) * 1000) / 10 : 0;
 }
 
+// "Bandung 222 · Guangdong 52"; the BioProject when the report has no region data.
+function regionText(d: Report["dataset"]) {
+  const parts = Object.entries(d.regions ?? {}).map(([r, n]) => `${r} ${n}`);
+  return parts.length ? parts.join(" · ") : d.bioproject;
+}
+
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
     <div className="rounded-xl border border-line bg-surface px-4 py-3">
@@ -303,7 +309,7 @@ export default function ReportView({
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <Stat label="Isolates" value={String(report.dataset.isolates)} sub={report.dataset.bioproject} />
+        <Stat label="Isolates" value={String(report.dataset.isolates)} sub={regionText(report.dataset)} />
         <Stat label="Candidates" value={String(report.candidates.length)} sub="ranked assays" />
         <Stat label="Top score" value={String(best.scores.overall)} sub={`${best.gene} ${best.mutation}`} />
         <Stat label="Reference" value="H37Rv" sub={report.dataset.reference} />
