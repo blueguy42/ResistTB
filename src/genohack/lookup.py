@@ -98,6 +98,9 @@ def find_targets(query: str, limit: int = 8) -> dict:
         "matched": scope, "who_variants": int(variants), "single_base_variants": int(n_pos),
         "designable_targets": len(mine), "designed": len(designed), "no_design": len(undesigned),
         "not_probeable": int(other), "explanation": explanation,
+        # Set only when it is true, so the assistant never has to compare the counts itself.
+        "limit_note": (f"Most of the WHO variants for {scope} cannot be one allele-specific probe, so an assay covers only a "
+                       "small part of its resistance." if other > len(mine) else ""),
         "targets": [
             {"id": t["id"], "name": _name(t), "drug": t["drug"], "resistant_isolates_in_who": t["resistant_isolates"],
              "overall_score": t["overall"], "exact_matches": f"{t['exact_matches']} of {t['isolates']} isolates"}

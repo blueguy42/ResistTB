@@ -66,7 +66,13 @@ def build_library(snapshot: str | Path = DEFAULT_SNAPSHOT, out: str | Path = LIB
     targets = [t for t in all_targets(genes) if t.id in snap.mats]
     rows, t0 = [], time.perf_counter()
     for i, t in enumerate(targets, 1):
-        rows.append(design_one(t, snap, ref, mask))
+        try:
+            rows.append(design_one(t, snap, ref, mask))
+        except Exception as exc:  # one odd target must not lose the other 200; it is listed as having no design
+            rows.append({"id": t.id, "gene": t.gene, "mutation": t.mutation, "drug": t.drug, "genome_pos": t.pos,
+                         "resistant_isolates": t.n_resistant, "who_ppv": None, "status": "no_design",
+                         "reason": f"The design failed with an error ({type(exc).__name__}); this is a bug to look at."})
+            log(f"{t.id}: {type(exc).__name__}: {exc}")
         if i % 25 == 0 or i == len(targets):
             log(f"{i}/{len(targets)} targets, {time.perf_counter() - t0:.0f} s")
     lib = {

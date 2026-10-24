@@ -63,7 +63,12 @@ def design_primer_pairs(
         | ((table["n_indel"] >= min_minor) & (table["n_indel"] / n_iso > max_maf)).to_numpy()
         | ((table["n_missing"] >= min_minor) & (table["n_missing"] / n_iso > max_maf)).to_numpy()
     )
-    excluded = [[int(i), 1] for i in np.flatnonzero(bad)]
+    # Primer3 takes at most 200 excluded regions: merge neighbouring positions into runs, and if the window is still that
+    # fragmented (very diverse isolates) it has no usable primer site at all.
+    idx = np.flatnonzero(bad)
+    excluded = [[int(c[0]), int(c[-1] - c[0] + 1)] for c in np.split(idx, np.flatnonzero(np.diff(idx) > 1) + 1)] if idx.size else []
+    if len(excluded) > 200:
+        return []
     args = {
         "SEQUENCE_ID": rm.name,
         "SEQUENCE_TEMPLATE": "".join(table["consensus"]),
