@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "build:static": "STATIC_EXPORT=1 next build",
+    "build:site": "NEXT_PUBLIC_API_URL= STATIC_EXPORT=1 next build && rm -rf site && cp -r .next-export site",
     "start": "next start",
     "lint": "eslint"
   },

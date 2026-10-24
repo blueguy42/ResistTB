@@ -15,9 +15,11 @@ COPY src ./src
 COPY resources ./resources
 COPY ref/NC_000962.3.fasta ref/mask.bed ./ref/
 COPY web/data/report.json ./web/data/report.json
+COPY web/site ./web/site
 
 RUN useradd --system --no-create-home app
 USER app
 
-# Cloud Run sets PORT. Set GENOHACK_ORIGINS to the address of the hosted web page (comma separated).
+# Cloud Run sets PORT. The web page is served by the API itself (web/site, built with `pnpm build:site`), so no CORS is
+# needed; GENOHACK_ORIGINS only matters if the page is hosted somewhere else.
 CMD exec uvicorn genohack.api:app --host 0.0.0.0 --port "${PORT:-8080}"

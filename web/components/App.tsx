@@ -83,6 +83,7 @@ export default function App({ report: initial }: { report: Report }) {
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ message: text, history: prior }),
         });
+        if (res.status === 429) throw new Error("LIMIT:The chat limit was reached. Please try again later.");
         if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
@@ -104,6 +105,10 @@ export default function App({ report: initial }: { report: Report }) {
           return;
         }
         const why = err instanceof Error ? err.message : String(err);
+        if (why.startsWith("LIMIT:")) {
+          setError(why.slice(6));
+          return;
+        }
         setError(`Chat failed (${why}). Is the backend running? uvicorn genohack.api:app --port 8000, API at ${apiBase()}`);
       } finally {
         setRunning(false);

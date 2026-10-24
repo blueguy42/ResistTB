@@ -12,5 +12,6 @@ web/*
 !web/data
 web/data/*
 !web/data/report.json
+!web/site
 **/__pycache__
 !Dockerfile
