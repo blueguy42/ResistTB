@@ -1,0 +1,15 @@
+*
+!deploy
+!deploy/requirements.txt
+!src
+!resources
+!ref
+ref/*
+!ref/NC_000962.3.fasta
+!ref/mask.bed
+!web
+web/*
+!web/data
+web/data/*
+!web/data/report.json
+**/__pycache__

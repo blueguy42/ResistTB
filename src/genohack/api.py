@@ -13,11 +13,14 @@ from pydantic import BaseModel
 
 from . import agent
 
+ORIGINS = [o.strip() for o in os.environ.get("GENOHACK_ORIGINS", "").split(",") if o.strip()]
+
 app = FastAPI(title="ChatGP-TB")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o for o in os.environ.get("GENOHACK_ORIGINS", "").split(",") if o],
-    allow_origin_regex=r"http://(localhost|127\.0\.0\.1|\[::1\])(:\d+)?",  # any local dev port, so a busy 3000 does not break chat
+    allow_origins=ORIGINS,
+    # Local dev: any localhost port, so a busy 3000 does not break chat. Off once GENOHACK_ORIGINS lists the hosted page.
+    allow_origin_regex=None if ORIGINS else r"http://(localhost|127\.0\.0\.1|\[::1\])(:\d+)?",
     allow_methods=["GET", "POST"],
     allow_headers=["content-type"],
 )
