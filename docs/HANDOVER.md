@@ -4,6 +4,8 @@ Written 2026-10-24 (about 09:00 WIB) for continuing in a new chat. Everything be
 the cloud project and the data on that date unless a line says "not verified". Read this first, then
 `README.md`, then the memory notes listed in section 17.
 
+Numbers in square brackets, like [8], refer to the reference list in section 19; its status column says which sources were read and which citations are from memory and need checking.
+
 **Deadline:** GenoHack proposal due **15:00 WIB on 2026-10-24** (3 A4 pages: background and problem, proposed
 technology, development plan, team, partners, current TRL, early prototype / lo-fi design).
 
@@ -100,13 +102,13 @@ Dataset facts that shape the limits of these results (from TB-Profiler on the 22
 
 | Dataset | Source | Size / count | Where it lives | Licence / note |
 |---|---|---|---|---|
-| SRA metadata | AWS open data `s3://sra-pub-metadata-us-east-1/sra/metadata/*`, queried with DuckDB (`sql/indonesia_isolates.sql`) | 1,001 Indonesian MTB Illumina WGS runs | `data/isolates.tsv` on the VM disk only (regenerate with `scripts/select_isolates.sh`) | public |
-| Bandung reads | NCBI SRA PRJNA1433044 (Universitas Padjadjaran; submitted 2026-03-05) | 222 runs, 361 Gbases, 174 GB gz | downloaded per isolate, then deleted | public |
-| H37Rv genome | NCBI nuccore NC_000962.3 | 4,411,532 bp | `ref/NC_000962.3.fasta` (local and VM, git-ignored) | public |
-| Gene annotation | Ensembl ASM19595v2 GFF, copied from the TOAST repo | 4,018 genes | `resources/H37Rv_ASM19595v2.gff` (committed, 2.3 MB) | TOAST is MIT. Chromosome is named `Chromosome` here, `NC_000962.3` elsewhere (same coordinates) |
-| Low-confidence mask | `nextstrain/tb` `defaults/AF14_RLC_Regions.Plus.LowPmapK50E4.H37Rv.bed` (Marin et al. 2022) | 1,324 regions, 276,750 bases | `ref/mask.bed` (downloaded by `setup_vm.sh`; not committed) | the nextstrain/tb clone had no LICENSE file, so it is downloaded, not copied. BED chromosome is `NC_000962` (no version) |
-| WHO catalogue 2023 | `GTB-tbsequencing/mutation-catalogue-2023` | grade 1 and 2 only: 1,383 rows, 1,291 variants, 643 with SNV coordinates | `resources/who_catalogue_2023_assoc_with_R.csv` (built by `scripts/build_who_subset.py`) | MIT. WHO names the inhA promoter variant at 1,673,425 `inhA_c.-777C>T`; the literature calls it fabG1 c.-15C>T |
-| Off-target BLAST db | NCBI Datasets: human GRCh38 (GCF_000001405.40); reference genomes of M. avium, M. intracellulare, M. abscessus, M. kansasii, M. fortuitum, M. smegmatis, M. marinum; S. pneumoniae, S. aureus, P. aeruginosa, K. pneumoniae, H. influenzae, Nocardia farcinica | 729 sequences, 3.37 Gbases, index about 842 MB (803 MiB) | VM disk `ref/offtarget/` and bucket `offtarget/` (not on the laptop) | public |
+| SRA metadata [2] | AWS open data `s3://sra-pub-metadata-us-east-1/sra/metadata/*`, queried with DuckDB (`sql/indonesia_isolates.sql`) | 1,001 Indonesian MTB Illumina WGS runs | `data/isolates.tsv` on the VM disk only (regenerate with `scripts/select_isolates.sh`) | public |
+| Bandung reads [1] | NCBI SRA PRJNA1433044 (Universitas Padjadjaran; submitted 2026-03-05) | 222 runs, 361 Gbases, 174 GB gz | downloaded per isolate, then deleted | public |
+| H37Rv genome [3] | NCBI nuccore NC_000962.3 | 4,411,532 bp | `ref/NC_000962.3.fasta` (local and VM, git-ignored) | public |
+| Gene annotation [4] | Ensembl ASM19595v2 GFF, copied from the TOAST repo | 4,018 genes | `resources/H37Rv_ASM19595v2.gff` (committed, 2.3 MB) | TOAST is MIT. Chromosome is named `Chromosome` here, `NC_000962.3` elsewhere (same coordinates) |
+| Low-confidence mask [6] | `nextstrain/tb` `defaults/AF14_RLC_Regions.Plus.LowPmapK50E4.H37Rv.bed` (Marin et al. 2022) | 1,324 regions, 276,750 bases | `ref/mask.bed` (downloaded by `setup_vm.sh`; not committed) | the nextstrain/tb clone had no LICENSE file, so it is downloaded, not copied. BED chromosome is `NC_000962` (no version) |
+| WHO catalogue 2023 [5] | `GTB-tbsequencing/mutation-catalogue-2023` | grade 1 and 2 only: 1,383 rows, 1,291 variants, 643 with SNV coordinates | `resources/who_catalogue_2023_assoc_with_R.csv` (built by `scripts/build_who_subset.py`) | MIT. WHO names the inhA promoter variant at 1,673,425 `inhA_c.-777C>T`; the literature calls it fabG1 c.-15C>T |
+| Off-target BLAST db [7] | NCBI Datasets: human GRCh38 (GCF_000001405.40); reference genomes of M. avium, M. intracellulare, M. abscessus, M. kansasii, M. fortuitum, M. smegmatis, M. marinum; S. pneumoniae, S. aureus, P. aeruginosa, K. pneumoniae, H. influenzae, Nocardia farcinica | 729 sequences, 3.37 Gbases, index about 842 MB (803 MiB) | VM disk `ref/offtarget/` and bucket `offtarget/` (not on the laptop) | public |
 | BLAST result cache | produced by the above | 4 entries | `resources/offtarget_cache.json` (committed) | keyed by the exact primer pair |
 | Per-isolate results | this project | 329 MB in the bucket, 504 MB on the laptop | bucket + `results/` (git-ignored) | derived data |
 
@@ -128,19 +130,19 @@ Two diagrams exist: `docs/pipeline_overview.pdf` (3 pages) and the earlier statu
 
 ### 6.1 Stage A: from public data to per-isolate results (cloud VM)
 
-Orchestration: `workflow/Snakefile` (one rule per isolate, random fixed-seed order so partial results are a fair
+Modelled on the Nextstrain TB build [22]. Orchestration (Snakemake [14]): `workflow/Snakefile` (one rule per isolate, random fixed-seed order so partial results are a fair
 sample), launched by `scripts/run_full.sh`, kept alive by `scripts/watchdog.sh`. Per isolate,
 `scripts/process_isolate.sh <run> <threads> <coverage>`:
 
 1. **Skip** if `gs://.../results/<run>/DONE` already exists (recreates the local `DONE` so Snakemake agrees).
-2. **Download** with `fasterq-dump` (sra-tools 3.2.1, `--split-files`) from NCBI SRA. ENA (curl) exists as an opt-in
+2. **Download** with `fasterq-dump` (sra-tools 3.2.1 [13], `--split-files`) from NCBI SRA. ENA (curl) exists as an opt-in
    (`DOWNLOAD_SOURCE=ena`); it stalled from Singapore and worked from us-east4 (2.6 MB/s) but SRA was about 20% faster.
-3. **Subsample** to 100x with `rasusa` 5.1.0 (`--genome-size 4.4mb --seed 100`). Reads are left uncompressed:
+3. **Subsample** to 100x with `rasusa` 5.1.0 [12] (`--genome-size 4.4mb --seed 100`). Reads are left uncompressed:
    compressing the full-size reads cost 5-10 minutes per isolate under load.
-4. **Call variants** with `snippy` 4.6.0 against H37Rv: `bwa mem` alignment, then FreeBayes 1.3.6. The VCF header shows
+4. **Call variants** with `snippy` 4.6.0 [8] against H37Rv: `bwa mem` [10] alignment, then FreeBayes 1.3.6 [9]. The VCF header shows
    `-p 2 -P 0 -C 2 -F 0.05 --min-coverage 10 --min-repeat-entropy 1.0 -q 13 -m 60`. In every file checked, all calls are
    genotype 1/1 and minimum depth is 10.
-5. **Profile** with `tb-profiler profile` 6.6.5 (own mapping and calling): lineage, drug-resistance calls.
+5. **Profile** with `tb-profiler profile` 6.6.5 [11] (own mapping and calling): lineage, drug-resistance calls.
 6. **Keep** `snps.vcf.gz`, `snps.aligned.fa.gz`, `snps.txt`, the TB-Profiler JSON; write `metadata.json` (per-step
    seconds, bytes, tool versions, machine type, the isolates.tsv row); upload to the bucket; write `DONE` last;
    delete the reads and intermediates.
@@ -164,7 +166,7 @@ Entry: `python -m genohack.cli report` or the agent's `design_assays` tool, both
 |---|---|---|---|
 | Locate targets | `genome.py`, `targets.py` | Positions from the GFF, strand aware (`Gene.codon_pos`, `upstream_pos`); asserts the reference base | 4 targets, hand-picked; verified against the genome and WHO coordinates |
 | Variant table | `isolates.py`, `variants.py` | For each target, +/-300 bp: base code per isolate per position (ACGT, MISSING for `-`, `N`, `n`), indel flags from the VCF, per-position counts, **consensus base**, minor-allele frequency, masked flag | `finished_samples` requires the data files, not just `DONE` |
-| Primers | `primers.py` | Primer3 (primer3-py 2.4.0) on the consensus; sites excluded if variable (MAF > tolerance AND >= 2 isolates), masked, indel or missing in > tolerance and >= 2 isolates; amplicon must contain the SNP | size 18-25, Tm 58-64, GC 40-65, poly-X <= 4, product 70-160, 20 pairs |
+| Primers | `primers.py` | Primer3 [16] (primer3-py 2.4.0) on the consensus; sites excluded if variable (MAF > tolerance AND >= 2 isolates), masked, indel or missing in > tolerance and >= 2 isolates; amplicon must contain the SNP | size 18-25, Tm 58-64, GC 40-65, poly-X <= 4, product 70-160, 20 pairs |
 | Probes | `probes.py` | Windows over the SNP; wild-type from consensus, mutant = one base changed; Tm gap from Primer3 thermodynamic alignment of each probe against the other allele | 20-30 nt, Tm 64-74, GC 30-75, no 5' G, no other variable site, SNP >= 4 bases from either end |
 | Assemble | `assay.py` | Per primer pair, picks the probe inside the amplicon with a Tm 6-12 C above the primers and the best gap | tolerance ladder 2% -> 5% -> 10% -> 20% if no design exists |
 | Checks | `checks.py`, `specificity.py`, `thermo.py` | hairpin/self-dimer/cross-dimer dG; H37Rv near-match scan (cached); BLAST predicted off-target products | see below |
@@ -174,7 +176,7 @@ Entry: `python -m genohack.cli report` or the agent's `design_assays` tool, both
 | Multiplex | `multiplex.py` | all cross-assay oligo pairs, worst dimer dG, status, greedy tube grouping | caution -7, conflict -9 kcal/mol; 4 channels, 2 per assay |
 | Report | `assay.build_report` | JSON for the interface | schema = `web/lib/types.ts` |
 
-Specificity details: primer binding site = BLAST alignment (`blastn-short`, word size 7) of >= 16 bases, <= 2 mismatches,
+Specificity details (BLAST+ [17]; the product idea follows Primer-BLAST [18]): primer binding site = BLAST alignment (`blastn-short`, word size 7) of >= 16 bases, <= 2 mismatches,
 no gaps, reaching the primer's 3' end with the last 5 bases exact; **a predicted product** = a plus-orientation site
 followed within 3,000 bases, on the same sequence, by a minus-orientation site. Counted per group (human, ntm, flora).
 Single-primer hits are deliberately not counted: a 16-mer with 2 mismatches matches the human genome about a thousand
@@ -183,7 +185,7 @@ the exact primer pair. **A new primer pair with no cache entry reports specifici
 
 ### 6.3 Stage C: agent, API, interface
 
-- `agent.py`: Gemini `gemini-3.5-flash-lite` through Vertex AI (location `global`; the model is not offered in
+- `agent.py`: Gemini `gemini-3.5-flash-lite` through Vertex AI [19] (location `global`; the model is not offered in
   us-central1), via the `google-genai` SDK with function calling. One tool, `design_assays(targets)`, with an enum of
   the four target ids and the drug each covers. The system prompt tells it to pick targets from the named drugs, never
   invent numbers, quote the supplied coverage sentence, write plain text, state in silico only. Tool arguments are
@@ -245,6 +247,8 @@ decimal (221/222 shows 99.5%).
 
 ## 9. Threshold provenance (be honest about this in the proposal)
 
+Sources: TOAST [20] and PrimeGen [21] (read), a web search result [27], the team notes [26], and general practice.
+
 Only a minority have an external source. Everything not marked "source" was applied from general qPCR practice or is a
 choice of mine. **Nothing here was re-verified against a published guideline in the session.**
 
@@ -296,7 +300,7 @@ laptop is a different one (`tap-twice-aurania`); always pass `--project haduh-51
 | Vertex AI | Gemini `gemini-3.5-flash-lite`, location `global`, billed to this project |
 | Deleted | the first VM `genohack-analysis` (asia-southeast1-b), after downloads from Singapore stalled |
 
-Cost so far (**my estimate from list prices, not from the billing console**): the VM at $0.36/h (e2-standard-8, us-east4) for
+Cost so far, with prices from [28] (**my estimate from list prices, not from the billing console**): the VM at $0.36/h (e2-standard-8, us-east4) for
 about 0.9 h and about $0.66/h (e2-standard-16, disk included) for about 9.1 h is roughly $6.4; the deleted Singapore VM
 (about $0.40/h for a few hours) about $1; disk, bucket and Vertex calls a few dollars at most. **Likely total around
 $8-10. Check the billing console for the real number.** Ongoing: the stopped VM's 400 GB disk costs about $0.06/h
@@ -528,3 +532,40 @@ Memory notes (auto-loaded in future sessions) are in `/Users/afan/.claude/projec
 The earlier sections of the master document, `papers/`, TOAST (`github.com/linfeng-wang/TOAST`) and PrimeGen
 (`github.com/melobio/PrimeGen`) are the reference material behind the design.
 Team (from the master doc): Hanifa Syifa Kamila, Yudisto P Nadapdap, Hefina Aissa Gunawan, Ahmad Alfani Handoyo.
+
+## 19. References and sources
+
+R = read or fetched during this project. M = tool used here; the citation details were written from memory and should be checked before the proposal is submitted. S = found in a web search, source document not identified. N = taken from the team's notes, not read.
+
+| # | Type | Reference | Status |
+|---|---|---|---|
+| [1] | Data | NCBI Sequence Read Archive / BioProject: PRJNA1433044 (Universitas Padjadjaran, Bandung active case finding; the design set), also PRJNA595834, PRJNA430531, PRJNA1150781, PRJNA633244, PRJNA950554. https://www.ncbi.nlm.nih.gov/bioproject/ | R |
+| [2] | Data | SRA public metadata, AWS Open Data, s3://sra-pub-metadata-us-east-1/sra/metadata/ (queried with DuckDB); ENA file reports for read sizes, https://www.ebi.ac.uk/ena/portal/api/ | R |
+| [3] | Data | H37Rv reference genome, NCBI RefSeq NC_000962.3. Cole ST et al. Deciphering the biology of Mycobacterium tuberculosis from the complete genome sequence. Nature 393:537-544 (1998). | M |
+| [4] | Data | Gene annotation: Ensembl Genomes, assembly ASM19595v2 (GCA_000195955.2), file taken from the TOAST repository (MIT licence). | R |
+| [5] | Data | World Health Organization. Catalogue of mutations in Mycobacterium tuberculosis complex and their association with drug resistance, 2nd edition (2023). Data files: https://github.com/GTB-tbsequencing/mutation-catalogue-2023 (MIT licence). | R |
+| [6] | Data | Low-confidence region mask: Marin M et al. Benchmarking the empirical accuracy of short-read sequencing across the M. tuberculosis genome. Bioinformatics 38(7):1781-1787 (2022); file from https://github.com/nextstrain/tb (defaults/AF14_RLC_Regions.Plus.LowPmapK50E4.H37Rv.bed). | M |
+| [7] | Data | Off-target genomes via NCBI Datasets, https://www.ncbi.nlm.nih.gov/datasets/ : human GRCh38 (GCF_000001405.40) and reference genomes of seven non-tuberculous mycobacteria and six respiratory bacteria (list in the handover). | R |
+| [8] | Software | Seemann T. snippy: rapid haploid variant calling and core genome alignment, v4.6.0. https://github.com/tseemann/snippy | M |
+| [9] | Software | Garrison E, Marth G. Haplotype-based variant detection from short-read sequencing. arXiv:1207.3907 (2012) (FreeBayes 1.3.6, run inside snippy). | M |
+| [10] | Software | Li H. Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM. arXiv:1303.3997 (2013). | M |
+| [11] | Software | Phelan JE et al. Integrating informatics tools and portable sequencing technology for rapid detection of resistance to anti-tuberculous drugs. Genome Medicine 11:41 (2019) (TB-Profiler 6.6.5). | M |
+| [12] | Software | Hall M. Rasusa: randomly subsample sequencing reads to a specified coverage. Journal of Open Source Software 7(69):3941 (2022) (v5.1.0). | M |
+| [13] | Software | NCBI SRA Toolkit (fasterq-dump 3.2.1). https://github.com/ncbi/sra-tools | M |
+| [14] | Software | Mölder F et al. Sustainable data analysis with Snakemake. F1000Research 10:33 (2021). | M |
+| [15] | Software | Raasveldt M, Mühleisen H. DuckDB: an embeddable analytical database. SIGMOD 2019. | M |
+| [16] | Software | Untergasser A et al. Primer3: new capabilities and interfaces. Nucleic Acids Research 40(15):e115 (2012); Python bindings primer3-py 2.4.0, https://github.com/libnano/primer3-py | M |
+| [17] | Software | Camacho C et al. BLAST+: architecture and applications. BMC Bioinformatics 10:421 (2009) (blastn 2.17.0+). | M |
+| [18] | Software | Ye J et al. Primer-BLAST: a tool to design target-specific primers for polymerase chain reaction. BMC Bioinformatics 13:134 (2012). The off-target product screen is inspired by it but is not identical to its defaults. | M |
+| [19] | Software | Google Cloud Vertex AI and Gemini (model gemini-3.5-flash-lite, location global), https://cloud.google.com/vertex-ai ; google-genai SDK; FastAPI, https://fastapi.tiangolo.com ; Next.js 16, https://nextjs.org/docs (bundled docs read) ; Tailwind CSS 4. | R |
+| [20] | Prior work | Wang L et al. TOAST: a novel tool for designing targeted gene amplicons and an optimised set of primers for high-throughput sequencing in tuberculosis genomic studies. BMC Genomics 26:1058 (2025). doi:10.1186/s12864-025-12247-9 ; https://github.com/linfeng-wang/TOAST | R |
+| [21] | Prior work | Wang Y et al. Accelerating primer design for amplicon sequencing using large language model-powered agents (PrimeGen). Nature Biomedical Engineering 10:338-353 (2026). doi:10.1038/s41551-025-01455-z ; https://github.com/melobio/PrimeGen | R |
+| [22] | Prior work | Nextstrain TB build, https://nextstrain.org/tb/global and https://github.com/nextstrain/tb : the per-isolate processing (SRA metadata query, fasterq-dump, TB-Profiler, snippy, Snakemake) is modelled on it. | R |
+| [23] | Prior work | Xie NG et al. Designing highly multiplex PCR primer sets with Simulated Annealing Design using Dimer Likelihood Estimation (SADDLE). Nature Communications 13:1881 (2022). Cited in the PrimeGen paper; not used in the code. | M |
+| [24] | Prior work | Multiplex real-time PCR melting curve assay to detect drug-resistant mutations of Mycobacterium tuberculosis. Journal of Clinical Microbiology (2011). https://pubmed.ncbi.nlm.nih.gov/21752982 : found in a web search; the basis for the melt-probe idea for dense regions such as the rpoB RRDR. | S |
+| [25] | Prior work | Comparative genomic analysis of established and emerging anti-tubercular drug targets ... in Mycobacterium tuberculosis isolates from Indonesia. Frontiers in Tropical Diseases (2026). doi:10.3389/fitd.2026.1953716 : listed in the team notes (master document p. 76); not read. | N |
+| [26] | Prior work | GenoHack Master Document (team notes, Indonesian), including the meeting plan 'Kesimpulan Meet 23/10/26' (p. 81) and the draft proposal with its own reference list (pp. 68-72). | R |
+| [27] | Thresholds | Design thresholds: the TOAST default settings file and the PrimeGen paper (both read); a web search result (patent text, specific patent not identified) for probe Tm 8-12 C above the primers and amplicons of 50-150 bp; general qPCR practice from memory. The dimer limit of about -9 kcal/mol is the commonly quoted manufacturer guidance, not verified here. See handover section 9. | S |
+| [28] | Cost | Google Cloud Billing Catalog API (E2 core and RAM and balanced persistent disk prices, us-east4 and asia-southeast1), https://cloud.google.com/billing/docs/how-to/get-pricing-information-api ; cross-check for e2-standard-8 in Singapore: https://pcr.cloud-mercato.com/providers/google/flavors/e2-standard-8.skylake and https://calculator.holori.com/gcp/vm/e2-standard-2/asia-southeast1 (third-party listings). | R |
+
+Citation numbers in the progress report refer to this list.
