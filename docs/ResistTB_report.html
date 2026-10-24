@@ -1,0 +1,134 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>ResistTB report</title><style>
+@page { size: A4; margin: 13mm; }
+* { box-sizing: border-box; }
+body { font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; color: #1c1c1a; font-size: 9.4pt; line-height: 1.48; margin: 0; }
+h1 { font-size: 19pt; margin: 0 0 1pt; font-weight: 600; }
+.sub { color: #6b6b66; margin: 0 0 8pt; font-size: 9.3pt; }
+h2 { font-size: 11.3pt; margin: 10pt 0 3pt; font-weight: 600; border-bottom: 0.6pt solid #d8d6cf; padding-bottom: 2pt; }
+p { margin: 0 0 5pt; }
+ul { margin: 0 0 5pt; padding-left: 14pt; } li { margin-bottom: 1.5pt; }
+table { border-collapse: collapse; width: 100%; font-size: 8.6pt; margin: 3pt 0 6pt; }
+th { text-align: left; font-weight: 600; background: #f1efe8; padding: 3pt 5pt; border-bottom: 0.6pt solid #bdbab0; }
+td { padding: 2.6pt 5pt; border-bottom: 0.4pt solid #e4e2da; vertical-align: top; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.done { color: #0F6E56; font-weight: 600; } .part { color: #854F0B; font-weight: 600; } .todo { color: #5F5E5A; font-weight: 600; }
+.cap { color: #5f5e5a; font-size: 8.6pt; margin: 3pt 0 0; }
+svg { display: block; width: 100%; height: auto; margin: 0 auto; }
+svg text { font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.th { font-size: 14px; font-weight: 600; } .ts { font-size: 12px; fill: #5f5e5a; }
+.arr { stroke: #6b6b66; stroke-width: 1.5; fill: none; }
+.c-gray rect { fill: #F1EFE8; stroke: #5F5E5A; stroke-width: 0.6; } .c-gray .th { fill: #2C2C2A; } .c-gray .ts { fill: #5F5E5A; }
+.c-teal rect { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.6; } .c-teal .th { fill: #085041; } .c-teal .ts { fill: #0F6E56; }
+.c-coral rect { fill: #FAECE7; stroke: #993C1D; stroke-width: 0.6; } .c-coral .th { fill: #712B13; } .c-coral .ts { fill: #993C1D; }
+.refs { columns: 2; column-gap: 7mm; font-size: 6.8pt; line-height: 1.27; color: #3b3b37; }
+.refs p { margin: 0 0 2pt; break-inside: avoid; word-break: break-word; }
+.legend { font-size: 7.3pt; color: #5f5e5a; margin: 0 0 3pt; }
+.kpi { display:flex; gap:6pt; margin:4pt 0 6pt; } .kpi div { flex:1; border:0.6pt solid #d8d6cf; border-radius:4pt; padding:4pt 6pt; background:#faf9f5; }
+.kpi b { display:block; font-size:14pt; line-height:1.15; } .kpi span { font-size:7.6pt; color:#5f5e5a; }
+.warn { background:#fdf3e1; border:0.6pt solid #e2c27a; border-radius:4pt; padding:4pt 7pt; color:#6b4a07; font-size:8.7pt; margin:4pt 0 6pt; }
+.pb { page-break-before: always; }
+code { font-family: Menlo, monospace; font-size: 7.8pt; background:#f1efe8; padding:0 2pt; border-radius:2pt; }
+.seq { font-family: Menlo, monospace; font-size: 7pt; word-break: break-all; }
+</style></head><body>
+<h1>ResistTB: progress report</h1>
+<p class="sub">GenoHack 2026 &middot; primer and probe design for drug-resistant TB &middot; status 25 October 2026, about 01:30 WIB &middot; in silico only</p>
+<div class="warn"><b>Nothing has been tested in a tube.</b> All coverage figures are measured on the same 456 isolates the oligos were designed on, so they are optimistic. Held-out and wet-lab validation have not been done.</div>
+
+<h2>What it is</h2>
+<p>ResistTB (formerly ChatGP-TB) turns public <i>Mycobacterium tuberculosis</i> genomes into qPCR primers and allele-specific probes for drug-resistance variants. A cloud VM called variants per isolate (snippy, FreeBayes, TB-Profiler) [8][9][11]. A Python library designs oligos on the <b>population consensus</b> with Primer3 [16], checks them against every isolate (overall, by lineage, by region), screens off-target amplification with BLAST [17], scores them and tests tube sharing. A Gemini agent on Vertex AI [19] turns free text into a design call. A web interface shows ranked assays and a library of <b>205 WHO resistance variants</b> [5]. It is live at <b>https://resist-tb.afanhandoyo.com</b>.</p>
+<div class="kpi"><div><b>456</b><span>isolates: Bandung 222, Guangdong 173, Tamil Nadu 61</span></div><div><b>192 / 205</b><span>WHO variants designed; all BLAST-screened</span></div><div><b>35</b><span>tests pass</span></div><div><b>$0 idle</b><span>Cloud Run, scales to zero; the VM is deleted</span></div></div>
+<svg viewBox="0 0 730 265"><path class="arr" d="M160 45 L190 45"/><path class="arr" d="M360 45 L390 45"/><path class="arr" d="M540 45 L570 45"/><path class="arr" d="M645 70 L645 90"/><path class="arr" d="M645 90 L85 90"/><path class="arr" d="M85 90 L85 110"/><path class="arr" d="M160 135 L190 135"/><path class="arr" d="M360 135 L390 135"/><path class="arr" d="M540 135 L570 135"/><path class="arr" d="M645 160 L645 180"/><path class="arr" d="M645 180 L85 180"/><path class="arr" d="M85 180 L85 200"/><path class="arr" d="M160 225 L190 225"/><path class="arr" d="M360 225 L390 225"/><path class="arr" d="M540 225 L570 225"/><g class="c-gray"><rect x="10" y="20" width="150" height="50" rx="6"/><text class="th" x="85.0" y="39" text-anchor="middle">Public data</text><text class="ts" x="85.0" y="56" text-anchor="middle">SRA, ENA, 3 BioProjects</text></g><g class="c-teal"><rect x="190" y="20" width="170" height="50" rx="6"/><text class="th" x="275.0" y="39" text-anchor="middle">Stage A: cloud VM</text><text class="ts" x="275.0" y="56" text-anchor="middle">fasterq-dump, rasusa, snippy</text></g><g class="c-teal"><rect x="390" y="20" width="150" height="50" rx="6"/><text class="th" x="465.0" y="39" text-anchor="middle">TB-Profiler</text><text class="ts" x="465.0" y="56" text-anchor="middle">lineage, resistance calls</text></g><g class="c-gray"><rect x="570" y="20" width="150" height="50" rx="6"/><text class="th" x="645.0" y="39" text-anchor="middle">Bucket (GCS)</text><text class="ts" x="645.0" y="56" text-anchor="middle">results per isolate + DONE</text></g><g class="c-coral"><rect x="10" y="110" width="150" height="50" rx="6"/><text class="th" x="85.0" y="129" text-anchor="middle">Snapshot</text><text class="ts" x="85.0" y="146" text-anchor="middle">205 targets, ±300 bp, region</text></g><g class="c-coral"><rect x="190" y="110" width="170" height="50" rx="6"/><text class="th" x="275.0" y="129" text-anchor="middle">Stage B: design</text><text class="ts" x="275.0" y="146" text-anchor="middle">Primer3, probes, BLAST cache</text></g><g class="c-coral"><rect x="390" y="110" width="150" height="50" rx="6"/><text class="th" x="465.0" y="129" text-anchor="middle">Score + coverage</text><text class="ts" x="465.0" y="146" text-anchor="middle">exact / 1 mm / fail; region</text></g><g class="c-gray"><rect x="570" y="110" width="150" height="50" rx="6"/><text class="th" x="645.0" y="129" text-anchor="middle">Library</text><text class="ts" x="645.0" y="146" text-anchor="middle">205 WHO variants</text></g><g class="c-teal"><rect x="10" y="200" width="150" height="50" rx="6"/><text class="th" x="85.0" y="219" text-anchor="middle">Gemini agent</text><text class="ts" x="85.0" y="236" text-anchor="middle">Vertex AI, function calls</text></g><g class="c-teal"><rect x="190" y="200" width="170" height="50" rx="6"/><text class="th" x="275.0" y="219" text-anchor="middle">FastAPI</text><text class="ts" x="275.0" y="236" text-anchor="middle">chat (SSE), design, report</text></g><g class="c-teal"><rect x="390" y="200" width="150" height="50" rx="6"/><text class="th" x="465.0" y="219" text-anchor="middle">Cloud Run</text><text class="ts" x="465.0" y="236" text-anchor="middle">1 container, min 0</text></g><g class="c-gray"><rect x="570" y="200" width="150" height="50" rx="6"/><text class="th" x="645.0" y="219" text-anchor="middle">Web interface</text><text class="ts" x="645.0" y="236" text-anchor="middle">sessions, library, onboarding</text></g></svg>
+<p class="cap">Pipeline: Stage A (VM, per isolate) &rarr; snapshot &rarr; Stage B (design) &rarr; library and agent &rarr; API on Cloud Run &rarr; interface.</p>
+
+<h2>Status</h2>
+<table><tr><th>Area</th><th>State</th></tr>
+<tr><td>456 isolates processed (222 Bandung, 173 Guangdong, 61 Tamil Nadu); 13 truncated SRA downloads rescued through ENA</td><td class="done">Done</td></tr>
+<tr><td>Pooled design, BLAST screen of all 192 designs (109 primer pairs), selection that backs off to looser tolerance when the best design has near-matches</td><td class="done">Done</td></tr>
+<tr><td>Library (205 targets), chat for drug, gene, variant and region questions, sessions, onboarding</td><td class="done">Done</td></tr>
+<tr><td>Cloud Run service <code>resisttb</code> (public, rate-limited) and custom domain on Cloudflare DNS</td><td class="done">Live</td></tr>
+<tr><td>Isolate QC; FASTA export for all 456; handover v3</td><td class="done">Done</td></tr>
+<tr><td>Leave-one-region-out and held-out validation (779 other Indonesian runs)</td><td class="todo">Not started</td></tr>
+<tr><td>Wet-lab validation (efficiency, detection limit, allele discrimination)</td><td class="todo">Not started</td></tr></table>
+
+<div class="pb"></div>
+<h2>Results: the four headline assays (456 isolates)</h2>
+<table><tr><th>Assay</th><th class="n">Overall</th><th class="n">Exact / 456</th><th class="n">Bandung</th><th class="n">Guangdong</th><th class="n">Tamil Nadu</th><th>Specificity</th></tr>
+<tr><td>inhA c.-15C&gt;T</td><td class="n">94</td><td class="n">441</td><td class="n">221/222</td><td class="n">171/173</td><td class="n">49/61</td><td>100</td></tr>
+<tr><td>gyrA p.Asp94Gly</td><td class="n">86</td><td class="n">412</td><td class="n">205/222</td><td class="n">154/173</td><td class="n">53/61</td><td>100</td></tr>
+<tr><td>katG p.Ser315Thr</td><td class="n">83</td><td class="n">429</td><td class="n">219/222</td><td class="n">164/173</td><td class="n">46/61</td><td>50 (2 H37Rv near-matches)</td></tr>
+<tr><td>rpoB p.Ser450Leu</td><td class="n">80</td><td class="n">382</td><td class="n">212/222</td><td class="n">147/173</td><td class="n">23/61</td><td>100</td></tr></table>
+<p class="small">Tubes: inhA + gyrA, katG + rpoB (4 channels, 2 per assay; no dimer conflict at &minus;9 kcal/mol). Mutant carriers: katG S315T 105 (Guangdong 91), rpoB S450L 67 (Guangdong 59), inhA c.-15 19, gyrA D94G 6. Score = 0.30 conservation + 0.30 thermodynamics + 0.20 specificity + 0.20 WHO evidence (a transparent heuristic, not fitted).</p>
+<table><tr><th>Assay</th><th>Forward</th><th>Reverse</th><th>Probe WT / mutant</th></tr>
+<tr><td>inhA c.-15</td><td class="seq">CTCGTGGACATACCGATTTC</td><td class="seq">CCAGGACTGAACGGGATAC</td><td class="seq">ACAACCTATCGTCTCGCCGCG / ACAACCTATCATCTCGCCGCG</td></tr>
+<tr><td>gyrA D94G</td><td class="seq">ACCATGGGCAACTACCAC</td><td class="seq">GGCTTCGGTGTACCTCATC</td><td class="seq">TACGACACCCTGGTGCGCAT / TACGGCACCCTGGTGCGCAT</td></tr>
+<tr><td>katG S315T</td><td class="seq">TCTCGAGGAAACTGTTGTCC</td><td class="seq">CTGGAAGAGCTCGTATGGC</td><td class="seq">ATCACCAGCGGCATCGAGGT / ATCACCACCGGCATCGAGGT</td></tr>
+<tr><td>rpoB S450L</td><td class="seq">TTCATGGACCAGAACAACCC</td><td class="seq">GGTTTCGATCGGGCACAT</td><td class="seq">CGCCGACAGTCGGCGCTTGT / CGCCAACAGTCGGCGCTTGT</td></tr></table>
+
+<h2>What the pooled rebuild showed</h2>
+<ul>
+<li><b>rpoB S450L fell from 83 (Bandung) to 61, then recovered to 80.</b> At the strict 2% variable-site tolerance Primer3 offered only 20 near-identical pairs, all with 4&ndash;6 near-matches in H37Rv. Trying looser tolerances restored the original pair. Five rpoB designs sharing it gained 18&ndash;22 points; only three other designs changed (rrl +2, rrs &minus;1, ethA &minus;2).</li>
+<li><b>Tamil Nadu and lineage 1 are weakest for rpoB S450L</b> (23/61 exact; lineage 1 only 26/58). The cause is mostly one uncalled base at position 761152 inside the probe in 39 isolates, with no variant in the VCF: a coverage dropout, not a polymorphism, though this was not confirmed from raw reads. The tool counts an uncalled base as a mismatch, so Tamil Nadu coverage is probably underestimated.</li>
+<li><b>Library:</b> 192 of 205 designed (13 not: 10 rpoB RRDR, 2 pncA, katG S315R). 161 designs score 80 or more; 129 have specificity 100; <b>20 still score 0</b> (BLAST found off-target products or near-matches). The 109-pair BLAST cache found 85 clean pairs, a few with non-tuberculous mycobacteria products and one with 43 predicted human products.</li>
+<li><b>Isolate QC:</b> median depth 83x (Bandung), 91x (Guangdong), 56x (Tamil Nadu); median 98.6&ndash;99.5% reads mapped. Four isolates look contaminated or mixed (19&ndash;49% mapped) and are still in the design.</li>
+</ul>
+
+<h2>Cloud footprint (project haduh-512512)</h2>
+<table><tr><th>Resource</th><th>Detail</th></tr>
+<tr><td>Cloud Run <code>resisttb</code>, asia-southeast1</td><td>public; min 0 / max 1 instance; 1 vCPU, 1 GiB; one container with FastAPI and the static Next.js site; service account with Vertex AI user only; <code>https://resisttb-66604371416.asia-southeast1.run.app</code> and <code>https://resist-tb.afanhandoyo.com</code> (domain mapping, Cloudflare DNS, free) [30]</td></tr>
+<tr><td>Bucket <code>haduh-512512-genohack</code></td><td>456 result folders, 803 MiB BLAST index, off-target cache, run bundle and logs</td></tr>
+<tr><td>Bucket for source uploads; Artifact Registry</td><td>about 7 MB; one 178 MB image repository</td></tr>
+<tr><td>Deleted</td><td>the data VM and its 100 GB disk (no snapshot), the old <code>chatgp-tb</code> service, account and images</td></tr>
+<tr><td>Cost (estimate from list prices [28], not the billing console)</td><td>about $0&ndash;1 per month idle plus Gemini calls; the VM phase cost roughly $6&ndash;8; open SSH and RDP firewall rules remain</td></tr></table>
+<p class="small"><b>To deploy:</b> sync results, rebuild the snapshot, library and report, run the tests, <code>pnpm build:site</code>, then <code>gcloud run deploy resisttb --source .</code> (about 75 files, 9 MB). A new BLAST pair needs a VM with the 803 MiB index; the handover has the exact steps.</p>
+
+<div class="pb"></div>
+<h2>How to validate readiness and regional suitability</h2>
+<ul>
+<li><b>Regional suitability (no lab):</b> leave-one-region-out coverage (design without one region, score it) and held-out coverage on the 779 other Indonesian runs, with Wilson 95% intervals; a per-lineage floor; separate uncalled from true mismatches; report coverage under more than one 3&prime;-mismatch rule, because that rule changes the estimate [31][33].</li>
+<li><b>Readiness (lab):</b> MIQE-style metrics [34]: efficiency (typically 90&ndash;110%), dynamic range, limit of detection, inclusivity and exclusivity panels, allele discrimination. Then sensitivity and specificity against phenotypic DST with sequencing for discordant results, benchmarked on Xpert MTB/XDR (about 96% isoniazid and 94% fluoroquinolone sensitivity in Anhui; 99.2% and 88.4% in Georgia) [35][36] and the WHO target product profiles (2024) [37]. The numeric acceptance targets are from memory, not from a cited source.</li>
+<li><b>Caution:</b> in silico specificity predicted wet-lab results poorly in an eDNA study (BLAST predicted about 67% of outcomes) [32].</li>
+</ul>
+
+<h2>Limitations</h2>
+<ul>
+<li>In silico only; coverage is in-sample; the score weights and most thresholds are heuristics without a published source.</li>
+<li>Region labels are per BioProject; Tamil Nadu is small (61) and lineage-1 heavy; four low-quality isolates are included; uncalled bases count as mismatches.</li>
+<li>Specificity is a BLAST screen with a pair-keyed cache; 20 designs score 0; the multiplex check covers dimers only and assumes 4 channels.</li>
+<li>Only near-fixed variant calls (no heteroresistance); 13 variants not designed (dense rpoB, pncA).</li>
+<li>Not a diagnostic; no clinical advice. The public endpoint has per-instance in-memory rate limits; Gemini cost per chat is unmeasured; domain mapping is a preview feature.</li>
+</ul>
+
+<h2>Next steps</h2>
+<table><tr><th>#</th><th>Step</th><th>Needs</th></tr>
+<tr><td>1</td><td>Leave-one-region-out validation, then held-out validation (779 runs)</td><td>laptop; later a VM (about 17 h, $15&ndash;35 est.)</td></tr>
+<tr><td>2</td><td>Report uncalled bases separately; inspect raw reads at rpoB 761152; decide on the 4 contaminated isolates</td><td>laptop</td></tr>
+<tr><td>3</td><td>BLAST-aware primer selection to lift the 20 designs with specificity 0; multi-probe or melt design for 13 undesigned variants</td><td>VM for BLAST</td></tr>
+<tr><td>4</td><td>Wet-lab test with synthetic templates at a partner lab; compare with Xpert and Deeplex Myc-TB</td><td>partner lab</td></tr>
+<tr><td>5</td><td>Settings file with cited thresholds, CI, UI backlog (order-sheet export, share link, accessibility); business case with two headline benefits</td><td>laptop</td></tr></table>
+
+<h2>References and sources</h2>
+<p class="legend">R = read or fetched during the project. M = tool used; citation written from memory, check before submitting. S = found in a web search, source not read in full. N = from team notes. Full list with links: <code>docs/HANDOVER.md</code> section 22.</p>
+<div class="refs">
+<p>[1] NCBI SRA/BioProject: PRJNA1433044 (Bandung), PRJNA1256943 (Tamil Nadu), PRJNA898845 (Guangdong). R</p>
+<p>[3] H37Rv, NCBI RefSeq NC_000962.3; Cole ST et al. Nature 393:537 (1998). M</p>
+<p>[5] WHO. Catalogue of mutations in M. tuberculosis complex, 2nd ed. (2023); github.com/GTB-tbsequencing/mutation-catalogue-2023. R</p>
+<p>[7] NCBI Datasets: human GRCh38, 7 NTM and 6 respiratory bacteria genomes (off-target set). R</p>
+<p>[8] Seemann T. snippy 4.6.0. M &nbsp; [9] Garrison E, Marth G. FreeBayes, arXiv:1207.3907 (2012). M</p>
+<p>[11] Phelan JE et al. TB-Profiler. Genome Med 11:41 (2019). M</p>
+<p>[16] Untergasser A et al. Primer3. Nucleic Acids Res 40:e115 (2012). M</p>
+<p>[17] Camacho C et al. BLAST+. BMC Bioinformatics 10:421 (2009). M</p>
+<p>[18] Ye J et al. Primer-BLAST. BMC Bioinformatics 13:134 (2012). M</p>
+<p>[19] Google Cloud Vertex AI / Gemini (gemini-3.5-flash-lite); FastAPI; Next.js 16. R</p>
+<p>[20] Wang L et al. TOAST. BMC Genomics 26:1058 (2025). R &nbsp; [21] Wang Y et al. PrimeGen. Nat Biomed Eng 10:338 (2026). R</p>
+<p>[22] Nextstrain TB build, github.com/nextstrain/tb. R</p>
+<p>[26] GenoHack Master Document (team notes, Indonesian), incl. OCR of image pages. R</p>
+<p>[28] Google Cloud Billing Catalog API (E2 and persistent disk prices). R</p>
+<p>[30] Cloud Run: Mapping custom domains (preview), docs.cloud.google.com/run/docs/mapping-custom-domains. S</p>
+<p>[31] Lefever S et al. Impact of basepair mismatch in primer annealing on qPCR assay performance (econferences.de). S</p>
+<p>[32] Pitfalls during in silico prediction of primer specificity for eDNA surveillance (2020), datadryad.org/dataset/doi:10.5061/dryad.41ns1rnb7. S</p>
+<p>[33] In silico primer coverage with a 3&prime; mismatch rule (dengue case study). BMC Bioinformatics 19 (2018), doi 10.1186/s12859-018-2313-0. S</p>
+<p>[34] Bustin SA et al. The MIQE guidelines. Clin Chem 55:611 (2009). M</p>
+<p>[35] Xpert MTB/XDR evaluation, Anhui, China (2025), PMC12431546. S &nbsp; [36] Xpert MTB/XDR in Georgia, medRxiv 2024.10.02.24314770. S</p>
+<p>[37] WHO. Updated target product profiles for TB diagnosis and drug-resistance detection (14 Aug 2024), who.int. S</p>
+</div>
+</body></html>
