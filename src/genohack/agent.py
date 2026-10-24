@@ -17,7 +17,7 @@ from google.oauth2.credentials import Credentials
 
 from .assay import build_report
 from .genome import load_genes
-from .lookup import capabilities, find_targets, names_a_target
+from .lookup import capabilities, find_targets, names_a_target, region_mutations
 from .regions import load_regions
 from .snapshot import DEFAULT_SNAPSHOT
 from .targets import all_targets
@@ -56,6 +56,10 @@ Rules:
 - If the user asks what you can design, which drugs, genes or regions are covered, or what the data contains, call
   list_capabilities and answer only from its result: name the drugs with their counts and the regions with their isolate
   counts. Do not call find_targets or design_assays for such a question, and do not list drugs that are not in the result.
+- If the user asks which resistance mutations occur in a region, or how common variants are there, call region_mutations
+  with that region if they named one, otherwise without a region (all regions together), and the drug if they named one. Answer from its variants: give each variant's sentence word for
+  word, then its note. Do not design assays unless the user also asks for primers, probes or an assay, and then pass
+  regions to design_assays. Never call design_assays twice with the same targets.
 - find_targets takes a drug, drug class, gene or variant the user names and returns its target ids, how many WHO variants
   exist, how many can be designed, and an explanation. Use it for any drug, gene or variant, and whenever the user asks
   what is possible. Then call design_assays with the best ids, at most {MAX_TARGETS}: the user's own choice if they named
@@ -113,6 +117,18 @@ TOOLS = [
                 "type": "object",
                 "properties": {"query": {"type": "string", "description": "A drug (ethambutol), class (fluoroquinolones), gene (embB) or variant (Met306Val)."}},
                 "required": ["query"],
+            },
+        ),
+        types.FunctionDeclaration(
+            name="region_mutations",
+            description="Which resistance variants occur in one region, most common first, with how many isolates carry each. "
+                        "No design is run. Use it for 'which mutations occur in Bandung' questions.",
+            parameters_json_schema={
+                "type": "object",
+                "properties": {
+                    "region": {"type": "string", "description": "Only if the user names one, a region or country: " + REGION_DOC + ". Leave out to cover all regions together."},
+                    "drug": {"type": "string", "description": "Optional drug or class, for example rifampicin."},
+                },
             },
         ),
         types.FunctionDeclaration(
@@ -232,6 +248,7 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
     step_no = 0
     looked_up: list[str] = []  # drugs find_targets was asked about
     designed_any = False
+    designed_keys: set[tuple] = set()  # a repeated design call must not add a second report
     named = names_a_target(" ".join([message] + [t.get("text", "") for t in (history or []) if t.get("role") == "user"]))
     t0 = time.perf_counter()
     yield {"type": "step", "step": {"id": "s0", "tool": "plan", "label": "Read the request and plan the tools", "status": "running"}}
@@ -267,6 +284,9 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
                     label, detail = "Look up the WHO catalogue for targets", str(args.get("query", ""))
                 elif call.name == "list_capabilities":
                     label, detail = "List what can be designed", ""
+                elif call.name == "region_mutations":
+                    label = "Look up the mutations seen in a region"
+                    detail = ", ".join(str(args[k]) for k in ("region", "drug") if args.get(k))
                 else:
                     label, detail = "Design primers and probes, check specificity and coverage", ", ".join(args.get("targets", []))
                 yield {"type": "step", "step": {"id": sid, "tool": call.name, "label": label, "detail": detail, "status": "running"}}
@@ -277,6 +297,8 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
                         result = find_targets(str(args.get("query", "")))
                     elif call.name == "list_capabilities":
                         result = capabilities()
+                    elif call.name == "region_mutations":
+                        result = region_mutations(args.get("region") or None, args.get("drug"))
                     elif call.name == "design_assays":
                         designed_any = True
                         asked = list(args.get("targets", []))
@@ -287,7 +309,12 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
                         if left:
                             result["not_designed"] = (f"These ids were skipped or have no design: {', '.join(left)}. At most "
                                                       f"{MAX_TARGETS} targets are designed per request, and some targets have no design.")
-                        yield {"type": "report", "report": report}
+                        key = (tuple(sorted(asked)), tuple(sorted(str(r).strip().lower() for r in args.get("regions") or [])))
+                        if key not in designed_keys:
+                            designed_keys.add(key)
+                            yield {"type": "report", "report": report}
+                        else:
+                            result["repeat"] = "This design was already made and shown; do not call design_assays again."
                     else:
                         raise ValueError(f"unknown tool {call.name}")
                 except Exception as exc:

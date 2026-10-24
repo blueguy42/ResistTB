@@ -154,6 +154,45 @@ def capabilities() -> dict:
     }
 
 
+def region_mutations(region: str | None = None, drug: str | None = None, limit: int = 8) -> dict:
+    """Resistance variants seen in one region (all regions together when none is named), most common first, from the
+    library's carrier counts (no design needed)."""
+    from .regions import load_regions
+
+    lib = load_library()
+    rows = [t for t in lib["targets"] if "mutation_by_region" in t]
+    if not rows:
+        return {"error": "carrier counts per region are not in the design library yet"}
+    have = {r.lower(): r for r in lib.get("regions", {})}
+    for v in load_regions().values():  # a country works too: China -> Guangdong
+        if v["region"] in lib.get("regions", {}):
+            have.setdefault(v.get("country", "").lower(), v["region"])
+    name = have.get(_norm(region)) if region else "overall"
+    if name is None:
+        return {"error": f"unknown region {region}; the data has {', '.join(sorted(set(have.values())))}"}
+    where = name if region else "all regions together"
+    wanted = DRUG_ALIASES.get(_norm(drug)) if drug else None
+    if drug and not wanted:
+        return {"error": f"'{drug}' is not a drug name used here; call list_capabilities for the drugs"}
+    hits = [t for t in rows if t["mutation_by_region"].get(name, [0])[0] > 0
+            and (not wanted or any(d in t["drug"] for d in wanted))]
+    hits.sort(key=lambda t: -t["mutation_by_region"][name][0])
+    n = lib["regions"][name] if region else lib["isolates"]
+    return {
+        "region": where, "isolates": n, "drug": ", ".join(wanted) if wanted else "all drugs", "variants_seen": len(hits),
+        "variants": [
+            {"id": t["id"], "name": _name(t), "drug": t["drug"], "carriers": t["mutation_by_region"][name][0],
+             "sentence": f"{_name(t)}: {t['mutation_by_region'][name][0]} of {t['mutation_by_region'][name][1]} isolates in {where}",
+             **({} if region else {"by_region": {r: f"{c[0]} of {c[1]}" for r, c in t["mutation_by_region"].items() if r != "overall"}})}
+            for t in hits[:limit]
+        ],
+        "note": f"Only single-base variants seen in at least {MIN_RESISTANT} WHO resistant isolates are counted. The counts are "
+                f"near-fixed calls in the {n} isolates sampled in {where}, so they say nothing about heteroresistance or the "
+                "whole population.",
+        "none_seen": "" if hits else f"None of the catalogue variants for {'these drugs' if wanted else 'any drug'} was seen in {where}.",
+    }
+
+
 def _legacy_ids(rows: pd.DataFrame) -> set[str]:
     """The four hand-built targets use their own ids; match them by the catalogue variant they correspond to."""
     from .targets import default_targets
