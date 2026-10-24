@@ -12,8 +12,9 @@ const ROLE_LABEL: Record<Oligo["role"], string> = {
   probe_mut: "Probe, mutant",
 };
 
+// Rounded down to one decimal, so 221 of 222 reads 99.5%, never 100%.
 function pct(n: number, total: number) {
-  return total ? Math.round((n / total) * 100) : 0;
+  return total ? Math.floor((n / total) * 1000) / 10 : 0;
 }
 
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
@@ -302,7 +303,7 @@ export default function ReportView({
                       <div className="h-1.5 w-20 overflow-hidden rounded-full bg-line">
                         <div className="h-full rounded-full bg-accent" style={{ width: `${cov}%` }} />
                       </div>
-                      <span className="text-xs tabular-nums text-muted">{cov}%</span>
+                      <span className="text-xs tabular-nums text-muted">{Number.isInteger(cov) ? cov : cov.toFixed(1)}%</span>
                     </div>
                   </td>
                   <td className="px-4 py-3 text-right font-semibold tabular-nums">{c.scores.overall}</td>
