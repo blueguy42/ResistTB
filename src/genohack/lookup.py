@@ -130,6 +130,30 @@ def find_targets(query: str, limit: int = 8) -> dict:
     return out
 
 
+def capabilities() -> dict:
+    """What can be designed, from the library alone: designed variants per drug, and per region how many are seen there."""
+    lib = load_library()
+    designed = [t for t in lib["targets"] if t["status"] == "designed"]
+    if not designed:
+        return {"error": "the design library has not been built yet"}
+    per_drug: dict[str, int] = {}
+    for t in designed:
+        for d in {x.strip() for x in t["drug"].split(",")}:
+            per_drug[d] = per_drug.get(d, 0) + 1
+    counted = any("mutation_by_region" in t for t in designed)  # libraries built before carrier counts lack it
+    regions = {
+        r: {"isolates": n, **({"designed_variants_seen_there": sum(1 for t in designed if t["mutation_by_region"].get(r, [0])[0] > 0)}
+                              if counted else {})}
+        for r, n in lib.get("regions", {}).items()
+    }
+    return {
+        "designed_variants": len(designed), "drugs": dict(sorted(per_drug.items(), key=lambda kv: -kv[1])),
+        "regions": regions, "isolates": lib.get("isolates"),
+        "note": "Each variant is a single-base resistance change from the WHO catalogue seen in at least "
+                f"{MIN_RESISTANT} resistant isolates. Drugs that are not listed have no such variant.",
+    }
+
+
 def _legacy_ids(rows: pd.DataFrame) -> set[str]:
     """The four hand-built targets use their own ids; match them by the catalogue variant they correspond to."""
     from .targets import default_targets

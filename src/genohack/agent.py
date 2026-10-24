@@ -17,7 +17,8 @@ from google.oauth2.credentials import Credentials
 
 from .assay import build_report
 from .genome import load_genes
-from .lookup import find_targets, names_a_target
+from .lookup import capabilities, find_targets, names_a_target
+from .regions import load_regions
 from .snapshot import DEFAULT_SNAPSHOT
 from .targets import all_targets
 
@@ -41,6 +42,8 @@ TARGET_DOC = {
     "gyrA_D94G": "fluoroquinolone resistance (gyrA Asp94Gly)",
 }
 
+REGION_DOC = ", ".join(f"{v['region']} ({v['country']})" for v in load_regions().values())
+
 SYSTEM = f"""You are ChatGP-TB, an assistant that designs qPCR primers and allele-specific probes for drug-resistant
 Mycobacterium tuberculosis, using public genomes from the regions named in each result.
 
@@ -50,6 +53,9 @@ deletions, or rare cannot be one allele-specific probe.
 
 Rules:
 - Call a tool for every primer, probe, score, coverage or WHO count. Never invent or estimate numbers or sequences.
+- If the user asks what you can design, which drugs, genes or regions are covered, or what the data contains, call
+  list_capabilities and answer only from its result: name the drugs with their counts and the regions with their isolate
+  counts. Do not call find_targets or design_assays for such a question, and do not list drugs that are not in the result.
 - find_targets takes a drug, drug class, gene or variant the user names and returns its target ids, how many WHO variants
   exist, how many can be designed, and an explanation. Use it for any drug, gene or variant, and whenever the user asks
   what is possible. Then call design_assays with the best ids, at most {MAX_TARGETS}: the user's own choice if they named
@@ -66,8 +72,9 @@ Rules:
   never mention tool or field names. Keep it under 150 words.
 - Always say the results are in silico only, not tested in the lab, and that they were designed and measured on the same
   isolates, which come from the regions named in the result (see regions).
-- If the user names a region (Bandung, Guangdong, Tamil Nadu), pass it in design_assays regions so the design and its
-  numbers use that region's isolates alone; if they name none, leave regions out.
+- If the user names regions or countries ({REGION_DOC}), pass every one they name in design_assays regions (Bandung and
+  China means both Bandung and Guangdong) so the design and its numbers use those isolates alone; if they name none, leave
+  regions out.
 - If the user asks how an assay does in a region, quote that region's region_matches sentence word for word.
 - If the user asks which mutations occur in a region, or how common a variant is there, quote the region_mutation_carriers sentences word for word; never estimate a count.
 - If the result has a multiplex section, say which assays can share a tube and that the grouping is a model.
@@ -109,6 +116,12 @@ TOOLS = [
             },
         ),
         types.FunctionDeclaration(
+            name="list_capabilities",
+            description="What the tool can design and what data it holds: designed variants per drug and the regions with "
+                        "their isolate counts. Use it when the user asks what is possible, not for a specific drug.",
+            parameters_json_schema={"type": "object", "properties": {}},
+        ),
+        types.FunctionDeclaration(
             name="design_assays",
             description="Design and score qPCR primer pairs and wild-type/mutant probes for resistance targets, "
                         f"using the finished isolates from all regions together, or only the regions named. At most {MAX_TARGETS} targets. "
@@ -121,8 +134,8 @@ TOOLS = [
                     "description": "Target ids from find_targets, or the main four: " + "; ".join(f"{k}: {v}" for k, v in TARGET_DOC.items()),
                 }, "regions": {
                     "type": "array", "items": {"type": "string"},
-                    "description": "Only when the user names a region (for example Bandung, Guangdong or Tamil Nadu): design and measure "
-                                   "on that region's isolates alone. Leave out to use all regions together.",
+                    "description": "Only when the user names a region or country: design and measure on those regions' isolates alone. "
+                                   "Include every one they name. Available: " + REGION_DOC + ". Leave out to use all regions together.",
                 }},
                 "required": ["targets"],
             },
@@ -218,6 +231,7 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
 
     step_no = 0
     looked_up: list[str] = []  # drugs find_targets was asked about
+    designed_any = False
     named = names_a_target(" ".join([message] + [t.get("text", "") for t in (history or []) if t.get("role") == "user"]))
     t0 = time.perf_counter()
     yield {"type": "step", "step": {"id": "s0", "tool": "plan", "label": "Read the request and plan the tools", "status": "running"}}
@@ -238,7 +252,7 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
             calls = [p.function_call for p in content.parts if p.function_call]
             if not calls:
                 text = (resp.text or "").replace("**", "").replace("isolate_matches", "coverage").strip()
-                if looked_up and not named:  # the model chose the drugs: say so, whatever it wrote
+                if looked_up and designed_any and not named:  # the model chose the drugs: say so, whatever it wrote
                     text = (f"You did not name a drug, so this looks at {' and '.join(dict.fromkeys(looked_up))}; "
                             f"tell me the drug for a specific panel.\n\n") + text
                 yield {"type": "text", "text": text}
@@ -251,6 +265,8 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
                 args = dict(call.args or {})
                 if call.name == "find_targets":
                     label, detail = "Look up the WHO catalogue for targets", str(args.get("query", ""))
+                elif call.name == "list_capabilities":
+                    label, detail = "List what can be designed", ""
                 else:
                     label, detail = "Design primers and probes, check specificity and coverage", ", ".join(args.get("targets", []))
                 yield {"type": "step", "step": {"id": sid, "tool": call.name, "label": label, "detail": detail, "status": "running"}}
@@ -259,7 +275,10 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
                     if call.name == "find_targets":
                         looked_up.append(str(args.get("query", "")))
                         result = find_targets(str(args.get("query", "")))
+                    elif call.name == "list_capabilities":
+                        result = capabilities()
                     elif call.name == "design_assays":
+                        designed_any = True
                         asked = list(args.get("targets", []))
                         report = {**run_design(asked, list(args.get("regions") or [])), "request": message}  # the cache holds the default text
                         result = _compact(report)

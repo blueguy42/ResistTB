@@ -190,12 +190,12 @@ export default function TargetLibrary({
             </table>
           </div>
 
-          <div className="mt-3 flex items-center gap-3">
+          <div className="mt-3 flex flex-wrap items-center gap-3">
             <button
               type="button"
               disabled={busy || picked.length === 0}
               onClick={() => onDesign(picked, region === "All regions" ? undefined : region)}
-              className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-surface transition-opacity disabled:opacity-40"
+              className="shrink-0 whitespace-nowrap rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-surface transition-opacity disabled:opacity-40"
             >
               {busy ? "Designing…" : `Design selected (${picked.length})${region === "All regions" ? "" : ` on ${region} only`}`}
             </button>

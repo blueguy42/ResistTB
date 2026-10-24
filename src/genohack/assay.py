@@ -277,6 +277,9 @@ def to_candidate(a: Assay, rank: int, scope: str = "") -> dict:
 def _only_regions(wanted: list[str], samples, lineage_of, region_of, mats):
     """Keep only the isolates from the named regions (case-insensitive), so the design and its coverage are for them alone."""
     have = {r.lower(): r for r in set(region_of)}
+    for v in load_regions().values():  # a country works too: China -> Guangdong
+        if v["region"] in set(region_of):
+            have.setdefault(v.get("country", "").lower(), v["region"])
     unknown = [w for w in wanted if w.strip().lower() not in have]
     if unknown:
         raise ValueError(f"unknown region {', '.join(unknown)}; the data has {', '.join(sorted(have.values()))}")

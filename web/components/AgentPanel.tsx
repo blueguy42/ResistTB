@@ -225,7 +225,7 @@ export default function AgentPanel({
 
   if (collapsed)
     return (
-      <div className="flex h-full items-center gap-3 rounded-2xl border border-line bg-surface px-3 py-2 lg:flex-col lg:justify-start lg:px-0 lg:py-3">
+      <div key="rail" className="panel-in flex h-full items-center gap-3 overflow-hidden rounded-2xl border border-line bg-surface px-3 py-2 lg:flex-col lg:justify-start lg:px-0 lg:py-3">
         <button
           type="button"
           onClick={onToggleCollapsed}
@@ -249,7 +249,7 @@ export default function AgentPanel({
     );
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-line bg-surface">
+    <div key="panel" className="panel-in flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface">
       <div className="flex items-center gap-2 border-b border-line px-4 py-3">
         <div className="min-w-0 flex-1">
           <h2 className="truncate text-sm font-medium">{view === "list" ? "Saved chats" : session?.title ?? "Assistant"}</h2>

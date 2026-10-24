@@ -34,8 +34,10 @@ export default function App({ report: initial }: { report: Report }) {
   const [tab, setTab] = useState<"results" | "library">("results");
   const [collapsed, setCollapsed] = useState(false);
   const [unread, setUnread] = useState(false);
+  const [ready, setReady] = useState(false); // motion starts after the stored layout is applied, so a load does not animate
   const [welcome, setWelcome] = useState<"hidden" | "first" | "help">("hidden");
   const wasRunning = useRef<string | null>(null);
+  const lastWelcome = useRef<"first" | "help">("help"); // the text stays put while the card animates shut
 
   // Preferences kept in this browser: the assistant starts open on a wide screen and minimized on a phone, and the
   // welcome card shows until it is closed once.
@@ -50,7 +52,13 @@ export default function App({ report: initial }: { report: Report }) {
     }
     setCollapsed(stored ? stored === "collapsed" : !window.matchMedia("(min-width: 1024px)").matches);
     setWelcome(seen ? "hidden" : "first");
+    const t = setTimeout(() => setReady(true), 100);
+    return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    if (welcome !== "hidden") lastWelcome.current = welcome;
+  }, [welcome]);
 
   const toggleCollapsed = useCallback(() => {
     setCollapsed((c) => {
@@ -236,7 +244,7 @@ export default function App({ report: initial }: { report: Report }) {
                 setWelcome((w) => (w === "hidden" ? "help" : "hidden"));
               }}
               aria-expanded={welcome !== "hidden"}
-              className="rounded-full border border-line px-3 py-1 text-xs hover:border-accent"
+              className="shrink-0 whitespace-nowrap rounded-full border border-line px-3 py-1 text-xs hover:border-accent"
             >
               How it works
             </button>
@@ -251,11 +259,11 @@ export default function App({ report: initial }: { report: Report }) {
       )}
 
       <main
-        className={`mx-auto grid w-full max-w-[1400px] flex-1 gap-5 px-5 py-5 ${
+        className={`mx-auto grid w-full max-w-[1400px] flex-1 content-start gap-5 px-5 py-5 ${
           collapsed ? "lg:grid-cols-[3.5rem_minmax(0,1fr)]" : "lg:grid-cols-[380px_minmax(0,1fr)]"
-        }`}
+        } ${ready ? "transition-[grid-template-columns] duration-300 ease-out motion-reduce:transition-none" : ""}`}
       >
-        <div className={`${collapsed ? "" : "h-[34rem]"} lg:sticky lg:top-5 lg:h-[calc(100vh-6.5rem)]`}>
+        <div className={`${collapsed ? "h-14" : "h-[34rem]"} min-w-0 ${ready ? "transition-[height] duration-300 ease-out motion-reduce:transition-none" : ""} lg:sticky lg:top-5 lg:h-[calc(100vh-6.5rem)]`}>
           <AgentPanel
             session={active}
             sessions={sessions}
@@ -289,23 +297,38 @@ export default function App({ report: initial }: { report: Report }) {
               <TargetLibrary library={library} current={(current?.candidates ?? []).map((c) => c.id)} busy={runningSid !== null} onDesign={designFromLibrary} />
             </div>
           ) : (
-            <div role="tabpanel" id="panel-results" aria-labelledby="tab-results" className="space-y-5">
-              {welcome !== "hidden" && (
-                <Onboarding
-                  mode={welcome}
-                  isolates={shown.dataset.isolates}
-                  regions={Object.keys(shown.dataset.regions ?? {})}
-                  designed={designed}
-                  onTry={() => {
-                    if (welcome === "first") closeWelcome();
-                    else setWelcome("hidden");
-                    if (collapsed) toggleCollapsed();
-                    void send(example);
-                  }}
-                  onClose={welcome === "first" ? closeWelcome : () => setWelcome("hidden")}
-                />
+            <div role="tabpanel" id="panel-results" aria-labelledby="tab-results" className="flex flex-col">
+              {/* Always mounted so it can animate shut; inert keeps it out of reach while closed. */}
+              <div
+                inert={welcome === "hidden"}
+                aria-hidden={welcome === "hidden"}
+                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none ${
+                  welcome === "hidden" ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"
+                }`}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  <div className="pb-5">
+                    <Onboarding
+                      mode={welcome === "hidden" ? lastWelcome.current : welcome}
+                      isolates={shown.dataset.isolates}
+                      regions={Object.keys(shown.dataset.regions ?? {})}
+                      designed={designed}
+                      onTry={() => {
+                        if (welcome === "first") closeWelcome();
+                        else setWelcome("hidden");
+                        if (collapsed) toggleCollapsed();
+                        void send(example);
+                      }}
+                      onClose={welcome === "first" ? closeWelcome : () => setWelcome("hidden")}
+                    />
+                  </div>
+                </div>
+              </div>
+              {active && (
+                <div className="mb-5">
+                  <ReportSwitcher session={active} onShow={showReport} />
+                </div>
               )}
-              {active && <ReportSwitcher session={active} onShow={showReport} />}
               <div id="report" className="scroll-mt-5">
                 {current ? (
                   <ReportView report={current} selectedId={selectedId} onSelect={setSelectedId} />
