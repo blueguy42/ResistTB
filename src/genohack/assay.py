@@ -15,6 +15,7 @@ from .isolates import finished_samples, read_resistance
 from . import specificity
 from .multiplex import compatibility
 from .primers import PrimerPair, design_primer_pairs
+from .regions import describe, load_regions, sample_region
 from .snapshot import load_snapshot
 from .probes import ProbePair, design_probes
 from .targets import Target, default_targets
@@ -44,7 +45,7 @@ def _clip01(x: float) -> float:
 
 
 def coverage_for(rm: RegionMatrix, table: pd.DataFrame, target: Target, pair: PrimerPair, probe: ProbePair,
-                 lineages: list[str] | None = None) -> dict:
+                 lineages: list[str] | None = None, regions: list[str] | None = None) -> dict:
     """Per-isolate match to the oligos. The SNP position is excluded from the mismatch count because the
     wild-type and mutant probe cover both alleles; an isolate still needs a called base there."""
     cons = np.array(["ACGT".index(b) for b in table["consensus"]], dtype=np.uint8)
@@ -70,13 +71,15 @@ def coverage_for(rm: RegionMatrix, table: pd.DataFrame, target: Target, pair: Pr
         "one_mismatch": int(one.sum()),
         "failing": int(fail.sum()),
     }
-    if lineages is not None:
+    for key, labels in (("by_lineage", lineages), ("by_region", regions)):
+        if labels is None:
+            continue
         by: dict[str, dict] = {}
-        for lin in sorted(set(lineages)):
-            sel = np.array([x == lin for x in lineages])
-            by[lin] = {"isolates": int(sel.sum()), "perfect_match": int((perfect & sel).sum()),
+        for lab in sorted(set(labels)):
+            sel = np.array([x == lab for x in labels])
+            by[lab] = {"isolates": int(sel.sum()), "perfect_match": int((perfect & sel).sum()),
                        "one_mismatch": int((one & sel).sum()), "failing": int((fail & sel).sum())}
-        out["by_lineage"] = by
+        out[key] = by
     return out
 
 
@@ -112,7 +115,8 @@ def score_assay(cov: dict, pair: PrimerPair, probe: ProbePair, inter: dict, hits
 TOLERANCE_LADDER = (0.02, 0.05, 0.10, 0.20)
 
 
-def build_assay(rm, table, ref, target: Target, n_pairs: int = 20, lineages: list[str] | None = None) -> Assay | None:
+def build_assay(rm, table, ref, target: Target, n_pairs: int = 20, lineages: list[str] | None = None,
+                regions: list[str] | None = None) -> Assay | None:
     """Design at the strictest variable-site tolerance that yields both primers and a probe; relax only if needed."""
     for tol in TOLERANCE_LADDER:
         pairs = design_primer_pairs(rm, table, target.pos, n=n_pairs, max_maf=tol)
@@ -138,7 +142,7 @@ def build_assay(rm, table, ref, target: Target, n_pairs: int = 20, lineages: lis
             "R": genome_hits(pair.right_seq, ref, (pair.right_start, pair.right_end), max_mismatch=3, clamp=6),
             "probe": genome_hits(probe.wt_seq, ref, (probe.start, probe.end), max_mismatch=2),
         }
-        cov = coverage_for(rm, table, target, pair, probe, lineages)
+        cov = coverage_for(rm, table, target, pair, probe, lineages, regions)
         scores = score_assay(cov, pair, probe, inter, sum(hits.values()), ev)
         cand = Assay(target, pair, probe, cov, scores, inter, hits, ev_rows, tolerance=tol)
         if best is None or cand.scores["overall"] > best.scores["overall"]:
@@ -201,7 +205,7 @@ def _specificity(a: Assay) -> dict:
                     "BLAST screen: a product needs both primers to bind within 3 kb, matching at the 3' end."}
 
 
-def to_candidate(a: Assay, rank: int) -> dict:
+def to_candidate(a: Assay, rank: int, scope: str = "") -> dict:
     t, c, s = a.target, a.coverage, a.scores
     tier, who_lines = _who_text(a.evidence)
     drug = ", ".join(sorted(set(a.evidence["drug"]))) if not a.evidence.empty else t.drug
@@ -212,8 +216,8 @@ def to_candidate(a: Assay, rank: int) -> dict:
         f"Probes separate the two alleles by an estimated {a.probe.wt_gap:.1f} C (wild-type) and {a.probe.mut_gap:.1f} C (mutant).",
     ]
     caveats = [
-        "Computed from the finished isolates only; coverage will change as more are processed." if n < 222 else
-        "Coverage is measured on the Bandung isolates only, not all of Indonesia.",
+        f"Coverage is measured on {scope or f'{n} isolates'}, the same isolates the oligos were designed on, so it is "
+        "optimistic; it was not tested on isolates from elsewhere.",
         ("Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; "
          "a screen is not proof of no cross-reaction." if a.off_target is not None else
          "Specificity covers the H37Rv genome only; human and non-tuberculous genomes have not been checked."),
@@ -248,14 +252,17 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
     t0 = time.perf_counter()
     ref, mask, genes = load_reference(), load_mask(), load_genes()
     targets = [t for t in default_targets(genes) if not target_ids or t.id in target_ids]
+    reg_table = load_regions()
     if snapshot:
-        samples, lineage_of, mats, snap_flank = load_snapshot(snapshot)
-        if snap_flank != flank:
-            raise ValueError(f"snapshot was made with flank {snap_flank}, not {flank}")
+        snap = load_snapshot(snapshot)
+        if snap.flank != flank:
+            raise ValueError(f"snapshot was made with flank {snap.flank}, not {flank}")
+        samples, mats, lineage_of, region_of = snap.samples, snap.mats, snap.lineage, snap.region
     else:
         samples = finished_samples(results_dir)
         mats = build_region_matrices(results_dir, {t.id: (t.pos - flank, t.pos + flank) for t in targets}, samples)
         lineage_of = None
+        region_of = [sample_region(results_dir, x, reg_table) for x in samples]
     step("get_variants", "Load variant tables around each target", f"{len(samples)} isolates, {len(targets)} targets", t0)
 
     t0 = time.perf_counter()
@@ -264,7 +271,7 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
     assays = []
     for t in targets:
         rm = mats[t.id]
-        a = build_assay(rm, position_table(rm, ref, mask), ref, t, lineages=lineage_of)
+        a = build_assay(rm, position_table(rm, ref, mask), ref, t, lineages=lineage_of, regions=region_of)
         if a:
             assays.append(a)
     step("design_assays", "Design primers and probes, check specificity and coverage",
@@ -281,10 +288,14 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
     multiplex = compatibility(assays) if len(assays) > 1 else None
     if multiplex:
         step("check_multiplex", "Check whether the assays can share a tube", f"{len(multiplex['pairs'])} assay pairs", t0)
-    cands = [to_candidate(a, i + 1) for i, a in enumerate(assays)]
+    dataset_name, region_text = describe(region_of, reg_table)
+    n_regions = len(set(region_of))
+    scope = f"{len(samples)} isolates from {region_text}"
+    cands = [to_candidate(a, i + 1, scope) for i, a in enumerate(assays)]
     best = cands[0] if cands else None
     summary = (
-        f"I designed {len(cands)} candidate assays on {len(samples)} Bandung isolates. "
+        f"I designed {len(cands)} candidate assays on {scope}"
+        + (" pooled into one design set" if n_regions > 1 else "") + ". "
         + (f"The top-ranked is {best['gene']} {best['mutation']} (overall {best['scores']['overall']}), "
            f"matching {best['coverage']['perfect_match']} of {best['coverage']['isolates_total']} isolates exactly. " if best else "")
         + "Results are in silico only."
@@ -295,8 +306,11 @@ def build_report(results_dir: str | Path = "results", request: str = "", target_
         "request": request or "Design qPCR assays for the main rifampicin, isoniazid and fluoroquinolone resistance mutations.",
         "summary": summary,
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "dataset": {"name": "Bandung active case finding", "bioproject": "PRJNA1433044", "isolates": len(samples),
-                    "reference": "NC_000962.3 (H37Rv)", "lineages": {k: lineage_of.count(k) for k in sorted(set(lineage_of))}},
+        "dataset": {"name": dataset_name,
+                    "bioproject": ", ".join(sorted({b for b, v in reg_table.items() if v["region"] in set(region_of)})),
+                    "isolates": len(samples), "reference": "NC_000962.3 (H37Rv)",
+                    "lineages": {k: lineage_of.count(k) for k in sorted(set(lineage_of))},
+                    "regions": {k: region_of.count(k) for k in sorted(set(region_of), key=lambda r: -region_of.count(r))}},
         "steps": steps,
         "candidates": cands,
         "multiplex": multiplex,

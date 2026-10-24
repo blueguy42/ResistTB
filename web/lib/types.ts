@@ -36,6 +36,7 @@ export interface LineageCoverage {
 
 export interface Coverage {
   by_lineage?: Record<string, LineageCoverage>; // keyed by TB-Profiler main lineage, e.g. "lineage4"
+  by_region?: Record<string, LineageCoverage>; // keyed by region name, e.g. "Bandung"; present when regions are known
   isolates_total: number;
   perfect_match: number; // isolates with zero mismatches at every oligo
   one_mismatch: number; // isolates with one mismatch outside the 3' end
@@ -104,6 +105,7 @@ export interface Report {
     isolates: number;
     reference: string;
     lineages?: Record<string, number>;
+    regions?: Record<string, number>; // isolates per region
   };
   steps: ToolStep[];
   candidates: Candidate[];

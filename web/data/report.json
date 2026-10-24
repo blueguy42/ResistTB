@@ -1,0 +1,613 @@
+{
+  "mock": false,
+  "request": "Design qPCR assays for the main rifampicin, isoniazid and fluoroquinolone resistance mutations.",
+  "summary": "I designed 4 candidate assays on 222 isolates from Bandung. The top-ranked is inhA promoter c.-15C>T (overall 94), matching 221 of 222 isolates exactly. Results are in silico only.",
+  "generated_at": "2026-10-24T08:39:16+00:00",
+  "dataset": {
+    "name": "Bandung active case finding",
+    "bioproject": "PRJNA1433044",
+    "isolates": 222,
+    "reference": "NC_000962.3 (H37Rv)",
+    "lineages": {
+      "lineage1": 8,
+      "lineage2": 94,
+      "lineage2;lineage4": 3,
+      "lineage4": 117
+    },
+    "regions": {
+      "Bandung": 222
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "tool": "get_variants",
+      "label": "Load variant tables around each target",
+      "detail": "222 isolates, 4 targets",
+      "status": "done",
+      "seconds": 0.0
+    },
+    {
+      "id": "s2",
+      "tool": "design_assays",
+      "label": "Design primers and probes, check specificity and coverage",
+      "detail": "Primer3, thermodynamic alignment, H37Rv near-match scan",
+      "status": "done",
+      "seconds": 11.8
+    },
+    {
+      "id": "s3",
+      "tool": "check_specificity",
+      "label": "Screen primers against human, non-tuberculous and respiratory genomes",
+      "detail": "cached BLAST results",
+      "status": "done",
+      "seconds": 0.0
+    },
+    {
+      "id": "s4",
+      "tool": "check_multiplex",
+      "label": "Check whether the assays can share a tube",
+      "detail": "6 assay pairs",
+      "status": "done",
+      "seconds": 0.0
+    }
+  ],
+  "candidates": [
+    {
+      "id": "inhA_c-15",
+      "rank": 1,
+      "gene": "inhA promoter",
+      "drug": "Ethionamide, Isoniazid",
+      "mutation": "c.-15C>T",
+      "genome_pos": 1673425,
+      "who_tier": "Assoc w R",
+      "amplicon_start": 1673387,
+      "amplicon_end": 1673497,
+      "oligos": [
+        {
+          "name": "fabG1-F",
+          "role": "forward",
+          "sequence": "CTCGTGGACATACCGATTTC",
+          "start": 1673387,
+          "end": 1673406,
+          "strand": "+",
+          "tm": 59.9,
+          "hairpin_dg": -0.39,
+          "self_dimer_dg": -2.79
+        },
+        {
+          "name": "fabG1-R",
+          "role": "reverse",
+          "sequence": "CCAGGACTGAACGGGATAC",
+          "start": 1673479,
+          "end": 1673497,
+          "strand": "-",
+          "tm": 61.0,
+          "hairpin_dg": 0.0,
+          "self_dimer_dg": -3.98
+        },
+        {
+          "name": "fabG1-WT probe",
+          "role": "probe_wt",
+          "sequence": "ACAACCTATCGTCTCGCCGCG",
+          "start": 1673415,
+          "end": 1673435,
+          "strand": "-",
+          "tm": 68.8,
+          "hairpin_dg": 0.0,
+          "self_dimer_dg": -5.75,
+          "mismatch_dtm": 4.5
+        },
+        {
+          "name": "fabG1-c.-15C>T probe",
+          "role": "probe_mut",
+          "sequence": "ACAACCTATCATCTCGCCGCG",
+          "start": 1673415,
+          "end": 1673435,
+          "strand": "-",
+          "tm": 66.7,
+          "hairpin_dg": 0.0,
+          "self_dimer_dg": -5.75,
+          "mismatch_dtm": 4.3
+        }
+      ],
+      "scores": {
+        "conservation": 100,
+        "thermodynamics": 84,
+        "specificity": 100,
+        "resistance_evidence": 97,
+        "overall": 94
+      },
+      "coverage": {
+        "isolates_total": 222,
+        "perfect_match": 221,
+        "one_mismatch": 1,
+        "failing": 0,
+        "by_lineage": {
+          "lineage1": {
+            "isolates": 8,
+            "perfect_match": 8,
+            "one_mismatch": 0,
+            "failing": 0
+          },
+          "lineage2": {
+            "isolates": 94,
+            "perfect_match": 94,
+            "one_mismatch": 0,
+            "failing": 0
+          },
+          "lineage2;lineage4": {
+            "isolates": 3,
+            "perfect_match": 3,
+            "one_mismatch": 0,
+            "failing": 0
+          },
+          "lineage4": {
+            "isolates": 117,
+            "perfect_match": 116,
+            "one_mismatch": 1,
+            "failing": 0
+          }
+        },
+        "by_region": {
+          "Bandung": {
+            "isolates": 222,
+            "perfect_match": 221,
+            "one_mismatch": 1,
+            "failing": 0
+          }
+        }
+      },
+      "specificity": {
+        "human_hits": 0,
+        "ntm_hits": 0,
+        "note": "Predicted off-target products: human 0, non-tuberculous mycobacteria 0, respiratory bacteria 0; 0 near-matches elsewhere in H37Rv. BLAST screen: a product needs both primers to bind within 3 kb, matching at the 3' end."
+      },
+      "reasons": [
+        "WHO catalogue: Assoc w R. Ethionamide: grade 1, resistant in 2,166 and susceptible in 745 isolates (positive predictive value 0.74); Isoniazid: grade 1, resistant in 4,449 and susceptible in 161 isolates (positive predictive value 0.97).",
+        "221 of 222 isolates match every oligo exactly (100%).",
+        "Probes separate the two alleles by an estimated 4.5 C (wild-type) and 4.3 C (mutant)."
+      ],
+      "caveats": [
+        "Coverage is measured on 222 isolates from Bandung, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
+        "Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; a screen is not proof of no cross-reaction.",
+        "Probe discrimination is a thermodynamic estimate (4.3 C at worst), not a measurement."
+      ],
+      "validation": "in_silico"
+    },
+    {
+      "id": "gyrA_D94G",
+      "rank": 2,
+      "gene": "gyrA",
+      "drug": "Levofloxacin, Moxifloxacin",
+      "mutation": "p.Asp94Gly",
+      "genome_pos": 7582,
+      "who_tier": "Assoc w R",
+      "amplicon_start": 7539,
+      "amplicon_end": 7697,
+      "oligos": [
+        {
+          "name": "gyrA-F",
+          "role": "forward",
+          "sequence": "ACCATGGGCAACTACCAC",
+          "start": 7539,
+          "end": 7556,
+          "strand": "+",
+          "tm": 61.1,
+          "hairpin_dg": -0.38,
+          "self_dimer_dg": -7.48
+        },
+        {
+          "name": "gyrA-R",
+          "role": "reverse",
+          "sequence": "GGCTTCGGTGTACCTCATC",
+          "start": 7679,
+          "end": 7697,
+          "strand": "-",
+          "tm": 61.6,
+          "hairpin_dg": 0.0,
+          "self_dimer_dg": -3.15
+        },
+        {
+          "name": "gyrA-WT probe",
+          "role": "probe_wt",
+          "sequence": "TACGACACCCTGGTGCGCAT",
+          "start": 7578,
+          "end": 7597,
+          "strand": "+",
+          "tm": 68.3,
+          "hairpin_dg": -1.09,
+          "self_dimer_dg": -7.79,
+          "mismatch_dtm": 5.3
+        },
+        {
+          "name": "gyrA-p.Asp94Gly probe",
+          "role": "probe_mut",
+          "sequence": "TACGGCACCCTGGTGCGCAT",
+          "start": 7578,
+          "end": 7597,
+          "strand": "+",
+          "tm": 71.1,
+          "hairpin_dg": -3.01,
+          "self_dimer_dg": -9.29,
+          "mismatch_dtm": 4.6
+        }
+      ],
+      "scores": {
+        "conservation": 92,
+        "thermodynamics": 68,
+        "specificity": 100,
+        "resistance_evidence": 94,
+        "overall": 87
+      },
+      "coverage": {
+        "isolates_total": 222,
+        "perfect_match": 205,
+        "one_mismatch": 14,
+        "failing": 3,
+        "by_lineage": {
+          "lineage1": {
+            "isolates": 8,
+            "perfect_match": 7,
+            "one_mismatch": 1,
+            "failing": 0
+          },
+          "lineage2": {
+            "isolates": 94,
+            "perfect_match": 93,
+            "one_mismatch": 0,
+            "failing": 1
+          },
+          "lineage2;lineage4": {
+            "isolates": 3,
+            "perfect_match": 2,
+            "one_mismatch": 0,
+            "failing": 1
+          },
+          "lineage4": {
+            "isolates": 117,
+            "perfect_match": 103,
+            "one_mismatch": 13,
+            "failing": 1
+          }
+        },
+        "by_region": {
+          "Bandung": {
+            "isolates": 222,
+            "perfect_match": 205,
+            "one_mismatch": 14,
+            "failing": 3
+          }
+        }
+      },
+      "specificity": {
+        "human_hits": 0,
+        "ntm_hits": 0,
+        "note": "Predicted off-target products: human 0, non-tuberculous mycobacteria 0, respiratory bacteria 0; 0 near-matches elsewhere in H37Rv. BLAST screen: a product needs both primers to bind within 3 kb, matching at the 3' end."
+      },
+      "reasons": [
+        "WHO catalogue: Assoc w R. Levofloxacin: grade 1, resistant in 2,128 and susceptible in 131 isolates (positive predictive value 0.94); Moxifloxacin: grade 1, resistant in 1,692 and susceptible in 260 isolates (positive predictive value 0.87).",
+        "205 of 222 isolates match every oligo exactly (92%).",
+        "Probes separate the two alleles by an estimated 5.3 C (wild-type) and 4.6 C (mutant)."
+      ],
+      "caveats": [
+        "Coverage is measured on 222 isolates from Bandung, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
+        "Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; a screen is not proof of no cross-reaction.",
+        "Probe discrimination is a thermodynamic estimate (4.6 C at worst), not a measurement.",
+        "3 isolates carry a variant likely to break the assay.",
+        "No design avoided every variable site, so oligos were allowed over sites varying in up to 5% of isolates; isolates carrying them count as mismatches in the coverage."
+      ],
+      "validation": "in_silico"
+    },
+    {
+      "id": "katG_S315T",
+      "rank": 3,
+      "gene": "katG",
+      "drug": "Isoniazid",
+      "mutation": "p.Ser315Thr",
+      "genome_pos": 2155168,
+      "who_tier": "Assoc w R",
+      "amplicon_start": 2155109,
+      "amplicon_end": 2155215,
+      "oligos": [
+        {
+          "name": "katG-F",
+          "role": "forward",
+          "sequence": "TCTCGAGGAAACTGTTGTCC",
+          "start": 2155109,
+          "end": 2155128,
+          "strand": "+",
+          "tm": 61.1,
+          "hairpin_dg": -0.33,
+          "self_dimer_dg": -6.65
+        },
+        {
+          "name": "katG-R",
+          "role": "reverse",
+          "sequence": "CTGGAAGAGCTCGTATGGC",
+          "start": 2155197,
+          "end": 2155215,
+          "strand": "-",
+          "tm": 61.7,
+          "hairpin_dg": 0.05,
+          "self_dimer_dg": -5.77
+        },
+        {
+          "name": "katG-WT probe",
+          "role": "probe_wt",
+          "sequence": "ATCACCAGCGGCATCGAGGT",
+          "start": 2155156,
+          "end": 2155175,
+          "strand": "-",
+          "tm": 68.2,
+          "hairpin_dg": -0.91,
+          "self_dimer_dg": -5.06,
+          "mismatch_dtm": 3.4
+        },
+        {
+          "name": "katG-p.Ser315Thr probe",
+          "role": "probe_mut",
+          "sequence": "ATCACCACCGGCATCGAGGT",
+          "start": 2155156,
+          "end": 2155175,
+          "strand": "-",
+          "tm": 67.8,
+          "hairpin_dg": -0.78,
+          "self_dimer_dg": -5.68,
+          "mismatch_dtm": 9.5
+        }
+      ],
+      "scores": {
+        "conservation": 99,
+        "thermodynamics": 85,
+        "specificity": 50,
+        "resistance_evidence": 98,
+        "overall": 85
+      },
+      "coverage": {
+        "isolates_total": 222,
+        "perfect_match": 219,
+        "one_mismatch": 2,
+        "failing": 1,
+        "by_lineage": {
+          "lineage1": {
+            "isolates": 8,
+            "perfect_match": 7,
+            "one_mismatch": 1,
+            "failing": 0
+          },
+          "lineage2": {
+            "isolates": 94,
+            "perfect_match": 93,
+            "one_mismatch": 0,
+            "failing": 1
+          },
+          "lineage2;lineage4": {
+            "isolates": 3,
+            "perfect_match": 3,
+            "one_mismatch": 0,
+            "failing": 0
+          },
+          "lineage4": {
+            "isolates": 117,
+            "perfect_match": 116,
+            "one_mismatch": 1,
+            "failing": 0
+          }
+        },
+        "by_region": {
+          "Bandung": {
+            "isolates": 222,
+            "perfect_match": 219,
+            "one_mismatch": 2,
+            "failing": 1
+          }
+        }
+      },
+      "specificity": {
+        "human_hits": 0,
+        "ntm_hits": 0,
+        "note": "Predicted off-target products: human 0, non-tuberculous mycobacteria 0, respiratory bacteria 0; 2 near-matches elsewhere in H37Rv. BLAST screen: a product needs both primers to bind within 3 kb, matching at the 3' end."
+      },
+      "reasons": [
+        "WHO catalogue: Assoc w R. Isoniazid: grade 1, resistant in 16,302 and susceptible in 250 isolates (positive predictive value 0.98).",
+        "219 of 222 isolates match every oligo exactly (99%).",
+        "Probes separate the two alleles by an estimated 3.4 C (wild-type) and 9.5 C (mutant)."
+      ],
+      "caveats": [
+        "Coverage is measured on 222 isolates from Bandung, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
+        "Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; a screen is not proof of no cross-reaction.",
+        "Probe discrimination is a thermodynamic estimate (3.4 C at worst), not a measurement.",
+        "1 isolates carry a variant likely to break the assay."
+      ],
+      "validation": "in_silico"
+    },
+    {
+      "id": "rpoB_S450L",
+      "rank": 4,
+      "gene": "rpoB",
+      "drug": "Rifampicin",
+      "mutation": "p.Ser450Leu",
+      "genome_pos": 761155,
+      "who_tier": "Assoc w R",
+      "amplicon_start": 761103,
+      "amplicon_end": 761252,
+      "oligos": [
+        {
+          "name": "rpoB-F",
+          "role": "forward",
+          "sequence": "TTCATGGACCAGAACAACCC",
+          "start": 761103,
+          "end": 761122,
+          "strand": "+",
+          "tm": 61.7,
+          "hairpin_dg": 0.0,
+          "self_dimer_dg": -4.52
+        },
+        {
+          "name": "rpoB-R",
+          "role": "reverse",
+          "sequence": "GGTTTCGATCGGGCACAT",
+          "start": 761235,
+          "end": 761252,
+          "strand": "-",
+          "tm": 61.9,
+          "hairpin_dg": 0.0,
+          "self_dimer_dg": -7.11
+        },
+        {
+          "name": "rpoB-WT probe",
+          "role": "probe_wt",
+          "sequence": "CGCCGACAGTCGGCGCTTGT",
+          "start": 761140,
+          "end": 761159,
+          "strand": "-",
+          "tm": 72.2,
+          "hairpin_dg": -5.47,
+          "self_dimer_dg": -17.68,
+          "mismatch_dtm": 4.6
+        },
+        {
+          "name": "rpoB-p.Ser450Leu probe",
+          "role": "probe_mut",
+          "sequence": "CGCCAACAGTCGGCGCTTGT",
+          "start": 761140,
+          "end": 761159,
+          "strand": "-",
+          "tm": 70.5,
+          "hairpin_dg": -2.46,
+          "self_dimer_dg": -6.89,
+          "mismatch_dtm": 5.1
+        }
+      ],
+      "scores": {
+        "conservation": 95,
+        "thermodynamics": 50,
+        "specificity": 100,
+        "resistance_evidence": 98,
+        "overall": 83
+      },
+      "coverage": {
+        "isolates_total": 222,
+        "perfect_match": 212,
+        "one_mismatch": 8,
+        "failing": 2,
+        "by_lineage": {
+          "lineage1": {
+            "isolates": 8,
+            "perfect_match": 7,
+            "one_mismatch": 1,
+            "failing": 0
+          },
+          "lineage2": {
+            "isolates": 94,
+            "perfect_match": 88,
+            "one_mismatch": 4,
+            "failing": 2
+          },
+          "lineage2;lineage4": {
+            "isolates": 3,
+            "perfect_match": 3,
+            "one_mismatch": 0,
+            "failing": 0
+          },
+          "lineage4": {
+            "isolates": 117,
+            "perfect_match": 114,
+            "one_mismatch": 3,
+            "failing": 0
+          }
+        },
+        "by_region": {
+          "Bandung": {
+            "isolates": 222,
+            "perfect_match": 212,
+            "one_mismatch": 8,
+            "failing": 2
+          }
+        }
+      },
+      "specificity": {
+        "human_hits": 0,
+        "ntm_hits": 0,
+        "note": "Predicted off-target products: human 0, non-tuberculous mycobacteria 0, respiratory bacteria 0; 0 near-matches elsewhere in H37Rv. BLAST screen: a product needs both primers to bind within 3 kb, matching at the 3' end."
+      },
+      "reasons": [
+        "WHO catalogue: Assoc w R. Rifampicin: grade 1, resistant in 10,859 and susceptible in 226 isolates (positive predictive value 0.98).",
+        "212 of 222 isolates match every oligo exactly (95%).",
+        "Probes separate the two alleles by an estimated 4.6 C (wild-type) and 5.1 C (mutant)."
+      ],
+      "caveats": [
+        "Coverage is measured on 222 isolates from Bandung, the same isolates the oligos were designed on, so it is optimistic; it was not tested on isolates from elsewhere.",
+        "Specificity was screened against H37Rv, human, seven non-tuberculous mycobacteria and six respiratory bacteria; a screen is not proof of no cross-reaction.",
+        "Probe discrimination is a thermodynamic estimate (4.6 C at worst), not a measurement.",
+        "2 isolates carry a variant likely to break the assay."
+      ],
+      "validation": "in_silico"
+    }
+  ],
+  "multiplex": {
+    "channels_per_tube": 4,
+    "channels_per_assay": 2,
+    "max_assays_per_tube": 2,
+    "thresholds": {
+      "caution": -7.0,
+      "conflict": -9.0
+    },
+    "pairs": [
+      {
+        "a": "inhA_c-15",
+        "b": "gyrA_D94G",
+        "worst_dg": -6.01,
+        "worst_pair": "inhA_c-15-WT + gyrA_D94G-MUT",
+        "status": "compatible"
+      },
+      {
+        "a": "inhA_c-15",
+        "b": "katG_S315T",
+        "worst_dg": -7.48,
+        "worst_pair": "inhA_c-15-WT + katG_S315T-WT",
+        "status": "caution"
+      },
+      {
+        "a": "inhA_c-15",
+        "b": "rpoB_S450L",
+        "worst_dg": -7.17,
+        "worst_pair": "inhA_c-15-WT + rpoB_S450L-WT",
+        "status": "caution"
+      },
+      {
+        "a": "gyrA_D94G",
+        "b": "katG_S315T",
+        "worst_dg": -7.59,
+        "worst_pair": "gyrA_D94G-WT + katG_S315T-WT",
+        "status": "caution"
+      },
+      {
+        "a": "gyrA_D94G",
+        "b": "rpoB_S450L",
+        "worst_dg": -6.73,
+        "worst_pair": "gyrA_D94G-MUT + rpoB_S450L-WT",
+        "status": "compatible"
+      },
+      {
+        "a": "katG_S315T",
+        "b": "rpoB_S450L",
+        "worst_dg": -6.6,
+        "worst_pair": "katG_S315T-WT + rpoB_S450L-WT",
+        "status": "compatible"
+      }
+    ],
+    "tubes": [
+      [
+        "inhA_c-15",
+        "gyrA_D94G"
+      ],
+      [
+        "katG_S315T",
+        "rpoB_S450L"
+      ]
+    ],
+    "note": "Each assay uses 2 probe channels, so a 4-channel instrument fits 2 assays per tube. Grouping avoids pairs with a predicted dimer stronger than -9.0 kcal/mol."
+  }
+}

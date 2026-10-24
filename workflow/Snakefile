@@ -1,9 +1,16 @@
+import os
+
 import pandas as pd
 
 configfile: "workflow/config.yaml"
 
 isolates = pd.read_csv(config["isolates"], sep="\t")
-design = isolates[isolates["bioproject"] == config["design_bioproject"]]
+# DESIGN_BIOPROJECT may be a comma-separated list. To split a run across VMs, give each VM the same list and
+# SHARD_COUNT=<VMs> with its own SHARD_INDEX (0-based); shard k takes every SHARD_COUNT-th isolate in file order.
+# scripts/progress.sh applies the same rule, so the VM shuts down when its own share is done.
+projects = [p for p in os.environ.get("DESIGN_BIOPROJECT", config["design_bioproject"]).split(",") if p]
+design = isolates[isolates["bioproject"].isin(projects)]
+design = design.iloc[int(os.environ.get("SHARD_INDEX", "0")) :: int(os.environ.get("SHARD_COUNT", "1"))]
 # Fixed-seed random order, so whichever isolates finish first are a fair sample of the project
 # and partial results stay representative if the run is stopped early.
 SAMPLES = design["acc"].sample(frac=1, random_state=100).tolist()

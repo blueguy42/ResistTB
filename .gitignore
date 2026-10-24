@@ -1,4 +1,5 @@
 data/
+!web/data/
 work/
 results/
 ref/

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Candidate, Multiplex, Oligo, Report } from "@/lib/types";
 import { formatPos, gcPercent } from "@/lib/seq";
 import AmpliconDiagram from "./AmpliconDiagram";
@@ -60,18 +61,45 @@ function lineageLabel(key: string) {
   return mixed ? `Mixed ${mixed[1]} + ${mixed[2]}` : key;
 }
 
-function LineageTable({ by }: { by: NonNullable<Candidate["coverage"]["by_lineage"]> }) {
-  const rows = Object.entries(by);
+type Groups = NonNullable<Candidate["coverage"]["by_lineage"]>;
+
+// Coverage split by lineage or, when the isolates come from more than one region, by region.
+function CoverageGroups({ coverage }: { coverage: Candidate["coverage"] }) {
+  const lineages = coverage.by_lineage;
+  const regions = coverage.by_region;
+  const hasRegions = !!regions && Object.keys(regions).length > 1;
+  const [mode, setMode] = useState<"lineage" | "region">(hasRegions ? "region" : "lineage");
+  const active = mode === "region" && hasRegions ? "region" : "lineage";
+  const by: Groups | undefined = active === "region" ? regions : lineages;
+  if (!by) return null;
+  const rows = Object.entries(by).sort((a, b) => b[1].isolates - a[1].isolates);
   return (
     <div className="mt-4">
-      <div className="mb-1.5 text-xs text-muted">By lineage</div>
+      <div className="mb-1.5 flex items-center justify-between text-xs text-muted">
+        <span>{active === "region" ? "By region" : "By lineage"}</span>
+        {hasRegions && lineages && (
+          <div role="group" aria-label="Group coverage by" className="flex overflow-hidden rounded-md border border-line">
+            {(["region", "lineage"] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                aria-pressed={active === m}
+                onClick={() => setMode(m)}
+                className={`px-2 py-0.5 ${active === m ? "bg-accent-soft text-ink" : "text-muted hover:text-ink"}`}
+              >
+                {m === "region" ? "Region" : "Lineage"}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
       <table className="w-full text-xs">
         <tbody>
           {rows.map(([key, v]) => {
             const pctExact = v.isolates ? (v.perfect_match / v.isolates) * 100 : 0;
             return (
               <tr key={key} className="border-t border-line first:border-0">
-                <td className="whitespace-nowrap py-1.5 pr-3 text-ink">{lineageLabel(key)}</td>
+                <td className="whitespace-nowrap py-1.5 pr-3 text-ink">{active === "region" ? key : lineageLabel(key)}</td>
                 <td className="whitespace-nowrap py-1.5 pr-3 tabular-nums text-muted">n = {v.isolates}</td>
                 <td className="w-full min-w-12 py-1.5 pr-3">
                   <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
@@ -80,6 +108,11 @@ function LineageTable({ by }: { by: NonNullable<Candidate["coverage"]["by_lineag
                 </td>
                 <td className="whitespace-nowrap py-1.5 text-right tabular-nums">
                   {v.perfect_match}/{v.isolates}
+                  {v.failing > 0 && (
+                    <span className="ml-1 text-bad" title="Isolates with a variant likely to break the assay">
+                      {v.failing} fail
+                    </span>
+                  )}
                   {v.isolates < 5 && <span className="ml-1 text-warn" title="Too few isolates to read much into">few</span>}
                 </td>
               </tr>
@@ -214,7 +247,7 @@ function Detail({ c }: { c: Candidate }) {
         <section>
           <h3 className="mb-2 text-sm font-medium">Coverage in the isolate set</h3>
           <CoverageBar c={c.coverage} />
-          {c.coverage.by_lineage && <LineageTable by={c.coverage.by_lineage} />}
+          <CoverageGroups coverage={c.coverage} />
         </section>
         <section>
           <h3 className="mb-2 text-sm font-medium">Specificity</h3>

@@ -50,7 +50,9 @@ Rules:
   limits. Quote numbers exactly as returned, and give each assay's isolate_matches sentence word for word, without saying that name. Never write a coverage
   figure like '14/14'. Write plain text: no markdown, no asterisks, no bullet symbols, and never mention tool or field
   names. Keep it under 120 words.
-- Always say the results are in silico only, not tested in the lab, and that they come from the Bandung isolates only.
+- Always say the results are in silico only, not tested in the lab, and that they were designed and measured on the same
+  isolates, which come from the regions named in the result (see regions).
+- If the user asks how an assay does in a region, quote that region's region_matches sentence word for word.
 - If the result has a multiplex section, say which assays can share a tube and that the grouping is a model.
 - If asked something unrelated to TB assay design, say briefly that you only help with this.
 Targets: {"; ".join(f"{k} = {v}" for k, v in TARGET_DOC.items())}."""
@@ -60,7 +62,7 @@ TOOLS = [
         types.FunctionDeclaration(
             name="design_assays",
             description="Design and score qPCR primer pairs and wild-type/mutant probes for resistance targets, "
-                        "using the finished Bandung isolates. Returns ranked assays with scores and coverage.",
+                        "using the finished isolates from all regions together. Returns ranked assays with scores and coverage.",
             parameters_json_schema={
                 "type": "object",
                 "properties": {"targets": {
@@ -114,12 +116,16 @@ def _compact(report: dict) -> dict:
     """What the model sees: enough to explain the result, nothing it could mistake for an invitation to invent."""
     return {
         "isolates": report["dataset"]["isolates"],
+        "regions": report["dataset"].get("regions", {}),
         "assays": [
             {
                 "rank": c["rank"], "target": f"{c['gene']} {c['mutation']}", "drug": c["drug"], "who_tier": c["who_tier"],
                 "scores": c["scores"], "isolate_matches": coverage_text(c["coverage"]),
                 "probe_tm_gap_c": [o["mismatch_dtm"] for o in c["oligos"] if "mismatch_dtm" in o],
                 "specificity": c["specificity"]["note"], "caveats": c["caveats"],
+                **({"region_matches": {r: f"{v['perfect_match']} of {v['isolates']} isolates match every oligo exactly; "
+                                          f"{v['failing']} likely to fail" for r, v in c["coverage"]["by_region"].items()}}
+                   if len(c["coverage"].get("by_region", {})) > 1 else {}),
             }
             for c in report["candidates"]
         ],
