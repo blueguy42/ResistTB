@@ -178,6 +178,9 @@ export default function AgentPanel({
   running,
   busyElsewhere,
   storageOk,
+  collapsed,
+  unread,
+  onToggleCollapsed,
   onSend,
   onNew,
   onSelect,
@@ -190,6 +193,9 @@ export default function AgentPanel({
   running: boolean;
   busyElsewhere: boolean;
   storageOk: boolean;
+  collapsed: boolean;
+  unread: boolean; // a reply finished while the assistant was minimized
+  onToggleCollapsed: () => void;
   onSend: (text: string) => void;
   onNew: () => void;
   onSelect: (id: string) => void;
@@ -217,6 +223,31 @@ export default function AgentPanel({
     onSend(text);
   };
 
+  if (collapsed)
+    return (
+      <div className="flex h-full items-center gap-3 rounded-2xl border border-line bg-surface px-3 py-2 lg:flex-col lg:justify-start lg:px-0 lg:py-3">
+        <button
+          type="button"
+          onClick={onToggleCollapsed}
+          aria-label={unread ? "Open the assistant: a reply is ready" : running ? "Open the assistant: it is working" : "Open the assistant"}
+          className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line text-ink hover:border-accent"
+        >
+          <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M3.5 4.5h13v8h-6l-3.5 3v-3h-3.5z" />
+          </svg>
+          {unread && <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-surface" />}
+        </button>
+        <span className="min-w-0 flex-1 truncate text-sm lg:hidden">
+          {running ? "Assistant is working…" : unread ? "Assistant: a reply is ready" : (session?.title ?? "Assistant")}
+        </span>
+        {running && <span className="h-3 w-3 shrink-0 animate-pulse rounded-full border-2 border-accent" aria-hidden />}
+        <button type="button" onClick={onToggleCollapsed} className="rounded-lg border border-line px-2.5 py-1 text-xs hover:border-accent lg:hidden">
+          Open
+        </button>
+        <span className="hidden text-xs text-muted [writing-mode:vertical-rl] lg:block">Assistant</span>
+      </div>
+    );
+
   return (
     <div className="flex h-full flex-col rounded-2xl border border-line bg-surface">
       <div className="flex items-center gap-2 border-b border-line px-4 py-3">
@@ -242,6 +273,9 @@ export default function AgentPanel({
           className={`rounded-lg border px-2.5 py-1 text-xs ${view === "list" ? "border-accent bg-accent-soft" : "border-line hover:border-accent"}`}
         >
           Chats ({sessions.length})
+        </button>
+        <button type="button" onClick={onToggleCollapsed} aria-label="Minimize the assistant" title="Minimize" className="rounded-lg border border-line px-2 py-1 text-xs hover:border-accent">
+          <span aria-hidden>−</span>
         </button>
       </div>
 

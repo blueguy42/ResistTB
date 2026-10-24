@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Report, ToolStep } from "@/lib/types";
 import AgentPanel from "./AgentPanel";
+import Onboarding from "./Onboarding";
 import ReportSwitcher from "./ReportSwitcher";
 import ReportView from "./ReportView";
 import TargetLibrary from "./TargetLibrary";
@@ -30,9 +31,56 @@ export default function App({ report: initial }: { report: Report }) {
   const { sessions, activeId, active, storageOk, update, select, create, remove, rename } = useSessions();
   const [runningSid, setRunningSid] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState(initial.candidates[0]?.id ?? "");
+  const [tab, setTab] = useState<"results" | "library">("results");
+  const [collapsed, setCollapsed] = useState(false);
+  const [unread, setUnread] = useState(false);
+  const [welcome, setWelcome] = useState<"hidden" | "first" | "help">("hidden");
+  const wasRunning = useRef<string | null>(null);
+
+  // Preferences kept in this browser: the assistant starts open on a wide screen and minimized on a phone, and the
+  // welcome card shows until it is closed once.
+  useEffect(() => {
+    let stored: string | null = null;
+    let seen: string | null = null;
+    try {
+      stored = localStorage.getItem("chatgp-tb:assistant");
+      seen = localStorage.getItem("chatgp-tb:welcome");
+    } catch {
+      /* storage blocked: use the defaults every time */
+    }
+    setCollapsed(stored ? stored === "collapsed" : !window.matchMedia("(min-width: 1024px)").matches);
+    setWelcome(seen ? "hidden" : "first");
+  }, []);
+
+  const toggleCollapsed = useCallback(() => {
+    setCollapsed((c) => {
+      try {
+        localStorage.setItem("chatgp-tb:assistant", c ? "open" : "collapsed");
+      } catch {
+        /* blocked */
+      }
+      return !c;
+    });
+    setUnread(false);
+  }, []);
+
+  const closeWelcome = useCallback(() => {
+    setWelcome("hidden");
+    try {
+      localStorage.setItem("chatgp-tb:welcome", "seen");
+    } catch {
+      /* blocked: it will show again next visit */
+    }
+  }, []);
 
   const shown = active?.reports.find((r) => r.id === active.activeReportId)?.report ?? initial;
   useEffect(() => setSelectedId(shown.candidates[0]?.id ?? ""), [shown]);
+
+  // A reply that finishes while the assistant is minimized leaves a dot on its button.
+  useEffect(() => {
+    if (wasRunning.current !== null && runningSid === null && collapsed) setUnread(true);
+    wasRunning.current = runningSid;
+  }, [runningSid, collapsed]);
 
   const patch = useCallback(
     (sid: string, msgId: string, fn: (m: ChatMessage) => ChatMessage) =>
@@ -139,7 +187,8 @@ export default function App({ report: initial }: { report: Report }) {
         const next = (await res.json()) as Report;
         patch(sid, msgId, (m) => ({ ...m, text: next.summary, steps: next.steps }));
         addReport(sid, msgId, next);
-        document.getElementById("report")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTab("results");
+        setTimeout(() => document.getElementById("report")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
       } catch (err) {
         patch(sid, msgId, (m) => ({ ...m, error: failure("Design", err) }));
       } finally {
@@ -154,10 +203,17 @@ export default function App({ report: initial }: { report: Report }) {
     (id: string | null) => {
       if (!active) return;
       update(active.id, (s) => ({ ...s, activeReportId: id }));
-      document.getElementById("report")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTab("results");
+      setTimeout(() => document.getElementById("report")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
     },
     [active, update],
   );
+
+  const designed = library.targets.filter((t) => t.status === "designed").length;
+  const tabClass = (on: boolean) =>
+    `-mb-px flex items-center gap-2 border-b-2 px-3 py-2 text-sm ${on ? "border-accent text-ink" : "border-transparent text-muted hover:text-ink"}`;
+  const count = "rounded-full bg-accent-soft px-1.5 py-0.5 text-[11px] tabular-nums text-accent";
+  const example = "Design assays for ethambutol resistance";
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -170,7 +226,20 @@ export default function App({ report: initial }: { report: Report }) {
               <p className="text-xs text-muted">Genomics-guided primer and probe design for drug-resistant tuberculosis</p>
             </div>
           </div>
-          <span className="hidden rounded-full border border-line px-3 py-1 text-xs text-muted sm:inline">{shown.dataset.name}</span>
+          <div className="flex items-center gap-2">
+            <span className="hidden max-w-[28rem] truncate rounded-full border border-line px-3 py-1 text-xs text-muted xl:inline">{shown.dataset.name}</span>
+            <button
+              type="button"
+              onClick={() => {
+                setTab("results");
+                setWelcome((w) => (w === "hidden" ? "help" : "hidden"));
+              }}
+              aria-expanded={welcome !== "hidden"}
+              className="rounded-full border border-line px-3 py-1 text-xs hover:border-accent"
+            >
+              How it works
+            </button>
+          </div>
         </div>
       </header>
 
@@ -180,14 +249,21 @@ export default function App({ report: initial }: { report: Report }) {
         </div>
       )}
 
-      <main className="mx-auto grid w-full max-w-[1400px] flex-1 gap-5 px-5 py-5 lg:grid-cols-[380px_minmax(0,1fr)]">
-        <div className="h-[34rem] lg:sticky lg:top-5 lg:h-[calc(100vh-6.5rem)]">
+      <main
+        className={`mx-auto grid w-full max-w-[1400px] flex-1 gap-5 px-5 py-5 ${
+          collapsed ? "lg:grid-cols-[3.5rem_minmax(0,1fr)]" : "lg:grid-cols-[380px_minmax(0,1fr)]"
+        }`}
+      >
+        <div className={`${collapsed ? "" : "h-[34rem]"} lg:sticky lg:top-5 lg:h-[calc(100vh-6.5rem)]`}>
           <AgentPanel
             session={active}
             sessions={sessions}
             running={runningSid !== null && runningSid === activeId}
             busyElsewhere={runningSid !== null && runningSid !== activeId}
             storageOk={storageOk}
+            collapsed={collapsed}
+            unread={unread}
+            onToggleCollapsed={toggleCollapsed}
             onSend={send}
             onNew={create}
             onSelect={select}
@@ -196,12 +272,45 @@ export default function App({ report: initial }: { report: Report }) {
             onShowReport={showReport}
           />
         </div>
-        <div className="min-w-0 space-y-5">
-          <TargetLibrary library={library} current={shown.candidates.map((c) => c.id)} busy={runningSid !== null} onDesign={designFromLibrary} />
-          {active && <ReportSwitcher session={active} onShow={showReport} />}
-          <div id="report" className="scroll-mt-5">
-            <ReportView report={shown} selectedId={selectedId} onSelect={setSelectedId} />
+
+        <div className="min-w-0 space-y-4">
+          <div role="tablist" aria-label="View" className="flex gap-1 border-b border-line">
+            <button role="tab" id="tab-results" aria-selected={tab === "results"} aria-controls="panel-results" onClick={() => setTab("results")} className={tabClass(tab === "results")}>
+              Results <span className={count}>{shown.candidates.length}</span>
+            </button>
+            <button role="tab" id="tab-library" aria-selected={tab === "library"} aria-controls="panel-library" onClick={() => setTab("library")} className={tabClass(tab === "library")}>
+              Target library <span className={count}>{designed}</span>
+            </button>
           </div>
+
+          {tab === "library" ? (
+            <div role="tabpanel" id="panel-library" aria-labelledby="tab-library">
+              <TargetLibrary library={library} current={shown.candidates.map((c) => c.id)} busy={runningSid !== null} onDesign={designFromLibrary} />
+            </div>
+          ) : (
+            <div role="tabpanel" id="panel-results" aria-labelledby="tab-results" className="space-y-5">
+              {welcome !== "hidden" && (
+                <Onboarding
+                  mode={welcome}
+                  isolates={shown.dataset.isolates}
+                  regions={Object.keys(shown.dataset.regions ?? {})}
+                  designed={designed}
+                  total={library.targets.length}
+                  onTry={() => {
+                    if (welcome === "first") closeWelcome();
+                    else setWelcome("hidden");
+                    if (collapsed) toggleCollapsed();
+                    void send(example);
+                  }}
+                  onClose={welcome === "first" ? closeWelcome : () => setWelcome("hidden")}
+                />
+              )}
+              {active && <ReportSwitcher session={active} onShow={showReport} />}
+              <div id="report" className="scroll-mt-5">
+                <ReportView report={shown} selectedId={selectedId} onSelect={setSelectedId} />
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

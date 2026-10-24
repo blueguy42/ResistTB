@@ -20,7 +20,6 @@ export default function TargetLibrary({
   busy: boolean;
   onDesign: (ids: string[]) => void;
 }) {
-  const [open, setOpen] = useState(true);
   const [drug, setDrug] = useState("All drugs");
   const [query, setQuery] = useState("");
   const [showNoDesign, setShowNoDesign] = useState(false);
@@ -48,19 +47,13 @@ export default function TargetLibrary({
 
   return (
     <section className="rounded-2xl border border-line bg-surface px-5 py-4" aria-label="Target library">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="text-sm font-medium">Target library</h3>
-        <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} className="text-xs text-muted hover:text-ink">
-          {open ? "Hide" : "Show"}
-        </button>
-      </div>
+      <h3 className="text-sm font-medium">Target library</h3>
       <p className="mt-1 text-xs text-muted">
         {designed} of {library.targets.length} WHO resistance variants have a design on {library.isolates} isolates
         {multiRegion ? ` from ${regionNames.length} regions` : ""}. Pick up to {MAX_PICK} to design them together.
       </p>
 
-      {open && (
-        <>
+      <>
           <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
             <label className="flex items-center gap-1.5">
               <span className="text-muted">Drug</span>
@@ -93,8 +86,8 @@ export default function TargetLibrary({
             <span className="ml-auto tabular-nums text-muted">{rows.length} shown</span>
           </div>
 
-          <div className="mt-3 max-h-80 overflow-auto rounded-xl border border-line">
-            <table className="w-full min-w-[560px] text-left text-xs">
+          <div className="mt-3 max-h-[60vh] overflow-auto rounded-xl border border-line">
+            <table className={`w-full text-left text-xs ${multiRegion ? "min-w-[760px]" : "min-w-[560px]"}`}>
               <thead className="sticky top-0 bg-surface text-muted">
                 <tr className="border-b border-line">
                   <th className="w-8 py-1.5 pl-3 font-normal"><span className="sr-only">Pick</span></th>
@@ -103,7 +96,12 @@ export default function TargetLibrary({
                   <th className="py-1.5 pr-3 text-right font-normal" title="Resistant isolates the WHO catalogue lists with this variant">WHO isolates</th>
                   <th className="py-1.5 pr-3 text-right font-normal">Score</th>
                   <th className="py-1.5 pr-3 text-right font-normal">Exact match</th>
-                  {multiRegion && <th className="py-1.5 pr-3 font-normal">By region</th>}
+                  {multiRegion &&
+                    regionNames.map((r) => (
+                      <th key={r} className="py-1.5 pr-3 text-right font-normal" title={`Isolates from ${r} matching every oligo exactly`}>
+                        {r}
+                      </th>
+                    ))}
                 </tr>
               </thead>
               <tbody>
@@ -137,21 +135,18 @@ export default function TargetLibrary({
                       <td className="py-1.5 pr-3 text-right tabular-nums">{t.resistant_isolates.toLocaleString()}</td>
                       <td className="py-1.5 pr-3 text-right tabular-nums">{ok ? t.overall : "–"}</td>
                       <td className="py-1.5 pr-3 text-right tabular-nums">{ok ? `${t.exact_matches}/${t.isolates}` : "–"}</td>
-                      {multiRegion && (
-                        <td className="py-1.5 pr-3 tabular-nums">
-                          {ok && t.by_region
-                            ? Object.entries(t.by_region)
-                                .map(([r, [n, total]]) => `${r} ${n}/${total}`)
-                                .join(" · ")
-                            : "–"}
-                        </td>
-                      )}
+                      {multiRegion &&
+                        regionNames.map((r) => (
+                          <td key={r} className="py-1.5 pr-3 text-right tabular-nums">
+                            {ok && t.by_region?.[r] ? `${t.by_region[r][0]}/${t.by_region[r][1]}` : "–"}
+                          </td>
+                        ))}
                     </tr>
                   );
                 })}
                 {rows.length === 0 && (
                   <tr>
-                    <td colSpan={multiRegion ? 7 : 6} className="py-4 text-center text-muted">
+                    <td colSpan={6 + (multiRegion ? regionNames.length : 0)} className="py-4 text-center text-muted">
                       No targets match.
                     </td>
                   </tr>
@@ -176,8 +171,7 @@ export default function TargetLibrary({
             )}
             <span className="text-xs text-muted">Designing runs the full design again on the current isolates.</span>
           </div>
-        </>
-      )}
+      </>
     </section>
   );
 }
