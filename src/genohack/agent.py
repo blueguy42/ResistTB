@@ -17,7 +17,7 @@ from google.oauth2.credentials import Credentials
 
 from .assay import build_report
 from .genome import load_genes
-from .lookup import find_targets
+from .lookup import find_targets, names_a_target
 from .snapshot import DEFAULT_SNAPSHOT
 from .targets import all_targets
 
@@ -69,6 +69,26 @@ Rules:
 - If the user asks how an assay does in a region, quote that region's region_matches sentence word for word.
 - If the result has a multiplex section, say which assays can share a tube and that the grouping is a model.
 - Assays for variants close together in one gene share primers' binding sites, so say they are alternatives, not a panel.
+- Questions about patients are in scope. For example "people treated with a drug but not improving, which primers and probes
+  should the assay include?" or "how can I design primers to test susceptibility to a drug?". Read them as a request for an
+  assay that detects resistance to the drug named. Do not diagnose, and do not advise on treatment: if asked what to
+  prescribe, say that is for the clinicians. If they name a regimen such as first-line, call find_targets for each of its
+  drugs. If the user wrote a placeholder instead of a drug, such as [drug], ask which
+  drug in one sentence and call no tool. If a patient scenario names no drug at all, assume rifampicin and isoniazid and begin
+  your reply by saying so ("You did not name a drug, so this assumes rifampicin and isoniazid; tell me the drug for a
+  specific panel."). A regimen such as first-line counts as naming its drugs.
+- For such a question: call find_targets for the drug, then design_assays with suggested_panel (up to 4 ids) unless the user
+  named variants. For several drugs, design the first one or two ids of each drug's suggested_panel, at most 6 in all, and
+  write one sentence per drug with its name, the targets designed for it and its share, and say the share is for that drug's
+  full panel of four, which you can design by asking for that drug alone. Only name targets that were designed in this result (the assays you were given), never
+  targets you only saw in find_targets, and take the sequences from the top-ranked assay of that result. Reply in this order: (1) one sentence that not improving has other causes too, such as missed doses,
+  poor absorption or a different diagnosis, and that this assay checks only the genetic cause; (2) the panel: which
+  targets, named by gene and mutation from suggested_panel_names and never by id, with panel_share_of_who_resistance_percent and a reminder that it is a rough guide, and if weak_panel_note is not empty say it (never
+  judge the share yourself); (3) for the top assay, its
+  sequences exactly as given, forward primer, reverse primer, wild-type probe and mutant probe, and say the other assays'
+  sequences are in the results table; (4) if a region such as Bandung was named, that region's region_matches sentence word
+  for word; (5) how to read it: the mutant probe signalling means that resistance variant is present, the wild-type probe
+  alone means that site is not changed, but that is not proof of susceptibility because other variants exist. Up to 220 words.
 - Only if asked something unrelated to TB assay design, say briefly that you only help with this.
 The four main targets: {"; ".join(f"{k} = {v}" for k, v in TARGET_DOC.items())}."""
 
@@ -150,8 +170,11 @@ def _compact(report: dict) -> dict:
                 "scores": c["scores"], "isolate_matches": coverage_text(c["coverage"]),
                 "probe_tm_gap_c": [o["mismatch_dtm"] for o in c["oligos"] if "mismatch_dtm" in o],
                 "specificity": c["specificity"]["note"], "caveats": c["caveats"],
-                **({"region_matches": {r: f"{v['perfect_match']} of {v['isolates']} isolates match every oligo exactly; "
-                                          f"{v['failing']} likely to fail" for r, v in c["coverage"]["by_region"].items()}}
+                # 5' to 3' as they would be ordered, so the reply can name exactly what to include in the assay
+                "sequences": {o["role"]: o["sequence"] for o in c["oligos"]},
+                **({"region_matches": {r: f"In {r}, {v['perfect_match']} of {v['isolates']} isolates match every oligo exactly; "
+                                          f"{v['failing']} {'is' if v['failing'] == 1 else 'are'} likely to fail"
+                                          for r, v in c["coverage"]["by_region"].items()}}
                    if len(c["coverage"].get("by_region", {})) > 1 else {}),
             }
             for c in report["candidates"]
@@ -183,6 +206,8 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
     cfg = types.GenerateContentConfig(system_instruction=SYSTEM, tools=TOOLS, temperature=0.2)
 
     step_no = 0
+    looked_up: list[str] = []  # drugs find_targets was asked about
+    named = names_a_target(" ".join([message] + [t.get("text", "") for t in (history or []) if t.get("role") == "user"]))
     t0 = time.perf_counter()
     yield {"type": "step", "step": {"id": "s0", "tool": "plan", "label": "Read the request and plan the tools", "status": "running"}}
     try:
@@ -201,7 +226,11 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
             content = resp.candidates[0].content
             calls = [p.function_call for p in content.parts if p.function_call]
             if not calls:
-                yield {"type": "text", "text": (resp.text or "").replace("**", "").replace("isolate_matches", "coverage").strip()}
+                text = (resp.text or "").replace("**", "").replace("isolate_matches", "coverage").strip()
+                if looked_up and not named:  # the model chose the drugs: say so, whatever it wrote
+                    text = (f"You did not name a drug, so this looks at {' and '.join(dict.fromkeys(looked_up))}; "
+                            f"tell me the drug for a specific panel.\n\n") + text
+                yield {"type": "text", "text": text}
                 break
             contents.append(content)
             replies = []
@@ -217,6 +246,7 @@ def chat(message: str, history: list[dict] | None = None) -> Iterator[dict[str, 
                 t1 = time.perf_counter()
                 try:
                     if call.name == "find_targets":
+                        looked_up.append(str(args.get("query", "")))
                         result = find_targets(str(args.get("query", "")))
                     elif call.name == "design_assays":
                         asked = list(args.get("targets", []))

@@ -10,7 +10,9 @@ import re
 import pandas as pd
 
 from .library import load_library
-from .targets import MIN_RESISTANT
+from .targets import MIN_RESISTANT, all_targets
+
+PANEL_SIZE = 4  # two tubes of two assays on a 4-channel instrument (see multiplex.py)
 from .who import load_catalogue
 
 # What people type, mapped to the catalogue's drug names.
@@ -94,6 +96,14 @@ def find_targets(query: str, limit: int = 8) -> dict:
         f"least {MIN_RESISTANT} resistant isolates, so none can be one allele-specific probe (they are mostly "
         "loss-of-function mutations or indels spread across the gene)."
     )
+    panel = designed[:PANEL_SIZE]
+    in_scope = rows.groupby("variant")["present_R"].max().fillna(0).sum()
+    # How much of the catalogue's resistance for this scope the panel's variants account for. Counts come from the
+    # variant's own rows within the scope, so a variant shared by two drugs is not credited with the other drug's isolates.
+    by_id = {t.id: t for t in all_targets()}  # several variants can share a position, so match the changed base too
+    panel_n = sum(
+        rows[(rows["pos"] == by_id[t["id"]].pos) & (rows["alt"] == by_id[t["id"]].alt)]["present_R"].fillna(0).max() for t in panel
+    ) if panel else 0
     out = {
         "matched": scope, "who_variants": int(variants), "single_base_variants": int(n_pos),
         "designable_targets": len(mine), "designed": len(designed), "no_design": len(undesigned),
@@ -101,6 +111,14 @@ def find_targets(query: str, limit: int = 8) -> dict:
         # Set only when it is true, so the assistant never has to compare the counts itself.
         "limit_note": (f"Most of the WHO variants for {scope} cannot be one allele-specific probe, so an assay covers only a "
                        "small part of its resistance." if other > len(mine) else ""),
+        "suggested_panel": [t["id"] for t in panel],
+        "suggested_panel_names": [_name(t) for t in panel],
+        "panel_share_of_who_resistance_percent": int(min(100, round(100 * panel_n / in_scope))) if in_scope and panel else 0,
+        "weak_panel_note": ("Because this panel covers under half of the drug's resistance in the WHO catalogue, a negative result "
+                            "tells little." if panel and in_scope and 100 * panel_n / in_scope < 50 else ""),
+        "panel_note": ("The panel is the designed targets with the most resistant isolates in the WHO catalogue. The share adds up "
+                       "isolates per variant, so an isolate with several variants counts more than once: a rough guide, not a "
+                       "detection rate.") if panel else "",
         "targets": [
             {"id": t["id"], "name": _name(t), "drug": t["drug"], "resistant_isolates_in_who": t["resistant_isolates"],
              "overall_score": t["overall"], "exact_matches": f"{t['exact_matches']} of {t['isolates']} isolates"}
@@ -118,3 +136,18 @@ def _legacy_ids(rows: pd.DataFrame) -> set[str]:
 
     keyed = {(r.pos, r.alt) for r in rows.itertuples() if pd.notna(r.pos)}
     return {t.id for t in default_targets() if (t.pos, t.alt) in keyed}
+
+
+_REGIMENS = ("first-line", "first line", "second-line", "second line", "mdr", "xdr")
+
+
+def names_a_target(text: str) -> bool:
+    """True when the text names a drug, drug class, regimen or a gene from the WHO catalogue."""
+    t = text.lower()
+    words = set(re.findall(r"[a-z0-9\-]+", t))
+    if any(w in words for w in DRUG_ALIASES if " " not in w) or any(r in t for r in _REGIMENS):
+        return True
+    if any(a in t for a in DRUG_ALIASES if " " in a):
+        return True
+    genes = {g.lower() for g in load_catalogue()["gene"].unique() if g != "gene"} | {"fabg1"}
+    return bool(words & genes)
