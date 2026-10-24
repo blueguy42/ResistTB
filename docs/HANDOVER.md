@@ -107,9 +107,9 @@ same local ports**. That is the main source of confusion. The original session f
    classifier earlier and are now done only on the user's explicit say-so. Do not work around a block; give the command to the user.
 7. **macOS Gatekeeper blocks `gcloud-crc32c`.** gcloud falls back to a slower checksum; one sync dropped a file while the prompt was
    open. Do not bypass it (the user's security setting).
-8. Docs from other chats: `docs/pipeline_explained.{html,pdf}`, `docs/pipeline_overview.{html,pdf}`, `docs/progress_report.{html,pdf}`
-   and `docs/status_report.{html,pdf}` were renamed to ResistTB and the PDFs regenerated with headless Chrome (same page counts).
-   `status_report` and `progress_report` still describe the earlier partial state; use this file and `ResistTB_report.pdf` instead.
+8. Docs: `docs/pipeline_explained.{html,pdf}` and `docs/pipeline_overview.{html,pdf}` were updated to the 456-isolate, 205-target state on
+   2026-10-25 and the PDFs regenerated with headless Chrome. The older `status_report`, `progress_report`, `refs.json` and the old interface
+   screenshots were deleted (still in git history); the README screenshots are in `docs/screenshots/`.
 9. Files outside the repo, in the parent folder `/Users/afan/Documents/Repos/mtb-hackathon/`: `GenoHack Master Document.pdf`,
    `GenoHack Master Document - OCR.txt` (OCR of its 58 image-only pages; dense tables and figures are garbled), `business.txt`,
    `papers/`, `ncbi_metadata/`.
@@ -729,8 +729,8 @@ tests/                     test_genome, test_windows, test_multiplex, test_snaps
                            test_scenarios   (35 pass)
 web/                       Next.js app: app/, components/, lib/, data/ (report.json, library.json)
 figures/                   position validation, lineage presence/absence, CSVs
-docs/                      HANDOVER.md, ResistTB_report.{html,pdf}, status_report, progress_report, pipeline_overview,
-                           pipeline_explained (html + pdf each), refs.json, interface screenshots
+docs/                      HANDOVER.md, ResistTB_report.{html,pdf}, pipeline_overview, pipeline_explained (html + pdf each),
+                           screenshots/ (used by the README)
 fasta_export/              (git-ignored) per-isolate and combined FASTA for all 456 isolates, isolates.tsv
 ```
 
