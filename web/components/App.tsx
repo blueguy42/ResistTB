@@ -73,7 +73,9 @@ export default function App({ report: initial }: { report: Report }) {
     }
   }, []);
 
-  const shown = active?.reports.find((r) => r.id === active.activeReportId)?.report ?? initial;
+  // A chat with no report yet shows an empty state; `initial` still supplies the dataset numbers for the header and welcome card.
+  const current = active ? (active.reports.find((r) => r.id === active.activeReportId) ?? (active.activeReportId === null ? active.reports[active.reports.length - 1] : undefined))?.report : undefined;
+  const shown = current ?? initial;
   useEffect(() => setSelectedId(shown.candidates[0]?.id ?? ""), [shown]);
 
   // A reply that finishes while the assistant is minimized leaves a dot on its button.
@@ -276,7 +278,7 @@ export default function App({ report: initial }: { report: Report }) {
         <div className="min-w-0 space-y-4">
           <div role="tablist" aria-label="View" className="flex gap-1 border-b border-line">
             <button role="tab" id="tab-results" aria-selected={tab === "results"} aria-controls="panel-results" onClick={() => setTab("results")} className={tabClass(tab === "results")}>
-              Results <span className={count}>{shown.candidates.length}</span>
+              Results {current && <span className={count}>{current.candidates.length}</span>}
             </button>
             <button role="tab" id="tab-library" aria-selected={tab === "library"} aria-controls="panel-library" onClick={() => setTab("library")} className={tabClass(tab === "library")}>
               Target library <span className={count}>{designed}</span>
@@ -285,7 +287,7 @@ export default function App({ report: initial }: { report: Report }) {
 
           {tab === "library" ? (
             <div role="tabpanel" id="panel-library" aria-labelledby="tab-library">
-              <TargetLibrary library={library} current={shown.candidates.map((c) => c.id)} busy={runningSid !== null} onDesign={designFromLibrary} />
+              <TargetLibrary library={library} current={(current?.candidates ?? []).map((c) => c.id)} busy={runningSid !== null} onDesign={designFromLibrary} />
             </div>
           ) : (
             <div role="tabpanel" id="panel-results" aria-labelledby="tab-results" className="space-y-5">
@@ -306,7 +308,32 @@ export default function App({ report: initial }: { report: Report }) {
               )}
               {active && <ReportSwitcher session={active} onShow={showReport} />}
               <div id="report" className="scroll-mt-5">
-                <ReportView report={shown} selectedId={selectedId} onSelect={setSelectedId} />
+                {current ? (
+                  <ReportView report={current} selectedId={selectedId} onSelect={setSelectedId} />
+                ) : (
+                  <div className="rounded-2xl border border-dashed border-line bg-surface px-5 py-10 text-center">
+                    <h2 className="text-sm font-medium">No results in this chat yet</h2>
+                    <p className="mx-auto mt-1 max-w-md text-xs leading-5 text-muted">
+                      Ask the assistant which resistance mutations occur in a region, or pick variants in the Target library. Results appear here.
+                    </p>
+                    <div className="mt-4 flex flex-wrap justify-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (collapsed) toggleCollapsed();
+                          void send(example);
+                        }}
+                        disabled={runningSid !== null}
+                        className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-surface disabled:opacity-50"
+                      >
+                        Try an example
+                      </button>
+                      <button type="button" onClick={() => setTab("library")} className="rounded-lg border border-line px-3 py-1.5 text-sm hover:border-accent">
+                        Open the Target library
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}

@@ -2,13 +2,14 @@
 
 import { ago, type Session } from "@/lib/sessions";
 
-// Moves between the reports a chat has produced. "Starting report" is the page's own default, not from a chat.
+// Moves between the reports a chat has produced. A chat with no report shows an empty state instead.
 export default function ReportSwitcher({ session, onShow }: { session: Session; onShow: (id: string | null) => void }) {
   if (session.reports.length === 0) return null;
-  const ids: (string | null)[] = [null, ...session.reports.map((r) => r.id)];
-  const at = ids.indexOf(session.activeReportId);
+  const ids = session.reports.map((r) => r.id);
+  // Chats saved before the empty state could point at the old starting report (null); they show the latest report.
+  const activeId = session.activeReportId ?? ids[ids.length - 1];
+  const at = ids.indexOf(activeId);
   const go = (delta: number) => onShow(ids[Math.min(ids.length - 1, Math.max(0, at + delta))]);
-  const current = session.reports.find((r) => r.id === session.activeReportId);
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-line bg-surface px-4 py-2.5 text-xs">
       <span className="text-muted">Results from this chat</span>
@@ -18,11 +19,10 @@ export default function ReportSwitcher({ session, onShow }: { session: Session; 
       <label className="min-w-0 flex-1">
         <span className="sr-only">Choose a report</span>
         <select
-          value={session.activeReportId ?? ""}
-          onChange={(e) => onShow(e.target.value || null)}
+          value={activeId}
+          onChange={(e) => onShow(e.target.value)}
           className="w-full min-w-0 truncate rounded-md border border-line bg-bg px-2 py-1 text-ink"
         >
-          <option value="">Starting report: the 4 main targets</option>
           {session.reports.map((r, i) => (
             <option key={r.id} value={r.id}>
               {i + 1}. {r.label} · {ago(r.at)}
@@ -34,7 +34,7 @@ export default function ReportSwitcher({ session, onShow }: { session: Session; 
         ›
       </button>
       <span className="tabular-nums text-muted">
-        {current ? `${session.reports.indexOf(current) + 1} of ${session.reports.length}` : `0 of ${session.reports.length}`}
+        {at + 1} of {ids.length}
       </span>
     </div>
   );
