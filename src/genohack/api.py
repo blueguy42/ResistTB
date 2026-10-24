@@ -46,35 +46,63 @@ def report() -> JSONResponse:
     return JSONResponse(json.loads(REPORT.read_text()))
 
 
-PER_IP_HOUR = int(os.environ.get("GENOHACK_CHATS_PER_IP_HOUR", "20"))  # 0 turns a limit off
-PER_DAY = int(os.environ.get("GENOHACK_CHATS_PER_DAY", "300"))
-_by_ip: dict[str, deque] = {}
-_today: deque = deque()
+class RateLimit:
+    """In-memory ceilings per caller and per day (0 turns one off). They reset when the instance restarts."""
+
+    def __init__(self, per_ip_hour: int, per_day: int) -> None:
+        self.per_ip_hour, self.per_day = per_ip_hour, per_day
+        self._by_ip: dict[str, deque] = {}
+        self._today: deque = deque()
+
+    def allow(self, ip: str) -> bool:
+        now = time.time()
+        while self._today and now - self._today[0] > 86400:
+            self._today.popleft()
+        hits = self._by_ip.setdefault(ip, deque())
+        while hits and now - hits[0] > 3600:
+            hits.popleft()
+        if len(self._by_ip) > 2000:
+            for k in [k for k, v in self._by_ip.items() if not v and k != ip]:
+                del self._by_ip[k]
+        if (self.per_day and len(self._today) >= self.per_day) or (self.per_ip_hour and len(hits) >= self.per_ip_hour):
+            return False
+        hits.append(now)
+        self._today.append(now)
+        return True
 
 
-def _allow(ip: str) -> bool:
-    """In-memory limits: each chat calls Gemini, so a public link needs a ceiling. Resets when the instance restarts."""
-    now = time.time()
-    while _today and now - _today[0] > 86400:
-        _today.popleft()
-    hits = _by_ip.setdefault(ip, deque())
-    while hits and now - hits[0] > 3600:
-        hits.popleft()
-    if len(_by_ip) > 2000:
-        for k in [k for k, v in _by_ip.items() if not v and k != ip]:
-            del _by_ip[k]
-    if (PER_DAY and len(_today) >= PER_DAY) or (PER_IP_HOUR and len(hits) >= PER_IP_HOUR):
-        return False
-    hits.append(now)
-    _today.append(now)
-    return True
+# Each chat calls Gemini, so it gets the tight limit. A library design runs no model, only the design code.
+chat_limit = RateLimit(int(os.environ.get("GENOHACK_CHATS_PER_IP_HOUR", "20")), int(os.environ.get("GENOHACK_CHATS_PER_DAY", "300")))
+design_limit = RateLimit(int(os.environ.get("GENOHACK_DESIGNS_PER_IP_HOUR", "60")), int(os.environ.get("GENOHACK_DESIGNS_PER_DAY", "1500")))
+
+
+def _caller(request: Request) -> str:
+    fwd = request.headers.get("x-forwarded-for", "")  # Cloud Run puts the caller first
+    return fwd.split(",")[0].strip() or (request.client.host if request.client else "unknown")
+
+
+class DesignIn(BaseModel):
+    targets: list[str]
+
+
+@app.post("/api/design")
+def design(body: DesignIn, request: Request) -> JSONResponse:
+    """Design the picked targets from the target library panel: the same report a chat request returns, with no model call."""
+    if not design_limit.allow(_caller(request)):
+        return JSONResponse({"error": "design limit reached, try again later"}, status_code=429)
+    ids = [t for t in dict.fromkeys(body.targets) if t in agent.TARGETS]
+    if not ids:
+        return JSONResponse({"error": "none of those ids is a target"}, status_code=400)
+    try:
+        report = agent.run_design(ids)
+    except ValueError as exc:
+        return JSONResponse({"error": str(exc)}, status_code=400)
+    return JSONResponse({**report, "request": "Target library: " + ", ".join(c["id"] for c in report["candidates"])})
 
 
 @app.post("/api/chat")
 def chat(body: ChatIn, request: Request):
-    fwd = request.headers.get("x-forwarded-for", "")  # Cloud Run puts the caller first
-    ip = fwd.split(",")[0].strip() or (request.client.host if request.client else "unknown")
-    if not _allow(ip):
+    if not chat_limit.allow(_caller(request)):
         return JSONResponse({"error": "chat limit reached, try again later"}, status_code=429)
 
     def events():

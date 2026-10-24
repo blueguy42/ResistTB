@@ -4,8 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Report, ToolStep } from "@/lib/types";
 import AgentPanel from "./AgentPanel";
 import ReportView from "./ReportView";
+import TargetLibrary from "./TargetLibrary";
+import { loadLibrary } from "@/lib/library";
 
 // Same host as the page, so localhost, 127.0.0.1 and a LAN address all reach the API on this machine.
+const library = loadLibrary();
 const apiBase = () => process.env.NEXT_PUBLIC_API_URL ?? `http://${window.location.hostname}:8000`;
 
 type Turn = { role: "user" | "model"; text: string };
@@ -23,6 +26,7 @@ export default function App({ report: initial }: { report: Report }) {
   const [summary, setSummary] = useState(initial.summary);
   const [steps, setSteps] = useState<ToolStep[]>(initial.steps);
   const [running, setRunning] = useState(false);
+  const [libBusy, setLibBusy] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(initial.candidates[0].id);
   const history = useRef<Turn[]>([]);
@@ -117,6 +121,37 @@ export default function App({ report: initial }: { report: Report }) {
     [handle, initial.mock, replay],
   );
 
+  // Design the targets picked in the library panel: same report as a chat request, with no model call.
+  const designFromLibrary = useCallback(
+    async (ids: string[]) => {
+      clearTimers();
+      setError("");
+      setLibBusy(true);
+      try {
+        const res = await fetch(`${apiBase()}/api/design`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ targets: ids }),
+        });
+        if (res.status === 429) throw new Error("LIMIT:The design limit was reached. Please try again later.");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const next = (await res.json()) as Report;
+        setReport(next);
+        setRequest(next.request);
+        setSummary(next.summary);
+        setSteps(next.steps);
+        setSelectedId(next.candidates[0]?.id ?? "");
+        document.getElementById("report")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (err) {
+        const why = err instanceof Error ? err.message : String(err);
+        setError(why.startsWith("LIMIT:") ? why.slice(6) : `Design failed (${why}). Is the backend running? API at ${apiBase()}`);
+      } finally {
+        setLibBusy(false);
+      }
+    },
+    [],
+  );
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b border-line bg-surface">
@@ -142,7 +177,12 @@ export default function App({ report: initial }: { report: Report }) {
         <div className="lg:sticky lg:top-5 lg:h-[calc(100vh-6.5rem)]">
           <AgentPanel request={request} steps={steps} summary={summary} error={error} running={running} onSend={send} />
         </div>
-        <ReportView report={report} selectedId={selectedId} onSelect={setSelectedId} />
+        <div className="min-w-0 space-y-5">
+          <TargetLibrary library={library} current={report.candidates.map((c) => c.id)} busy={libBusy || running} onDesign={designFromLibrary} />
+          <div id="report" className="scroll-mt-5">
+            <ReportView report={report} selectedId={selectedId} onSelect={setSelectedId} />
+          </div>
+        </div>
       </main>
     </div>
   );

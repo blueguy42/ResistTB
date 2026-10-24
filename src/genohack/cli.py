@@ -53,6 +53,8 @@ def cmd_library(args: argparse.Namespace) -> None:
     from .library import build_library
 
     lib = build_library(args.snapshot, args.out)
+    if args.web_out:  # the web page imports this copy, so the library panel works without a backend
+        Path(args.web_out).write_text(Path(args.out).read_text())
     rows = lib["targets"]
     ok = sum(r["status"] == "designed" for r in rows)
     print(f"{ok} of {len(rows)} targets designed -> {args.out}")
@@ -82,6 +84,7 @@ def main() -> None:
     lb = sub.add_parser("library", help="design every WHO target once and save a summary the chat lookup reads")
     lb.add_argument("--snapshot", default="resources/snapshot_windows.npz")
     lb.add_argument("--out", default="resources/design_library.json")
+    lb.add_argument("--web-out", default="web/data/library.json", help="copy for the web page ('' to skip)")
     lb.set_defaults(func=cmd_library)
     args = p.parse_args()
     args.func(args)

@@ -111,3 +111,29 @@ export interface Report {
   candidates: Candidate[];
   multiplex?: Multiplex | null;
 }
+
+// One row of the target library: a WHO resistance variant that can be a single allele-specific probe, with its design summary.
+export interface LibraryTarget {
+  id: string;
+  gene: string;
+  mutation: string;
+  drug: string; // WHO drug names, comma separated
+  genome_pos: number;
+  resistant_isolates: number; // resistant isolates the WHO catalogue lists with this variant
+  who_ppv: number | null;
+  status: "designed" | "no_design";
+  overall?: number;
+  exact_matches?: number;
+  isolates?: number;
+  likely_fail?: number;
+  by_region?: Record<string, [number, number]>; // region -> [exact matches, isolates]
+  reason?: string; // why there is no design
+  probe_room_fallback?: boolean;
+}
+
+export interface Library {
+  generated_at: string;
+  isolates: number;
+  regions: Record<string, number>;
+  targets: LibraryTarget[];
+}

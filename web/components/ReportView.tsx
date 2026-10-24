@@ -247,7 +247,7 @@ function Detail({ c }: { c: Candidate }) {
         <section>
           <h3 className="mb-2 text-sm font-medium">Coverage in the isolate set</h3>
           <CoverageBar c={c.coverage} />
-          <CoverageGroups coverage={c.coverage} />
+          <CoverageGroups key={`${c.id}-${Object.keys(c.coverage.by_region ?? {}).length > 1}`} coverage={c.coverage} />
         </section>
         <section>
           <h3 className="mb-2 text-sm font-medium">Specificity</h3>

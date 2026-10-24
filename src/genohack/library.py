@@ -39,7 +39,9 @@ def design_one(target: Target, snap, ref, mask) -> dict:
     table = position_table(rm, ref, mask)
     ev = evidence_for(target)
     row = {
-        "id": target.id, "gene": target.gene, "mutation": target.mutation, "drug": target.drug,
+        "id": target.id, "gene": target.gene, "mutation": target.mutation,
+        # The catalogue's own drug names (the four hand-built targets word theirs differently).
+        "drug": ", ".join(sorted(set(ev["drug"]))) if not ev.empty else target.drug,
         "genome_pos": target.pos, "resistant_isolates": target.n_resistant,
         "who_ppv": None if ev.empty else round(float(ev["ppv"].max()), 2),
     }
@@ -52,6 +54,7 @@ def design_one(target: Target, snap, ref, mask) -> dict:
     return {
         **row, "status": "designed", "overall": c["scores"]["overall"], "scores": c["scores"],
         "exact_matches": cov["perfect_match"], "isolates": cov["isolates_total"], "likely_fail": cov["failing"],
+        "by_region": {r: [v["perfect_match"], v["isolates"]] for r, v in cov.get("by_region", {}).items()},
         "amplicon": [c["amplicon_start"], c["amplicon_end"]], "tolerance": assay.tolerance, "probe_room_fallback": bool(assay.target_margin),
         "specificity_checked": c["specificity"]["human_hits"] is not None,
     }
