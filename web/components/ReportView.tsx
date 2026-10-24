@@ -53,8 +53,10 @@ function CoverageBar({ c }: { c: Candidate["coverage"] }) {
 }
 
 function lineageLabel(key: string) {
-  const m = key.match(/^lineage(\d+)$/);
-  return m ? `Lineage ${m[1]}` : key;
+  const single = key.match(/^lineage(\d+)$/);
+  if (single) return `Lineage ${single[1]}`;
+  const mixed = key.match(/^lineage(\d+);lineage(\d+)$/);
+  return mixed ? `Mixed ${mixed[1]} + ${mixed[2]}` : key;
 }
 
 function LineageTable({ by }: { by: NonNullable<Candidate["coverage"]["by_lineage"]> }) {
