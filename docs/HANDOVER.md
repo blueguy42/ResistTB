@@ -50,7 +50,7 @@ chat; the draft is in the master document, pages 68-72.
 | Agent (Gemini) + API | **Done** (tested on partial pooled data) |
 | Web interface | **Done** (sessions, library, minimize, onboarding) |
 | Tracked data in git (`web/data/*.json`, `resources/design_library.json`, `resources/snapshot_windows.npz`) | **Bandung-only.** Not yet rebuilt on pooled data |
-| Cloud Run `resisttb` | **Live, public, but an old build** (4 targets, Bandung-only, no sessions) |
+| Cloud Run `resisttb` | **Live on the current build** (456 isolates, three regions, 192 of 205 targets designed); replaces the old `chatgp-tb` service |
 | Rebuild on pooled data + redeploy | **Waiting for the VM run** |
 | Delete VM and disk | **Waiting for the user's explicit OK** |
 | Held-out validation (other Indonesian projects, 779 runs) | Not started |
@@ -304,7 +304,7 @@ alerts; **nothing stops spending automatically**). Quotas: E2_CPUS 24 per region
 
 ### 9.2 Cloud Run `resisttb` (asia-southeast1)
 
-URL `https://resisttb-zqrp2hdbia-as.a.run.app`, **public** (`allUsers` has `run.invoker`), revision `resisttb-00001-tjp`, min 0 / max 1 instance, 1 vCPU / 1 GiB,
+URL `https://resisttb-66604371416.asia-southeast1.run.app`, **public** (`allUsers` has `run.invoker`), revision `resisttb-00001-nvs`, min 0 / max 1 instance, 1 vCPU / 1 GiB,
 concurrency 4, timeout 120 s, service account `resisttb-run@haduh-512512.iam.gserviceaccount.com` (only `roles/aiplatform.user`),
 env `GENOHACK_PROJECT=haduh-512512`, `GENOHACK_LOCATION=global`. It runs the **old build** (4 targets, Bandung only, 9 KB snapshot,
 no regions, library or sessions). A redeploy is part of the runbook (section 15). Public means anyone can spend Gemini quota, bounded by the rate limits (20 chats/IP/h, 300/day) and the budget alert.
@@ -479,7 +479,7 @@ gcloud run deploy resisttb --source . --project haduh-512512 --region asia-south
 
 The service is currently public (`allUsers` invoker). A redeploy keeps IAM; if it is ever recreated, re-grant with
 `gcloud run services add-iam-policy-binding resisttb --member=allUsers --role=roles/run.invoker --region asia-southeast1 --project haduh-512512`.
-Verify: `curl https://resisttb-zqrp2hdbia-as.a.run.app/api/health`, then run a design and a chat from the page. Check the page shows 456 isolates and three regions.
+Verify: `curl https://resisttb-66604371416.asia-southeast1.run.app/api/health`, then run a design and a chat from the page. Check the page shows 456 isolates and three regions.
 
 The container (python:3.13-slim) runs from source (`PYTHONPATH=/app/src`) and copies `src`, `resources`, `ref/NC_000962.3.fasta`, `ref/mask.bed`,
 `web/data/report.json`, `web/site`. It needs no results folder and no BLAST database (snapshot + cache).
