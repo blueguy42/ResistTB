@@ -230,7 +230,8 @@ export default function App({ report: initial }: { report: Report }) {
       <header className="border-b border-line bg-surface">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-5 py-3.5">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-sm font-semibold text-surface">GP</div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/genome-logo.svg" alt="" className="h-9 w-9 rounded-lg" />
             <div>
               <h1 className="text-base font-semibold leading-tight">ResistTB</h1>
               <p className="text-xs text-muted">Genomics-guided primer and probe design for drug-resistant tuberculosis</p>
