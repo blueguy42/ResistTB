@@ -50,7 +50,13 @@ svg text { font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-
 <li>the caveats</li>
 </ul>
 <p>Everything is in silico. Nothing has been tested in a tube.</p>
-<p>The next two pages show the process from start to finish. The first covers the data half: from public data to per-isolate results.</p>
+<p>The next page shows the whole pipeline on one page; the two after it show the process in detail. The first covers the data half: from public data to per-isolate results.</p>
+
+<div class="fig">
+<h2>The whole pipeline on one page</h2>
+<img src="pipeline_diagram.png" style="width:100%;height:auto" alt="ResistTB pipeline">
+<p class="cap">Stage A (cloud VM, finished) turns public reads into per-isolate results; stage B (Python design library) designs and scores the assays; stage C (Gemini agent, API and web dashboard on Cloud Run) serves them. The next two pages show stages A and B in detail.</p>
+</div>
 
 <div class="fig">
 <h2>1. From public data to per-isolate results</h2>

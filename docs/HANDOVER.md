@@ -16,7 +16,7 @@ operations.
 
 ## 1. Summary
 
-ResistTB (formerly "ChatGP-TB"; renamed on 2026-10-25) turns public *Mycobacterium tuberculosis* (TB) genomes into qPCR primer and
+ResistTB turns public *Mycobacterium tuberculosis* (TB) genomes into qPCR primer and
 allele-specific probe designs for drug-resistance variants. A cloud VM processed sequencing reads into per-isolate variant calls
 (done, VM deleted). A Python library designs primers and probes on the **population consensus** of those isolates, checks them
 against every isolate (overall, by lineage, by region), screens for off-target amplification with BLAST, scores them and checks
@@ -31,15 +31,15 @@ What changed since version 2 (written 19:15 WIB on 2026-10-24):
 | VM run still going (about 150 of 234 new isolates) | Run finished: **456 isolates** (Bandung 222, Guangdong 173, Tamil Nadu 61). 13 isolates failed on truncated SRA downloads and were redone through ENA |
 | Library, snapshot, report on Bandung only | Rebuilt on all 456 isolates; every one of the 192 designs is now BLAST-screened (109 primer pairs in the cache) |
 | rpoB S450L scored 83 (Bandung) then 61 (first pooled rebuild) | Primer selection fixed to try looser variable-site tolerances when the best design has H37Rv near-matches: rpoB S450L **80**, specificity 100 |
-| Cloud Run `chatgp-tb`, old build | Cloud Run **`resisttb`** (new service, new service account), current build, public. Old service, account and images deleted |
+| Earlier Cloud Run service, old build | Cloud Run **`resisttb`** (new service, new service account), current build, public. Old service, account and images deleted |
 | VM `genohack-run-0` and 100 GB disk | **Deleted** (no snapshot, by the user's decision). Nothing but Cloud Run and two buckets remains |
-| Name ChatGP-TB | **ResistTB** everywhere in code, UI, docs and storage keys |
+| Earlier project name | **ResistTB** everywhere in code, UI, docs and storage keys |
 | No custom domain | `https://resist-tb.afanhandoyo.com` live (Cloud Run domain mapping, Cloudflare DNS only) |
 | FASTA exported for Bandung only | `fasta_export/` now covers all 456 isolates |
 
 Team (from the master document): Hanifa Syifa Kamila, Yudisto P Nadapdap, Hefina Aissa Gunawan, Ahmad Alfani Handoyo. The
 proposal deadline was 15:00 WIB on 2026-10-24 (3 A4 pages); whether it was submitted is not known to this chat. The draft is in the
-master document, pages 68-72, and says "ChatGP-TB", not ResistTB.
+master document, pages 68-72, and uses the earlier project name, not ResistTB.
 
 ---
 
@@ -349,7 +349,7 @@ Static export of a Next.js app, served by `pnpm dev` on port 3000 or by the API 
   with a **Region | Lineage** switch; an empty state in a new chat.
 - **Assistant:** free-text chat (SSE with visible tool steps); transcript; *Chats* list with rename and delete; "New chat" keeps old ones.
 - **Sessions:** IndexedDB database `resisttb` in the user's browser (max 50 chats, 20 reports per chat); report switcher per chat. The
-  storage keys were renamed from `chatgp-tb` on 2026-10-25, so chats saved under the old name are no longer visible (the new domains also
+  storage keys were renamed on 2026-10-25, so chats saved under the old name are no longer visible (the new domains also
   start with empty storage). Nothing is stored on a server.
 - **Onboarding:** welcome card on first visit, reopened by "How it works"; numbers come from the loaded data; "Try an example"; a
   "Good to know" box (in silico, coverage is in-sample, chats are local); a guide to scores and terms.
@@ -376,14 +376,14 @@ artifactregistry, cloudbuild and others). Cloud Scheduler is not enabled.
 | Cloud Run service `resisttb` (asia-southeast1) | revision `resisttb-00001-nvs`, public (`allUsers` has `run.invoker`), min 0 / max 1 instance, 1 vCPU / 1 GiB, concurrency 4, timeout 120 s, service account `resisttb-run@haduh-512512.iam.gserviceaccount.com` (only `roles/aiplatform.user`), env `GENOHACK_PROJECT=haduh-512512`, `GENOHACK_LOCATION=global`. URL `https://resisttb-66604371416.asia-southeast1.run.app` | about $0 idle; Gemini usage per chat unmeasured |
 | Bucket `gs://haduh-512512-genohack` (asia-southeast1) | `results/` (456 folders), `offtarget/` (803 MiB BLAST index), `vm-backup/` (isolates.tsv, logs, `offtarget_cache.json`), `deploy/` (run bundle, probably out of date), `runlogs/` | pennies per month |
 | Bucket `run-sources-haduh-512512-asia-southeast1` | source zips from `gcloud run deploy --source` (about 6.7 MB) | pennies |
-| Artifact Registry `cloud-run-source-deploy` | the `resisttb` image (older `chatgp-tb` images deleted) | about $0.02 per month |
+| Artifact Registry `cloud-run-source-deploy` | the `resisttb` image (older images deleted) | about $0.02 per month |
 | Domain mapping `resist-tb.afanhandoyo.com` → `resisttb` | Cloud Run domain mapping (preview feature; free); live | $0 |
 | Service accounts | `resisttb-run` (Cloud Run), `genohack-vm` (storage.objectAdmin on the bucket; unused, kept for a future VM), default compute SA `66604371416-compute@` (roles/editor and `roles/cloudbuild.builds.builder`, needed for source deploys) | free |
 | Firewall | `allow-iap-ssh` (35.235.240.0/20), `default-allow-icmp`, `default-allow-internal`, and **`default-allow-ssh` and `default-allow-rdp` still open to 0.0.0.0/0** (recommend deleting; not requested yet) | free |
 | **Nothing else** | no VM, disks, snapshots, reserved IPs, Cloud Run jobs or scheduler jobs (checked) | |
 
 Deleted on 2026-10-24 and 2026-10-25: first VM and 400 GB disk (earlier), VM `genohack-run-0` and its 100 GB disk (no snapshot), Cloud Run
-`chatgp-tb`, service account `chatgp-tb-run` and its role, two `chatgp-tb` images.
+the earlier Cloud Run service, its service account and role, and two old images.
 
 Cost notes: the data VM ran about 6.5 hours for the main run plus two short boots for BLAST (about 8-9 hours on e2-standard-16 at about
 $0.66/h including disk, so roughly $6-8 for this phase). The gcloud `beta` component was installed on the laptop on 2026-10-25.
@@ -679,7 +679,7 @@ Research done on 2026-10-24 (web searches; the primary papers were not all read,
 15. Wet-lab validation with a partner lab; compare with Xpert MTB/RIF and Deeplex Myc-TB (tNGS; the team notes include a West Java
     implementation study and cost table).
 16. Panel optimisation as in PrimeGen (SADDLE-style).
-17. Update the master document and proposal wording to ResistTB if the name change is meant to apply there (the submitted draft says ChatGP-TB).
+17. Update the master document and proposal wording to ResistTB if the name change is meant to apply there (the submitted draft uses the earlier name).
 
 ---
 

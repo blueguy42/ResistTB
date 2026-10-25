@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1640" height="720" viewBox="0 0 1640 720" font-family="-apple-system,Helvetica Neue,Helvetica,Arial,sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#6b6b66" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="1640" height="720" fill="#fff"/>
+<text x="30" y="42" font-size="26" font-weight="600" fill="#1c1c1a">ResistTB pipeline</text>
+<text x="30" y="66" font-size="14" fill="#6b6b66">From public TB genomes to ranked qPCR primer and probe designs. All results are in silico.</text>
+<rect x="30" y="96" width="500" height="590" rx="14" fill="none" stroke="#9a9a93" stroke-width="1" stroke-dasharray="6 5"/>
+<circle cx="60" cy="128" r="14" fill="#0F6E56"/><text x="60" y="133" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">A</text>
+<text x="84" y="126" font-size="17" font-weight="600" fill="#1c1c1a">Per-isolate genome processing</text><text x="84" y="144" font-size="12.5" fill="#6b6b66">Cloud VM · finished</text>
+<rect x="50" y="174" width="290" height="68" rx="9" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.9"/>
+<text x="195" y="203" font-size="15.5" font-weight="600" fill="#2C2C2A" text-anchor="middle">Public reads</text><text x="195" y="224" font-size="12" fill="#5F5E5A" text-anchor="middle">NCBI SRA / ENA · 456 runs, 3 regions</text>
+<line x1="340" y1="208" x2="360" y2="208" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="362" y="182" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="437" y="205" font-size="11" fill="#5F5E5A" text-anchor="middle">Bandung 222 · Guangdong</text>
+<text x="437" y="219" font-size="11" fill="#5F5E5A" text-anchor="middle">173 · Tamil Nadu 61</text>
+<line x1="195" y1="242" x2="195" y2="272" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="50" y="274" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="195" y="303" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">Download and subsample</text><text x="195" y="324" font-size="12" fill="#0F6E56" text-anchor="middle">fasterq-dump · rasusa to 100x</text>
+<line x1="340" y1="308" x2="360" y2="308" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="362" y="282" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="437" y="305" font-size="11" fill="#5F5E5A" text-anchor="middle">Snakemake, 6 isolates at</text>
+<text x="437" y="319" font-size="11" fill="#5F5E5A" text-anchor="middle">once</text>
+<line x1="195" y1="342" x2="195" y2="372" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="50" y="374" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="195" y="403" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">Call variants</text><text x="195" y="424" font-size="12" fill="#0F6E56" text-anchor="middle">snippy (BWA-MEM + FreeBayes) vs H37Rv</text>
+<line x1="340" y1="408" x2="360" y2="408" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="362" y="382" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="437" y="405" font-size="11" fill="#5F5E5A" text-anchor="middle">Watchdog restarts</text>
+<text x="437" y="419" font-size="11" fill="#5F5E5A" text-anchor="middle">stalled runs</text>
+<line x1="195" y1="442" x2="195" y2="472" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="50" y="474" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="195" y="503" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">Lineage and resistance calls</text><text x="195" y="524" font-size="12" fill="#0F6E56" text-anchor="middle">TB-Profiler</text>
+<line x1="340" y1="508" x2="360" y2="508" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="362" y="482" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="437" y="505" font-size="11" fill="#5F5E5A" text-anchor="middle">Reference: H37Rv</text>
+<text x="437" y="519" font-size="11" fill="#5F5E5A" text-anchor="middle">NC_000962.3</text>
+<line x1="195" y1="542" x2="195" y2="572" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="50" y="574" width="290" height="68" rx="9" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.9"/>
+<text x="195" y="603" font-size="15.5" font-weight="600" fill="#2C2C2A" text-anchor="middle">Cloud Storage</text><text x="195" y="624" font-size="12" fill="#5F5E5A" text-anchor="middle">456 result folders: VCF, aligned FASTA, JSON</text>
+<line x1="533" y1="391" x2="567" y2="391" stroke="#6b6b66" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="570" y="96" width="500" height="590" rx="14" fill="none" stroke="#9a9a93" stroke-width="1" stroke-dasharray="6 5"/>
+<circle cx="600" cy="128" r="14" fill="#0F6E56"/><text x="600" y="133" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">B</text>
+<text x="624" y="126" font-size="17" font-weight="600" fill="#1c1c1a">Design library</text><text x="624" y="144" font-size="12.5" fill="#6b6b66">Python · src/genohack</text>
+<rect x="590" y="174" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="735" y="203" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">Pick targets</text><text x="735" y="224" font-size="12" fill="#0F6E56" text-anchor="middle">205 WHO resistance variants</text>
+<line x1="880" y1="208" x2="900" y2="208" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="902" y="182" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="977" y="205" font-size="11" fill="#5F5E5A" text-anchor="middle">WHO 2023 catalogue ·</text>
+<text x="977" y="219" font-size="11" fill="#5F5E5A" text-anchor="middle">gene annotation</text>
+<line x1="735" y1="242" x2="735" y2="272" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="590" y="274" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="735" y="303" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">Snapshot and consensus</text><text x="735" y="324" font-size="12" fill="#0F6E56" text-anchor="middle">±300 bp · 456 isolates · lineage, region</text>
+<line x1="880" y1="308" x2="900" y2="308" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="902" y="282" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="977" y="305" font-size="11" fill="#5F5E5A" text-anchor="middle">Variable sites and</text>
+<text x="977" y="319" font-size="11" fill="#5F5E5A" text-anchor="middle">masked regions avoided</text>
+<line x1="735" y1="342" x2="735" y2="372" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="590" y="374" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="735" y="403" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">Primers and probes</text><text x="735" y="424" font-size="12" fill="#0F6E56" text-anchor="middle">Primer3 · wild-type and mutant probes</text>
+<line x1="880" y1="408" x2="900" y2="408" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="902" y="382" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="977" y="405" font-size="11" fill="#5F5E5A" text-anchor="middle">Tolerance ladder 2 to</text>
+<text x="977" y="419" font-size="11" fill="#5F5E5A" text-anchor="middle">20%</text>
+<line x1="735" y1="442" x2="735" y2="472" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="590" y="474" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="735" y="503" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">Check each design</text><text x="735" y="524" font-size="12" fill="#0F6E56" text-anchor="middle">coverage · BLAST off-targets · dimers</text>
+<line x1="880" y1="508" x2="900" y2="508" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="902" y="482" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="977" y="512" font-size="11" fill="#5F5E5A" text-anchor="middle">Human, 7 NTM, 6 bacteria</text>
+<line x1="735" y1="542" x2="735" y2="572" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="590" y="574" width="290" height="68" rx="9" fill="#FAECE7" stroke="#993C1D" stroke-width="0.9"/>
+<text x="735" y="603" font-size="15.5" font-weight="600" fill="#712B13" text-anchor="middle">Score, rank, group tubes</text><text x="735" y="624" font-size="12" fill="#993C1D" text-anchor="middle">30 / 30 / 20 / 20 · multiplex</text>
+<line x1="880" y1="608" x2="900" y2="608" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="902" y="582" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="977" y="605" font-size="11" fill="#5F5E5A" text-anchor="middle">192 designs, library</text>
+<text x="977" y="619" font-size="11" fill="#5F5E5A" text-anchor="middle">cached</text>
+<line x1="1073" y1="391" x2="1107" y2="391" stroke="#6b6b66" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="1110" y="96" width="500" height="590" rx="14" fill="none" stroke="#9a9a93" stroke-width="1" stroke-dasharray="6 5"/>
+<circle cx="1140" cy="128" r="14" fill="#0F6E56"/><text x="1140" y="133" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">C</text>
+<text x="1164" y="126" font-size="17" font-weight="600" fill="#1c1c1a">AI agent and web app</text><text x="1164" y="144" font-size="12.5" fill="#6b6b66">Cloud Run · live</text>
+<rect x="1130" y="174" width="290" height="68" rx="9" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.9"/>
+<text x="1275" y="203" font-size="15.5" font-weight="600" fill="#2C2C2A" text-anchor="middle">Request</text><text x="1275" y="224" font-size="12" fill="#5F5E5A" text-anchor="middle">plain-English chat, or library pick</text>
+<line x1="1420" y1="208" x2="1440" y2="208" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="1442" y="182" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="1517" y="205" font-size="11" fill="#5F5E5A" text-anchor="middle">Drug, gene, variant,</text>
+<text x="1517" y="219" font-size="11" fill="#5F5E5A" text-anchor="middle">region</text>
+<line x1="1275" y1="242" x2="1275" y2="272" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="1130" y="274" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="1275" y="303" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">Gemini agent</text><text x="1275" y="324" font-size="12" fill="#0F6E56" text-anchor="middle">Vertex AI · calls the design tools</text>
+<line x1="1420" y1="308" x2="1440" y2="308" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="1442" y="282" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="1517" y="305" font-size="11" fill="#5F5E5A" text-anchor="middle">Plans, never writes</text>
+<text x="1517" y="319" font-size="11" fill="#5F5E5A" text-anchor="middle">numbers</text>
+<line x1="1275" y1="342" x2="1275" y2="372" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="1130" y="374" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="1275" y="403" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">FastAPI</text><text x="1275" y="424" font-size="12" fill="#0F6E56" text-anchor="middle">/api/chat · /api/design · /api/report</text>
+<line x1="1420" y1="408" x2="1440" y2="408" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="1442" y="382" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="1517" y="405" font-size="11" fill="#5F5E5A" text-anchor="middle">Rate limited, static</text>
+<text x="1517" y="419" font-size="11" fill="#5F5E5A" text-anchor="middle">site served</text>
+<line x1="1275" y1="442" x2="1275" y2="472" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="1130" y="474" width="290" height="68" rx="9" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.9"/>
+<text x="1275" y="503" font-size="15.5" font-weight="600" fill="#085041" text-anchor="middle">Web dashboard</text><text x="1275" y="524" font-size="12" fill="#0F6E56" text-anchor="middle">Results tab · Target library tab</text>
+<line x1="1420" y1="508" x2="1440" y2="508" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="1442" y="482" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="1517" y="505" font-size="11" fill="#5F5E5A" text-anchor="middle">Chats saved in the</text>
+<text x="1517" y="519" font-size="11" fill="#5F5E5A" text-anchor="middle">browser</text>
+<line x1="1275" y1="542" x2="1275" y2="572" stroke="#6b6b66" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="1130" y="574" width="290" height="68" rx="9" fill="#FAECE7" stroke="#993C1D" stroke-width="0.9"/>
+<text x="1275" y="603" font-size="15.5" font-weight="600" fill="#712B13" text-anchor="middle">Ranked assay report</text><text x="1275" y="624" font-size="12" fill="#993C1D" text-anchor="middle">primers, probes, scores, tubes, caveats</text>
+<line x1="1420" y1="608" x2="1440" y2="608" stroke="#9a9a93" stroke-dasharray="3 3"/>
+<rect x="1442" y="582" width="150" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text x="1517" y="612" font-size="11" fill="#5F5E5A" text-anchor="middle">resist-tb.afanhandoyo.com</text>
+<g font-size="12" fill="#5F5E5A"><rect x="30" y="696" width="14" height="14" rx="3" fill="#F1EFE8" stroke="#5F5E5A" stroke-width=".6"/><text x="50" y="707">Data, input or notes</text><rect x="190" y="696" width="14" height="14" rx="3" fill="#E1F5EE" stroke="#0F6E56" stroke-width=".6"/><text x="210" y="707">Processing step</text><rect x="330" y="696" width="14" height="14" rx="3" fill="#FAECE7" stroke="#993C1D" stroke-width=".6"/><text x="350" y="707">Output</text></g>
+</svg>
